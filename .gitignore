@@ -1,0 +1,23 @@
+# Local environments and editor files
+.venv/
+.env
+.env.*
+.vscode/
+
+# Local datasets and generated data files
+*.csv
+*.rds
+*.RDS
+*.zip
+*.parquet
+*.feather
+*.xlsx
+*.xls
+*.sqlite
+*.db
+
+# Python cache and generated output
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+*.log
