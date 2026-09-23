@@ -1,0 +1,547 @@
+---
+title: A large-scale analysis of racial disparities in police stops across the United
+  States
+classoption: landscape
+---
+
+```{r setup, echo = FALSE, message = FALSE, warning = FALSE}
+source(here::here("lib", "utils.R"))
+source(here::here("lib", "format_plots_for_paper.R"))
+library(tidyverse)
+library(patchwork)
+library(knitr)
+opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+pfs <- read_rds(here::here("results", "prima_facie_stats.rds"))
+vod <- read_rds(here::here("results", "veil_of_darkness.rds"))
+disp <- read_rds(here::here("results", "disparity.rds"))
+mj <- read_rds(here::here("results", "marijuana_legalization_analysis.rds"))
+mjf <- format_mj(mj)
+```
+
+
+\section{Basic Numbers}
+
+
+We have collected and released a dataset of 
+`r comma_num(pfs$counts$collected$n_stops)` traffic stops carried out by 
+`r pfs$counts$collected$n_states` (`r comma_num(pfs$counts$collected$n_stops_states)`)
+state patrol agencies and
+`r pfs$counts$collected$n_cities` (`r comma_num(pfs$counts$collected$n_stops_cities)`)
+municipal police departments.
+
+We analyzed a unique dataset detailing 
+`r comma_num(pfs$counts$analyzed$n_stops)` traffic stops carried out by 
+`r pfs$counts$analyzed$n_states` (`r comma_num(pfs$counts$analyzed$n_stops_states)`)
+state patrol agencies and
+`r pfs$counts$analyzed$n_cities` (`r comma_num(pfs$counts$analyzed$n_stops_cities)`)
+municipal police departments.
+
+
+\section{Prima Facie Stats}
+
+Stop rates:
+```{r stop_rates}
+pfs$rates$stop %>%
+  mutate(
+    agency = if_else(city == "Statewide", "state patrol", "municipal pd"),
+    var = annual_stop_rate * (1 - annual_stop_rate) / population
+  ) %>% 
+  group_by(agency, subject_race) %>%
+  summarize(
+    stop_rate = mean(annual_stop_rate),
+    std_error = sqrt(sum(var)) / n(),
+    lower_ci = stop_rate - 1.96 * std_error,
+    upper_ci = stop_rate + 1.96 * std_error
+  ) %>%
+  kable()
+```
+
+Search rates:
+Number of state patrols with data for search analysis: 
+`r pfs$rates$search %>% filter(city == "Statewide") %>% select(state) %>% n_distinct`
+
+Number of city departments with data for search analysis: 
+`r pfs$rates$search %>% filter(city != "Statewide") %>% select(state, city) %>% n_distinct`
+
+```{r search_rates_cis}
+pfs$rates$search %>% 
+mutate(
+  agency = if_else(city == "Statewide", "state patrol", "municipal pd"),
+  var = search_rate * (1 - search_rate) / n
+) %>% 
+group_by(agency, subject_race) %>%
+summarize(
+  average_search_rate = mean(search_rate),
+  std_error = sqrt(sum(var)) / n(),
+  lower_ci = average_search_rate - 1.96 * std_error,
+  upper_ci = average_search_rate + 1.96 * std_error
+) %>%
+ungroup() %>%
+kable()
+```
+
+\newpage
+
+\section{Summary Table}
+
+total: `r pfs$summary_table$Stops %>% str_replace_all(",", "") %>% as.numeric() %>% sum %>% comma_num()`
+
+\newpage
+
+\section{Veil of Darkness}
+
+Number of stops in 7:00-7:15pm panel:
+```{r}
+vod$full$plots$states$TX$`7:00pm`$data$n %>% sum() %>% comma_num()
+```
+
+Number of stops in 7:15-7:30pm panel:
+```{r}
+vod$full$plots$states$TX$`7:15pm`$data$n %>% sum() %>% comma_num()
+```
+
+Number of stops in 7:30-7:45pm panel:
+```{r}
+vod$full$plots$states$TX$`7:30pm`$data$n %>% sum() %>% comma_num()
+```
+
+Total number of stops in 3 panels:
+```{r}
+comma_num(vod$full$plots$states$TX$`7:00pm`$data$n %>% sum() + vod$full$plots$states$TX$`7:15pm`$data$n %>% sum() +  vod$full$plots$states$TX$`7:30pm`$data$n %>% sum())
+```
+
+```{r veil_of_darkness-plot-trio, fig.height=4, fig.width=9}
+d <- rbind(
+  vod$full$plots$states$TX$`7:00pm`$data,
+  vod$full$plots$states$TX$`7:15pm`$data,
+  vod$full$plots$states$TX$`7:30pm`$data
+) %>% 
+  mutate(time_window = str_c(
+    time_str, " to ", minute_to_time(rounded_minute + 15)
+  ))
+
+d %>% 
+  ggplot(aes(minutes_since_dark, proportion_minority)) +
+  geom_point(aes(size = n)) +
+  geom_smooth(
+    aes(y = avg_p_minority, color = is_dark),
+    method = "lm", se = F, linetype = "dashed"
+  ) +
+  geom_vline(xintercept = -25, linetype = "dotted") +
+  geom_vline(xintercept = 0, linetype = "dotted") +
+  geom_ribbon(
+    data = filter(d, is_dark),
+    aes(ymin = avg_p_minority - se, ymax = avg_p_minority + se),
+    alpha=0.3
+  ) +
+  geom_ribbon(
+    data = filter(d, !is_dark),
+    aes(ymin = avg_p_minority - se, ymax = avg_p_minority + se),
+    alpha=0.3
+  ) +
+  scale_x_continuous(
+    "Minutes since dusk",
+    limits = c(-90, 60),
+    breaks = seq(-90, 60, 30)
+  ) +
+  scale_y_continuous(
+    str_c("Percent of stopped drivers who are black"),
+    limits = c(0.15, 0.35),
+    breaks = seq(0.0, 1.0, 0.05), 
+    labels = scales::percent_format(accuracy = 1)
+  ) +
+  scale_color_manual(values = c("blue", "blue")) +
+  theme_bw(base_size = 16) +
+  theme(
+    legend.position = 'none',
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  ) +
+  facet_grid(cols = vars(time_str))
+```
+
+\subsection{Main model results}
+
+```{r veil_of_darkness-main_mod}
+vod$dst %>% 
+  select(-data, -base_controls) %>% 
+  filter(spline_degree == 6, agency_control, !interact_time_loc) %>% 
+  kable()
+```
+
+Point estimates: `r vod$dst %>% filter(spline_degree == 6, agency_control, !interact_time_loc) %>% pull(is_dark)`
+
+95% CI (lower): `r vod$dst %>% filter(spline_degree == 6, agency_control, !interact_time_loc) %>% pull(is_dark) - 1.96*(vod$dst %>% filter(spline_degree == 6, agency_control, !interact_time_loc) %>% pull(std_error))`
+
+95% CI (upper): `r vod$dst %>% filter(spline_degree == 6, agency_control, !interact_time_loc) %>% pull(is_dark) + 1.96*(vod$dst %>% filter(spline_degree == 6, agency_control, !interact_time_loc) %>% pull(std_error))`
+
+\newpage
+\subsection{Model results for the appendix/footnote reference}
+
+Number of robustness check models with results not statistically significant: 
+`r vod$dst %>% filter(is_dark + 1.96*std_error >= 0) %>% nrow`
+
+```{r veil_of_darkness-appendix_mods}
+vod$dst %>%
+  select(-data, -base_controls) %>%
+  mutate(
+    l_ci = is_dark - 1.96 * std_error,
+    u_ci = is_dark + 1.96 * std_error
+  ) %>% 
+  arrange(agency_control, interact_time_loc, spline_degree) %>% 
+  select(agency, is_dark, std_error, l_ci, u_ci, p_value, everything()) %>%
+  kable()
+```
+
+\newpage
+
+\section{Search Disparity Analysis}
+
+State patrol agencies analyzed: 
+`r disp$state$outcome$results$hit_rates$geography %>% unique()`
+
+Total number of state patrol searches: 
+`r disp$state$outcome$results$hit_rates$n_search_conducted %>% sum() %>% comma_num()`
+
+Municipal departments analyzed:
+`r disp$city$outcome$results$hit_rates$geography %>% unique()`
+
+Total number of municipal pd searches: 
+`r disp$city$outcome$results$hit_rates$n_search_conducted %>% sum() %>% comma_num()`
+
+\subsection{Outcome Test}
+
+City and State outcomes:
+```{r disparity-hit_rates-tables}
+rbind(
+disp$city$outcome$results$hit_rates %>% 
+  group_by(geography, subject_race) %>% 
+  summarize(
+    hit_rate = weighted.mean(hit_rate, n_search_conducted),
+    var = hit_rate * (1 - hit_rate) / sum(n_search_conducted)
+  ) %>% 
+  group_by(subject_race) %>% 
+  summarize(
+    geography = "cities",
+    hit_rate = mean(hit_rate),
+    std_error = sqrt(sum(var)) / n(),
+    lower_ci = hit_rate - 1.96 * std_error,
+    upper_ci = hit_rate + 1.96 * std_error
+  ),
+disp$state$outcome$results$hit_rates %>% 
+  group_by(geography, subject_race) %>% 
+  summarize(
+    hit_rate = weighted.mean(hit_rate, n_search_conducted),
+    var = hit_rate * (1 - hit_rate) / sum(n_search_conducted)
+  ) %>% 
+  group_by(subject_race) %>% 
+  summarize(
+    geography = "states",
+    hit_rate = mean(hit_rate),
+    std_error = sqrt(sum(var)) / n(),
+    lower_ci = hit_rate - 1.96 * std_error,
+    upper_ci = hit_rate + 1.96 * std_error
+  )
+) %>% 
+select(geography, everything()) %>%
+kable()
+```
+\newpage
+
+```{r disparity-city-hit_rates-plot, fig.height=6, fig.width=10}
+axis_min <- max(
+  min(
+    disp$city$outcome$plots$aggregate$data$minority_rate,
+    disp$city$outcome$plots$aggregate$data$majority_rate
+  ) - 0.05, 0
+)
+axis_max <- min(
+  max(
+    disp$city$outcome$plots$aggregate$data$minority_rate,
+    disp$city$outcome$plots$aggregate$data$majority_rate
+  ) + 0.05, 1
+)
+disp$city$outcome$plots$aggregate + 
+  theme(legend.position = "none", plot.title = element_blank()) + 
+  scale_x_continuous(
+    limits = c(axis_min, axis_max),
+    labels = scales::percent_format(accuracy = 1), expand = c(0,0)
+  ) + 
+  scale_y_continuous(
+    limits = c(axis_min, axis_max),
+    labels = scales::percent_format(accuracy = 1),expand = c(0,0)
+  ) 
+```
+
+\newpage
+
+```{r disparity-state-hit_rates-plot, fig.height=6, fig.width=10}
+axis_min <- max(
+  min(
+    disp$state$outcome$plots$aggregate$data$minority_rate,
+    disp$state$outcome$plots$aggregate$data$majority_rate
+  ) - 0.03, 0
+)
+axis_max <- min(
+  max(
+    disp$state$outcome$plots$aggregate$data$minority_rate,
+    disp$state$outcome$plots$aggregate$data$majority_rate
+  ) + 0.03, 1
+)
+
+disp$state$outcome$plots$aggregate + 
+  theme(
+    legend.position = "none",
+    plot.title = element_blank()
+  ) +
+  scale_x_continuous(
+    limits = c(axis_min, axis_max),
+    labels = scales::percent_format(accuracy = 1), expand = c(0,0)
+  ) + 
+  scale_y_continuous(
+    limits = c(axis_min, axis_max),
+    labels = scales::percent_format(accuracy = 1),expand = c(0,0)
+  ) 
+```
+
+\newpage
+
+\subsection{Threshold test results}
+
+city then state
+
+Scaling priors by 0.5x:
+```{r disparity-thresholds-tables-0_5}
+kable(disp$city$threshold$prior_scaling_factor_0.5$results$aggregate_thresholds)
+kable(disp$state$threshold$prior_scaling_factor_0.5$results$aggregate_thresholds)
+```
+
+Priors at 1.0 (normal):
+```{r disparity-thresholds-tables-1_0}
+kable(disp$city$threshold$prior_scaling_factor_1$results$aggregate_thresholds)
+kable(disp$state$threshold$prior_scaling_factor_1$results$aggregate_thresholds)
+```
+
+Scaling priors by 1.5x:
+```{r disparity-thresholds-tables-1_5}
+kable(disp$city$threshold$prior_scaling_factor_1.5$results$aggregate_thresholds)
+kable(disp$state$threshold$prior_scaling_factor_1.5$results$aggregate_thresholds)
+```
+
+\newpage
+Threshold plot for normal priors:
+
+```{r disparity-city-thresholds-plot, fig.height=5, fig.width=10}
+axis_min <- max(
+  min(
+    disp$city$threshold$prior_scaling_factor_1$plots$aggregate$data$minority_rate,
+    disp$city$threshold$prior_scaling_factor_1$plots$aggregate$data$majority_rate
+  ) - 0.03, 0
+)
+axis_max <- min(
+  max(
+    disp$city$threshold$prior_scaling_factor_1$plots$aggregate$data$minority_rate,
+    disp$city$threshold$prior_scaling_factor_1$plots$aggregate$data$majority_rate
+  ) + 0.03, 1
+)
+disp$city$threshold$prior_scaling_factor_1$plots$aggregate + 
+  theme(legend.position = "none", plot.title = element_blank()) + 
+  scale_x_continuous(
+    limits = c(axis_min, axis_max), breaks = seq(0, .5, 0.05),
+    labels = scales::percent_format(accuracy = 1), expand = c(0,0)
+  ) + 
+  scale_y_continuous(
+    limits = c(axis_min, axis_max), breaks = seq(0, .5, 0.05),
+    labels = scales::percent_format(accuracy = 1),expand = c(0,0)
+  ) 
+```
+
+\newpage
+Normal priors:
+
+```{r disparity-state-thresholds-plot, fig.height=5, fig.width=10}
+disp$state$threshold$prior_scaling_factor_1$plots$aggregate + 
+  theme(legend.position = "none", plot.title = element_blank())
+```
+
+\newpage
+Normal priors:
+
+```{r disparity-city-ppc-search, fig.height=5, fig.width=8}
+disp$city$threshold$prior_scaling_factor_1$ppc$search_rate + 
+  scale_y_continuous(
+    "Search rate prediction error\n",
+    limits = c(-.016, .016), breaks = seq(-.5, .5, 0.005),
+    labels = scales::percent_format(accuracy = 0.1)
+) +
+    scale_x_continuous(
+        "\nPredicted search rate",
+        limits = c(0, .27), breaks = seq(0, .5, 0.05),
+        labels = scales::percent_format(accuracy = 1), expand = c(0,0)
+    ) +
+  theme(plot.title = element_blank())
+```
+
+\newpage
+Normal priors:
+
+```{r disparity-city-ppc-hit, fig.height=5, fig.width=8}
+disp$city$threshold$prior_scaling_factor_1$ppc$hit_rate +
+    scale_y_continuous(
+        "Hit rate prediction error\n",
+        limits = c(-.21, .21), breaks = seq(-.5, .5, 0.05),
+        labels = scales::percent_format(accuracy = 1)
+    ) +
+    scale_x_continuous(
+        "\nPredicted hit rate",
+        limits = c(0, .37), breaks = seq(0, .5, 0.05),
+        labels = scales::percent_format(accuracy = 1), expand = c(0,0)
+    ) +
+    theme(plot.title = element_blank())
+```
+
+\newpage
+Normal priors:
+
+```{r disparity-state-ppc-search, fig.height=5, fig.width=8}
+disp$state$threshold$prior_scaling_factor_1$ppc$search_rate +
+  scale_y_continuous(
+        "Search rate prediction error\n",
+        limits = c(-.021, .021), breaks = seq(-.5, .5, 0.005),
+        labels = scales::percent_format(accuracy = .1)
+    ) +
+    scale_x_continuous(
+        "\nPredicted search rate",
+        limits = c(0, .11), breaks = seq(0, .5, 0.02),
+        labels = scales::percent_format(accuracy = 1), expand = c(0,0)
+    ) +
+  theme(plot.title = element_blank())
+```
+
+\newpage
+Normal priors:
+
+```{r disparity-state-ppc-hit, fig.height=5, fig.width=8}
+disp$state$threshold$prior_scaling_factor_1$ppc$hit_rate + 
+  scale_y_continuous(
+        "Hit rate prediction error\n",
+        limits = c(-.30, .30), breaks = seq(-.5, .5, 0.05),
+        labels = scales::percent_format(accuracy = 1)
+    ) +
+    scale_x_continuous(
+        "\nPredicted hit rate",
+        limits = c(0, .65), breaks = seq(0, .8, 0.1),
+        labels = scales::percent_format(accuracy = 1), expand = c(0,0)
+    ) +
+  theme(plot.title = element_blank())
+```
+
+\newpage
+
+
+\section{Marijuana Legalization Analysis}
+
+
+```{r mj_table}
+kable(mj$tables$search_rate_difference_in_difference_coefficients)
+```
+
+\newpage
+```{r mj_search_rates_treatment, fig.height=3, fig.width=8}
+sr <- mj$plots$search_rates
+mjf$treatment_search_rates
+```
+
+CO: `r sr$CO$count`
+
+WA: `r sr$WA$count`
+
+decrease:
+```{r mj_decrease}
+mjf$treatment_discretionary_searches_with_no_contraband %>%
+kable()
+```
+
+\newpage
+
+```{r mj_misdemeanor_rates_treatment, fig.height=3, fig.width=8}
+md <- mj$plots$misdemeanor_rates
+mjf$treatment_misdemeanor_rates
+```
+
+CO: `r md$CO$count`
+
+WA: `r md$WA$count`
+
+\newpage
+
+```{r mj_search_rates_control, fig.height=5.75, fig.width=10}
+mjf$control_search_rates
+```
+AZ: `r sr$AZ$count`
+
+CA: `r sr$CA$count`
+
+FL: `r sr$FL$count`
+
+MA: `r sr$MA$count`
+
+MT: `r sr$MT$count`
+
+NC: `r sr$NC$count`
+
+OH: `r sr$OH$count`
+
+RI: `r sr$RI$count`
+
+SC: `r sr$SC$count`
+
+TX: `r sr$TX$count`
+
+VT: `r sr$VT$count`
+
+WI: `r sr$WI$count`
+
+\newpage
+
+```{r mj_inferred_threshold_plot, fig.height=5, fig.width=10}
+mj$plots$inferred_threshold_changes$prior_scaling_factor_1$plot +
+  theme_bw(base_size = 20) +
+  theme(
+    panel.grid = element_blank(),
+    legend.background=element_rect(fill="transparent"),
+    legend.position=c(0.65, 0.25)
+  )
+```
+
+\newpage
+
+Prior robustness checks
+
+Scaling factor 0.5:
+
+WA rhat = `r mj$plots$inferred_threshold_changes$prior_scaling_factor_0.5$metadata$wa_rhat`
+
+WA n_eff = `r mj$plots$inferred_threshold_changes$prior_scaling_factor_0.5$metadata$wa_n_eff`
+
+CO rhat = `r mj$plots$inferred_threshold_changes$prior_scaling_factor_0.5$metadata$co_rhat`
+
+CO n_eff = `r mj$plots$inferred_threshold_changes$prior_scaling_factor_0.5$metadata$co_n_eff`
+
+```{r mj_inferred_threshold_plot_0_5_prior_scale, fig.height=5, fig.width=10}
+mj$plots$inferred_threshold_changes$prior_scaling_factor_0.5$plot
+```
+
+Scaling factor 1.5:
+
+WA rhat = `r mj$plots$inferred_threshold_changes$prior_scaling_factor_1.5$metadata$wa_rhat`
+
+WA n_eff = `r mj$plots$inferred_threshold_changes$prior_scaling_factor_1.5$metadata$wa_n_eff`
+
+CO rhat = `r mj$plots$inferred_threshold_changes$prior_scaling_factor_1.5$metadata$co_rhat`
+
+CO n_eff = `r mj$plots$inferred_threshold_changes$prior_scaling_factor_1.5$metadata$co_n_eff`
+
+```{r mj_inferred_threshold_plot_1_5_prior_scale, fig.height=5, fig.width=10}
+mj$plots$inferred_threshold_changes$prior_scaling_factor_1.5$plot
+```
