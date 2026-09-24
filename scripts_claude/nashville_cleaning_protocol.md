@@ -138,6 +138,8 @@ Group sizes per year (consent): black 4,766 → 1,521; white 3,207 → 1,026; **
 
 **Row count after cleaning: 3,092,351 − 39 − 3 − 4,023 = 3,088,286 stops.**
 
+**Representation fix (2026-09-24, no rows or values changed):** the literal string `"NA"` in text columns is converted to a real missing value. The first build skipped this for every text column (pandas 3 stores text as `str`, not `object`), leaving e.g. 390,217 `"NA"` in `precinct`/`zone`, 31,449 in `vehicle_registration_state`, 12,793 in `subject_sex`. Caught by the plate-code check in `build_plate_features.py`; the cleaning script now asserts that no `"NA"`/empty string remains and logs per-column counts in the manifest (`text_NA_converted_to_missing`). Features built before the fix (`build_nbh_features.py`) used no affected column.
+
 **Explicitly rejected:**
 
 | # | Proposed | Decision |
@@ -196,7 +198,7 @@ AND raw_search_plain_view == FALSE
 AND date <  2019-03-01
 ```
 
-≈ **58,900 rows** *(est.; 58,974 before dropping the partial month, which holds ~150 consent searches)*. Target `contraband_found`, base rate ≈ 18–19%.
+**58,939 rows** (confirmed on the cleaned table). Target `contraband_found`, base rate **16.9%** (Black 15.7%, white 20.8%, Hispanic 7.9%); no missing values in the target.
 
 This is stricter than `search_basis == 'consent'` (67,629) and is justified by Part 1.7: 10,456 consent searches carry a second, non-discretionary justification.
 

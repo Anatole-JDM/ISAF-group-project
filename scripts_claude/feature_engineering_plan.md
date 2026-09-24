@@ -199,9 +199,25 @@ The Tennessee statewide tract file (not just Davidson) is used so stops just acr
 2. **Download** `tl_2010_47_tract10.zip`, Tennessee 2010 census tracts, from www2.census.gov — **13.73 MB**.
 3. **Query** the Census API (api.census.gov) — 9 vintages × ~11 tables, Tennessee tracts; small JSON responses, no API key needed at this volume.
 
-## Decisions needed from the team
+## Decisions
 
-- **D1** — temporal rule: A, **B (recommended)**, or C.
-- **D2** — join method: point-in-polygon, or 800 m buffer if boundary proximity is material.
-- **D3** — tract race composition in X, or only in the fairness analysis.
-- **D4** — neighbourhood features on interstates and parkways: keep with a road-type interaction, or set to missing.
+| # | Question | Decision | Evidence |
+|---|---|---|---|
+| D1 | Temporal rule | **B** — window ending Y−1; 2010 stops use 2006–2010, flagged | team, 2026-09-24 |
+| D2 | Join method | **Population-weighted 800 m circle** (2010 census blocks), not point-in-polygon | `diag_boundary.py`: 29.1% of stops within 10 m of a tract boundary (34.3% of intersections) |
+| D5 | Smooth across releases? | **No** | change over time is 2–8% of the variance for most features; smoothing would add lag and blur real change |
+| — | Unemployment | add **`unemployment_rel`** = circle rate ÷ Davidson rate, same release | raw rate: 29.5% of variance is change over time (business cycle) → date proxy |
+| — | Robustness radius | **1,200 m** instead of 400 m | at 400 m, 18.7% of stops have <100 residents in the circle and 6.2% have none |
+| D3 | Tract race composition in X, or fairness analysis only | **open** — needed before modelling | |
+| D4 | Neighbourhood features on interstates/parkways | **open** — needed before modelling | |
+
+## Step 1 — build status
+
+Scripts, in order: `clean_nashville.py` → `fetch_acs.py` → `fetch_block_pop.py` → `build_nbh_features.py`.
+
+First build (800 m / 400 m), before the decisions above were applied:
+- 2,867,297 stops (92.8%) with neighbourhood features at 800 m; 206,685 without coordinates; 14,304 in circles with no residents.
+- Known-answer test (circle inside a single tract) exact: 0.197666 = 0.197666; 0 shares outside [0, 1].
+- Release-to-release noise in `share_black` at a fixed location: median 4.5 points, p95 11.2 (tract level: 5.3 / 13.2).
+
+**Assumptions to state in the deck:** uniform composition within a tract; residents distributed as in 2010 (post-2010 growth in new developments is under-weighted).
