@@ -43,8 +43,16 @@ def _preprocessor(X: pd.DataFrame, scale: bool = True) -> ColumnTransformer:
 
 
 # --------------------------------------------------------------------------- arms
-def make_scorecard(X: pd.DataFrame) -> Pipeline:
+def make_scorecard(X: pd.DataFrame, class_weight=None) -> Pipeline:
     """White-box arm. Readable to a caseworker: coefficients are the explanation.
+
+    class_weight defaults to None, NOT "balanced". Balanced weighting improves
+    ranking on an imbalanced target but destroys calibration — it inflates
+    predicted probabilities, which showed up here as a Brier of 0.300 against
+    the GBM's 0.168. Calibration IS the sufficiency dimension of the fairness
+    taxonomy, so a miscalibrated white-box arm would fail the audit for a
+    reason that has nothing to do with fairness. Pass class_weight="balanced"
+    only if you are reporting ranking metrics alone, and say so.
 
     For the full WOE/IV scorecard banks actually deploy, swap the preprocessor
     for optbinning's BinningProcess — it bins monotonically and yields points
@@ -52,20 +60,52 @@ def make_scorecard(X: pd.DataFrame) -> Pipeline:
     """
     return Pipeline([
         ("prep", _preprocessor(X, scale=True)),
-        ("clf", LogisticRegression(max_iter=2000, class_weight="balanced", random_state=SEED)),
+        ("clf", LogisticRegression(max_iter=2000, class_weight=class_weight,
+                                   random_state=SEED)),
     ])
 
 
-def make_xgboost(X: pd.DataFrame, **kw) -> Pipeline:
-    from xgboost import XGBClassifier
+def make_gbm(X: pd.DataFrame, prefer_xgboost: bool = True, **kw) -> Pipeline:
+    """ML arm. Uses XGBoost when installed, else sklearn's HistGradientBoosting.
 
-    params = dict(
-        n_estimators=400, max_depth=5, learning_rate=0.05,
-        subsample=0.8, colsample_bytree=0.8,
-        eval_metric="logloss", random_state=SEED, n_jobs=-1,
-    )
-    params.update(kw)
-    return Pipeline([("prep", _preprocessor(X, scale=False)), ("clf", XGBClassifier(**params))])
+    Both are gradient-boosted trees and perform comparably here. The fallback
+    exists so the pipeline produces real numbers before XGBoost is installed;
+    install it (`pip install xgboost`) for the version named in the report.
+    """
+    if prefer_xgboost:
+        try:
+            from xgboost import XGBClassifier
+
+            params = dict(
+                n_estimators=400, max_depth=5, learning_rate=0.05,
+                subsample=0.8, colsample_bytree=0.8,
+                eval_metric="logloss", random_state=SEED, n_jobs=-1,
+            )
+            params.update(kw)
+            return Pipeline([("prep", _preprocessor(X, scale=False)),
+                             ("clf", XGBClassifier(**params))])
+        except ImportError:
+            pass
+
+    from sklearn.ensemble import HistGradientBoostingClassifier
+
+    params = dict(max_iter=400, max_depth=5, learning_rate=0.05, random_state=SEED)
+    params.update({k: v for k, v in kw.items()
+                   if k in HistGradientBoostingClassifier().get_params()})
+    return Pipeline([("prep", _preprocessor(X, scale=False)),
+                     ("clf", HistGradientBoostingClassifier(**params))])
+
+
+def gbm_backend() -> str:
+    try:
+        import xgboost  # noqa: F401
+        return "xgboost"
+    except ImportError:
+        return "sklearn-histgb"
+
+
+# Back-compat alias
+make_xgboost = make_gbm
 
 
 class TabPFNArm:
@@ -98,5 +138,16 @@ class TabPFNArm:
         return (self.predict_proba(X)[:, 1] >= 0.5).astype(int)
 
 
-def build_all(X: pd.DataFrame) -> dict:
-    return {"scorecard": make_scorecard(X), "xgboost": make_xgboost(X), "tabpfn": TabPFNArm()}
+def tabpfn_available() -> bool:
+    try:
+        import tabpfn  # noqa: F401
+        return True
+    except ImportError:
+        return False
+
+
+def build_all(X: pd.DataFrame, include_tabpfn: bool = True) -> dict:
+    arms = {"scorecard": make_scorecard(X), "gbm": make_gbm(X)}
+    if include_tabpfn and tabpfn_available():
+        arms["tabpfn"] = TabPFNArm()
+    return arms

@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import zipfile
 
+import numpy as np
 import pandas as pd
 
 from . import config as C
@@ -126,11 +127,32 @@ def restrict_period(df: pd.DataFrame) -> pd.DataFrame:
     return df.loc[m].copy()
 
 
+def sklearn_safe(df: pd.DataFrame) -> pd.DataFrame:
+    """Convert pandas nullable dtypes to numpy-backed ones.
+
+    sklearn's SimpleImputer finds missing values with `X != X`, which raises
+    "boolean value of NA is ambiguous" on StringDtype / Int64 columns. The
+    parquet cache round-trips as nullable dtypes, so convert at the boundary:
+    string -> object with np.nan, nullable int/bool -> float64.
+    """
+    out = df.copy()
+    for c in out.columns:
+        dt = out[c].dtype
+        if not pd.api.types.is_extension_array_dtype(dt):
+            continue
+        if pd.api.types.is_integer_dtype(dt) or pd.api.types.is_bool_dtype(dt):
+            out[c] = out[c].astype("float64")
+        else:
+            out[c] = out[c].astype(object).where(out[c].notna(), np.nan)
+    return out
+
+
 # --------------------------------------------------------------------------- frame
 def build_xy(
     df: pd.DataFrame,
     search_type: str | None = "consent",
     include_questionable: bool = False,
+    include_protected: bool = True,
     y_coding: str = C.Y_NATIVE,
 ):
     """Return (X, y, meta) for one stratum.
@@ -145,10 +167,28 @@ def build_xy(
     y_raw = _truthy(d[C.TARGET]).astype(int)
     y = y_raw if y_coding == C.Y_NATIVE else 1 - y_raw
 
-    drop = set(C.EXCLUDE_DEFAULT) | {C.TARGET, "date", "time", "location", "lat", "lng"}
+    # search_type / is_discretionary are DERIVED from the stratifiers. Leaving
+    # them in X would hand the pooled model a near-perfect proxy for the search
+    # type (mechanical searches hit at 27%, discretionary at 16%).
+    drop = set(C.EXCLUDE_DEFAULT) | {
+        C.TARGET, "date", "time", "location", "lat", "lng",
+        "search_type", "is_discretionary",
+    }
     if include_questionable:
         drop -= set(C.QUESTIONABLE)
 
-    X = d.drop(columns=[c for c in drop if c in d.columns], errors="ignore")
+    # RUN BOTH AND REPORT BOTH.
+    # With race included, a contraband-optimising model searches WHITE drivers
+    # more, because white drivers have the higher hit rate in discretionary
+    # searches (25.5% vs 19.5% on the 2016+ test set) -- the reverse of actual
+    # officer behaviour. That is a real result and it is the outcome test
+    # expressed as a model. But "fairness through unawareness" is the obvious
+    # objection, so the race-blind run is needed to show what race is doing.
+    # Note that dropping race does NOT make the model race-neutral: precinct
+    # and zone are strong proxies in a segregated city.
+    if not include_protected:
+        drop |= {c for c in C.PROTECTED if c != "subject_age"}
+
+    X = sklearn_safe(d.drop(columns=[c for c in drop if c in d.columns], errors="ignore"))
     meta = d[["officer_id_hash", "precinct", "year", "search_type", C.PRIMARY_PROTECTED]].copy()
     return X, y, meta

@@ -103,6 +103,62 @@ the deck.
 
 ---
 
+## Results (consent stratum, train <2016 → test ≥2016)
+
+Reproduce with `python -m src.train`, then `streamlit run app/streamlit_app.py`.
+
+| Arm | n train | AUC | PR-AUC | Brier |
+|---|---|---|---|---|
+| scorecard | 49,752 | 0.5518 | 0.2449 | 0.1678 |
+| gbm | 49,752 | 0.5649 | 0.2514 | 0.1677 |
+
+n test = 9,113 · base rate 16.1% train → 21.4% test
+(a real base-rate shift across the regime split) · GBM backend `sklearn-histgb`.
+
+### The finding: there is almost no signal, and it is the wrong signal
+
+**Best AUC is 0.5649** — 0.0649 above chance. Decomposing that sliver:
+
+| Ablation | AUC | Share of above-chance signal |
+|---|---|---|
+| Pre-search features only | 0.5649 | — |
+| **+ officer identity** | 0.5955 | **47%** |
+| **− driver race** | 0.5348 | **46%** |
+
+Roughly half the model's discriminative power is *who stopped you*, and roughly
+half is *what you look like*. Almost none of it is anything about the situation.
+
+Removing race does **not** make the model race-neutral: precinct and zone are
+strong proxies in a segregated city. Run both (`mode="full"` and
+`mode="full_blind"`) and report both.
+
+### The selection inverts
+
+At K = 2,000 on the scorecard, selection rates are **white 51.4%, black 5.0%,
+hispanic 0.0%**. A contraband-optimising model searches *white* drivers far more,
+because white drivers have the higher hit rate in discretionary searches (25.5%
+vs 19.5% on the test set) — the reverse of actual officer behaviour.
+
+That is the outcome test expressed as a model, and it is a strong slide. It also
+means a group with zero selections yields an undefined PPV; `group_rates` returns
+NaN rather than a misleading zero. Do not report a bare point estimate there.
+
+### Economics
+
+Net benefit at K = 2,000 turns **negative once an innocent driver's search costs
+more than ~0.25 of a justified search**. Under any defensible valuation,
+deploying the model destroys value.
+
+### Recommendation to the client: do not deploy
+
+Not because it is unfair *or* because it is inaccurate, but because all four
+dimensions point the same way — near-random discrimination, signal dominated by
+officer identity and race, large false-positive disparities, and negative net
+benefit. That is what "trustworthy AI rather than predictive performance alone"
+looks like when you actually run the numbers.
+
+---
+
 ## Traps (handled in `src/config.py`)
 
 1. **Target leakage.** `contraband_drugs` and `contraband_weapons` are components
