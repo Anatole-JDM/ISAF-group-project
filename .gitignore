@@ -8,6 +8,11 @@ data/processed/
 *.parquet
 !data/README.md
 
+# Secrets — TABPFN_TOKEN and friends. Never commit; this repo is public.
+.env
+.env.*
+!.env.example
+
 # Python
 __pycache__/
 *.py[cod]
