@@ -10,6 +10,8 @@ class with training-set size.
 """
 from __future__ import annotations
 
+import os
+
 import numpy as np
 import pandas as pd
 from sklearn.compose import ColumnTransformer
@@ -108,7 +110,24 @@ def gbm_backend() -> str:
 make_xgboost = make_gbm
 
 
-TABPFN_VERSION = "V2"
+# Which TabPFN checkpoint the foundation-model arm uses.
+#
+# Default V2 because it is UNGATED: no PriorLabs token, no licence acceptance,
+# no account of any kind. Everyone on the team can run it immediately, and it
+# is the version in Hollmann et al., Nature 637 (2025), under the Prior Labs
+# License (Apache 2.0 + attribution).
+#
+# V3_5 is newer and scores better, but its weights are non-commercial and it
+# requires a PriorLabs account, a licence acceptance at ux.priorlabs.ai, and an
+# 876 MB download. If you have already done that, opt in per-machine without
+# touching the code or making teammates follow you:
+#
+#     export TABPFN_VERSION=V3_5
+#
+# Valid: V2, V2_5, V2_6, V3, V3_5, V3_5_FAST (tabpfn.constants.ModelVersion).
+# The version actually used is recorded in every metrics JSON, so the report
+# cannot silently misstate which model was fitted.
+TABPFN_VERSION = os.environ.get("TABPFN_VERSION", "V2").strip() or "V2"
 
 
 class TabPFNArm:

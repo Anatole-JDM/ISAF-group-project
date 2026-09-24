@@ -161,12 +161,13 @@ Not because it is unfair *or* because it is inaccurate, but because all four dim
 `TabPFNArm` defaults to **v2**, deliberately. The v3/v3.5 weights sit in GATED
 HuggingFace repos and need **three** separate approvals:
 
-1. a PriorLabs API token (`TABPFN_TOKEN`),
-2. a PriorLabs licence acceptance at <https://ux.priorlabs.ai> (Licenses tab), and
-3. a HuggingFace account **granted access to the gated repo**.
+1. a PriorLabs account,
+2. a licence acceptance at <https://ux.priorlabs.ai> (Licenses tab), and
+3. an 876 MB weights download.
 
-Measured 2026-09-24: `Prior-Labs/tabpfn-v3.5` returns **401**;
-`Prior-Labs/TabPFN-v2-clf` returns **200** — ungated, no token, no licence gate.
+The PriorLabs login flow handles the HuggingFace side itself — the download
+completes even with unauthenticated HF requests. `Prior-Labs/TabPFN-v2-clf`
+returns 200 unauthenticated, so v2 needs none of the above.
 
 v2 is also the better citation for this report: it is the version in
 
@@ -176,11 +177,16 @@ v2 is also the better citation for this report: it is the version in
 Its weights are under the Prior Labs License (Apache 2.0 + attribution);
 the v3.5 weights are non-commercial.
 
-To opt in to 3.5 once you have HF access:
+Opting in to 3.5 is per-machine, so one person doing it does not force the
+rest of the team through the licence flow:
 
-```python
-models.TabPFNArm(version="V3_5")   # or set src.models.TABPFN_VERSION
+```bash
+export TABPFN_VERSION=V3_5
+python -m src.train && python scripts/update_readme_results.py
 ```
+
+The version actually fitted is recorded in every metrics JSON, so the report
+cannot silently misstate which model produced the numbers.
 
 
 ---
