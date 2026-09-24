@@ -156,6 +156,33 @@ Not because it is unfair *or* because it is inaccurate, but because all four dim
 4. **Thin subgroups.** Asian/PI has 323 consent searches. Report with a CI or
    fold into "other" — never a bare point estimate.
 
+### Tabular foundation model arm
+
+`TabPFNArm` defaults to **v2**, deliberately. The v3/v3.5 weights sit in GATED
+HuggingFace repos and need **three** separate approvals:
+
+1. a PriorLabs API token (`TABPFN_TOKEN`),
+2. a PriorLabs licence acceptance at <https://ux.priorlabs.ai> (Licenses tab), and
+3. a HuggingFace account **granted access to the gated repo**.
+
+Measured 2026-09-24: `Prior-Labs/tabpfn-v3.5` returns **401**;
+`Prior-Labs/TabPFN-v2-clf` returns **200** — ungated, no token, no licence gate.
+
+v2 is also the better citation for this report: it is the version in
+
+> Hollmann et al., "Accurate predictions on small data with a tabular
+> foundation model", *Nature* 637 (2025).
+
+Its weights are under the Prior Labs License (Apache 2.0 + attribution);
+the v3.5 weights are non-commercial.
+
+To opt in to 3.5 once you have HF access:
+
+```python
+models.TabPFNArm(version="V3_5")   # or set src.models.TABPFN_VERSION
+```
+
+
 ---
 
 ## Layout

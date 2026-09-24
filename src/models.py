@@ -108,27 +108,58 @@ def gbm_backend() -> str:
 make_xgboost = make_gbm
 
 
+TABPFN_VERSION = "V2"
+
+
 class TabPFNArm:
     """Foundation-model arm. Subsamples to TABPFN_MAX_TRAIN on fit.
 
     TabPFN has no native global explanation, so this is the honest black-box arm
     of the comparison. tabpfn-extensions provides SHAP-based local explanations.
+
+    DEFAULTS TO V2, DELIBERATELY. The weights for v3/v3.5 live in GATED
+    HuggingFace repos (`Prior-Labs/tabpfn-v3.5` returns 401), which need three
+    separate approvals: a PriorLabs API token, a PriorLabs licence acceptance,
+    AND a HuggingFace account that has been granted access to the gated repo.
+    `Prior-Labs/TabPFN-v2-clf` returns 200 -- ungated, no token, no licence gate.
+
+    v2 is also the better citation for a course report: it is the version in
+    Hollmann et al., "Accurate predictions on small data with a tabular
+    foundation model", Nature 637 (2025). The v2 weights are under the Prior
+    Labs License (Apache 2.0 plus an attribution requirement); v3.5 weights are
+    non-commercial.
+
+    Pass version="V3_5" to opt in, once you have HF access. Valid values are the
+    names of tabpfn.constants.ModelVersion: V2, V2_5, V2_6, V3, V3_5, V3_5_FAST.
     """
 
-    def __init__(self, max_train: int = TABPFN_MAX_TRAIN, seed: int = SEED):
-        self.max_train, self.seed = max_train, seed
+    def __init__(self, max_train: int = TABPFN_MAX_TRAIN, seed: int = SEED,
+                 version: str | None = TABPFN_VERSION):
+        self.max_train, self.seed, self.version = max_train, seed, version
         self.prep = self.clf = None
 
-    def fit(self, X: pd.DataFrame, y):
+    def _make(self):
         from tabpfn import TabPFNClassifier
 
+        if not self.version:
+            return TabPFNClassifier()                 # package default (currently 3.5, gated)
+        from tabpfn.constants import ModelVersion
+
+        try:
+            mv = ModelVersion[self.version.upper()]
+        except KeyError as exc:
+            valid = [m.name for m in ModelVersion]
+            raise ValueError(f"unknown TabPFN version {self.version!r}; valid: {valid}") from exc
+        return TabPFNClassifier.create_default_for_version(mv)
+
+    def fit(self, X: pd.DataFrame, y):
         y = np.asarray(y)
         rng = np.random.default_rng(self.seed)
         if len(X) > self.max_train:
             idx = rng.choice(len(X), self.max_train, replace=False)
             X, y = X.iloc[idx], y[idx]
         self.prep = _preprocessor(X, scale=False).fit(X)
-        self.clf = TabPFNClassifier().fit(self.prep.transform(X), y)
+        self.clf = self._make().fit(self.prep.transform(X), y)
         return self
 
     def predict_proba(self, X):
