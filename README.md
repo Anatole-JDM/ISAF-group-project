@@ -110,20 +110,20 @@ Regenerate: `python -m src.train && python scripts/update_readme_results.py`
 
 | Arm | n train | AUC | PR-AUC | Brier |
 |---|---|---|---|---|
-| scorecard | 49,752 | 0.5518 | 0.2449 | 0.1678 |
-| gbm | 49,752 | 0.5600 | 0.2494 | 0.1690 |
+| scorecard | 49,752 | 0.5506 | 0.2466 | 0.1698 |
+| gbm | 49,752 | 0.5642 | 0.2548 | 0.1697 |
 
 n test = 9,113 · base rate 16.1% train → 21.4% test (a real shift across the regime split) · GBM backend `xgboost`.
 
 ### There is almost no signal, and it is the wrong signal
 
-**Best AUC is 0.5600** — 0.0600 above chance. Decomposing that sliver:
+**Best AUC is 0.5642** — 0.0642 above chance. Decomposing that sliver:
 
 | Ablation | AUC | Share of above-chance signal |
 |---|---|---|
-| Pre-search features only | 0.5600 | — |
-| **+ officer identity** | 0.5940 | **57%** |
-| **− driver race** | 0.5410 | **32%** |
+| Pre-search features only | 0.5642 | — |
+| **+ officer identity** | 0.6009 | **57%** |
+| **− driver race** | 0.5424 | **34%** |
 
 Most of the model's discriminative power is *who stopped you* and *what you look like*. Almost none of it is anything about the situation.
 

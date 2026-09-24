@@ -36,10 +36,14 @@ st.dataframe(E.sensitivity(y5, s5, kk).style.format({
     "net_benefit": "{:,.0f}"}), width="stretch")
 
 st.subheader("Equity / efficiency frontier")
-sub5 = scores["subject_race"].isin(C.RACE_REPORTABLE).to_numpy()
-ks = np.unique(np.linspace(200, int(sub5.sum()), 25).astype(int))
-fr = E.equity_efficiency_frontier(y5[sub5], s5[sub5],
-                                  scores["subject_race"][sub5], ks,
+st.caption(
+    "Top-K is ranked over the **whole** test set, the same definition the "
+    "Fairness page uses, so the two agree for the same K. Gaps are reported "
+    "only for groups with enough volume to be stable."
+)
+ks = np.unique(np.linspace(200, len(scores), 25).astype(int))
+fr = E.equity_efficiency_frontier(y5, s5, scores["subject_race"], ks,
+                                  report_groups=C.RACE_REPORTABLE,
                                   cost_fp=cost_fp)
 if not fr.empty:
     st.scatter_chart(fr, x="max_FPR_gap", y="net_benefit")

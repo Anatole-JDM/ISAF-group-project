@@ -6,6 +6,7 @@ observed. That filtering step IS the selective labels problem — see README.
 """
 from __future__ import annotations
 
+import re
 import zipfile
 
 import numpy as np
@@ -20,17 +21,37 @@ def _truthy(s: pd.Series) -> pd.Series:
     return s.astype("string").str.strip().isin(TRUEISH)
 
 
-def _stringify_objects(df: pd.DataFrame) -> pd.DataFrame:
-    """Cast mixed-type object columns to string.
+_DOT_ZERO = re.compile(r"^(\d+)\.0$")
 
-    Several columns (precinct, zone, reporting_area) mix strings with NaN floats
-    in the raw file, which makes the parquet cache write fail. Normalising here
-    keeps them categorical, which is what they are.
+
+def _stringify_objects(df: pd.DataFrame) -> pd.DataFrame:
+    """Cast mixed-type object columns to string, normalising "5.0" -> "5".
+
+    Two separate problems, both caused by the chunked read in load_searches():
+
+    1. Columns like precinct/zone mix strings with NaN floats, which makes the
+       parquet cache write fail.
+    2. WORSE, and silent: pd.read_csv infers dtype PER CHUNK. A chunk where
+       `zone` contains a NaN is inferred float64, so 5 becomes 5.0; a chunk
+       without NaN stays object, so 5 stays "5". After pd.concat the column
+       holds BOTH spellings, and a naive .astype("string") freezes them as
+       distinct categories.
+
+    That second one was not hypothetical. The raw CSV contains zero literal
+    ".0" values (verified by streaming it with dtype=str), yet the cached frame
+    had 17 precinct levels for 8 real precincts and 65 phantom zone levels.
+    Every dotted zone row landed in 2017-2018 -- the TEST side of the 2016
+    split -- so OneHotEncoder(handle_unknown="ignore") emitted an all-zero
+    geography block for 29.7% of consent test rows (34.4% pooled). Geography
+    was silently deleted for a third of the test set, and the app's headline
+    "race share of above-chance signal" read 31.6% instead of 26.5%.
     """
     out = df.copy()
     for c in out.columns:
         if out[c].dtype == object:
             out[c] = out[c].astype("string")
+        if isinstance(out[c].dtype, pd.StringDtype):
+            out[c] = out[c].str.replace(_DOT_ZERO, r"\1", regex=True)
     return out
 
 

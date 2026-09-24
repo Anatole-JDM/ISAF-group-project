@@ -116,9 +116,13 @@ def model_distance(preds: dict) -> pd.DataFrame:
 def contribution_drift(model, X, y, year: pd.Series, top_n: int = 15) -> pd.DataFrame:
     """Refit per year and track each feature's coefficient over time."""
     y = np.asarray(y)
+    # POSITIONAL, not label-based. groupby().groups yields index LABELS; feeding
+    # those to y[i] / X.iloc[i] silently mis-aligns whenever the frame's index
+    # is not a clean RangeIndex (e.g. after any filtering upstream).
+    yr_s = pd.Series(np.asarray(year))
     rows = {}
-    for yr, idx in pd.Series(year).groupby(pd.Series(year)).groups.items():
-        i = np.asarray(idx)
+    for yr, pos in yr_s.groupby(yr_s).indices.items():
+        i = np.asarray(pos)
         if len(i) < 200 or len(np.unique(y[i])) < 2:
             continue
         m = clone(model).fit(X.iloc[i], y[i])

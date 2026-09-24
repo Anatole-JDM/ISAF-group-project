@@ -94,9 +94,22 @@ QUESTIONABLE = {
 # Dropped after inspecting cardinality on the real file (2026-09-24).
 DROP_EXTRA = {
     "type":           "constant on this data — every row is a vehicular stop",
-    "reporting_area": "geographic ID with 1,718 levels; zone (137) and precinct (17) "
-                      "already carry geography at a usable granularity, and one-hot "
-                      "encoding this would swamp TabPFN's feature budget",
+    "reporting_area": "geographic ID with ~1,700 levels; zone and precinct already "
+                      "carry geography at a usable granularity, and one-hot encoding "
+                      "this would swamp TabPFN's feature budget",
+    # FIX: verified identical to `violation` on all 127,122 rows (zero mismatches,
+    # identical value_counts). Keeping both splits every stop-reason coefficient
+    # across two identical one-hot blocks under L2, halving each and making the
+    # scorecard's "main drivers" story wrong -- which is the interpretability
+    # dimension we are graded on.
+    "reason_for_stop": "byte-identical duplicate of `violation`; keeping both halves "
+                       "every stop-reason coefficient under L2 regularisation",
+    # FIX: `year` is the train/test split variable. Train is year<2016, so every
+    # test row has a `year` value with ZERO training support. Trees cannot split
+    # on it usefully and the linear arm extrapolates off the end of its range.
+    # month/dow/hour carry the within-period seasonality without this problem.
+    "year":            "this is the split variable — test years have no training "
+                       "support, so it cannot be a feature as well",
 }
 
 EXCLUDE_DEFAULT = (

@@ -61,6 +61,16 @@ def arm_name(col: str) -> str:
     return col.replace("score_", "")
 
 
+# Per-column, because `n` is a COUNT and mean_score can be NaN: a blanket
+# "{:.2%}" rendered group sizes as 494700.00% and NaN as "nan%".
+RATE_FMT = {
+    "n": "{:,.0f}",
+    "base_rate": "{:.2%}", "selection_rate": "{:.2%}",
+    "TPR": "{:.2%}", "FPR": "{:.2%}", "PPV": "{:.2%}", "NPV": "{:.2%}",
+    "mean_score": "{:.4f}",
+}
+
+
 def run_selector() -> tuple[pd.DataFrame, dict]:
     """The sidebar 'Run' picker shared by the model pages. Returns (scores, meta), or stops the page."""
     from src import train as T

@@ -32,9 +32,7 @@ rates = F.group_rates(scores["y"][sub], yhat[sub.to_numpy()],
                       scores["subject_race"][sub], y_score=s[sub.to_numpy()])
 st.subheader("Per-group rates")
 st.dataframe(
-    rates.style.format({"base_rate": "{:.2%}", "selection_rate": "{:.2%}",
-                        "TPR": "{:.2%}", "FPR": "{:.2%}", "PPV": "{:.2%}",
-                        "NPV": "{:.2%}", "mean_score": "{:.4f}"}),
+    rates.style.format(common.RATE_FMT, na_rep="—"),
     width="stretch",
 )
 
@@ -61,6 +59,6 @@ with st.expander("Both Y codings — the convention inversion"):
                           scores["subject_race"][sub])
     cc1, cc2 = st.columns(2)
     cc1.markdown(f"`{C.Y_NATIVE}` — Y=1 contraband found")
-    cc1.dataframe(both[C.Y_NATIVE].style.format("{:.2%}"))
+    cc1.dataframe(both[C.Y_NATIVE].style.format(common.RATE_FMT, na_rep="—"))
     cc2.markdown(f"`{C.Y_COURSE}` — Y=1 innocent (course convention)")
-    cc2.dataframe(both[C.Y_COURSE].style.format("{:.2%}"))
+    cc2.dataframe(both[C.Y_COURSE].style.format(common.RATE_FMT, na_rep="—"))
