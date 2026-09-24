@@ -103,6 +103,43 @@ the deck.
 
 ---
 
+<!-- RESULTS:START -->
+## Results (consent stratum, train <2016 → test ≥2016)
+
+Regenerate: `python -m src.train && python scripts/update_readme_results.py`
+
+| Arm | n train | AUC | PR-AUC | Brier |
+|---|---|---|---|---|
+| scorecard | 49,752 | 0.5518 | 0.2449 | 0.1678 |
+| gbm | 49,752 | 0.5600 | 0.2494 | 0.1690 |
+
+n test = 9,113 · base rate 16.1% train → 21.4% test (a real shift across the regime split) · GBM backend `xgboost`.
+
+### There is almost no signal, and it is the wrong signal
+
+**Best AUC is 0.5600** — 0.0600 above chance. Decomposing that sliver:
+
+| Ablation | AUC | Share of above-chance signal |
+|---|---|---|
+| Pre-search features only | 0.5600 | — |
+| **+ officer identity** | 0.5940 | **57%** |
+| **− driver race** | 0.5410 | **32%** |
+
+Most of the model's discriminative power is *who stopped you* and *what you look like*. Almost none of it is anything about the situation.
+
+Removing race does **not** make the model race-neutral: precinct and zone are strong proxies in a segregated city. Run both (`full` and `full_blind`) and report both.
+
+### The selection inverts
+
+A contraband-optimising model searches *white* drivers far more, because white drivers have the higher hit rate in discretionary searches — the reverse of actual officer behaviour. That is the outcome test expressed as a model. Check the Fairness tab at your chosen K; a group with zero selections yields an undefined PPV, which `group_rates` returns as NaN rather than a misleading zero.
+
+### Recommendation to the client: do not deploy
+
+Not because it is unfair *or* because it is inaccurate, but because all four dimensions point the same way — near-random discrimination, signal dominated by officer identity and race, large false-positive disparities, and negative net benefit under any defensible cost of searching an innocent driver.
+<!-- RESULTS:END -->
+
+---
+
 ## Traps (handled in `src/config.py`)
 
 1. **Target leakage.** `contraband_drugs` and `contraband_weapons` are components
@@ -130,19 +167,23 @@ src/models.py      the three arms behind one interface
 src/fairness.py    independence / separation / sufficiency + both Y codings
 src/stability.py   temporal, officer and geographic splits; PSI; coefficient drift
 src/economics.py   top-K net benefit, sensitivity, equity/efficiency frontier
+src/train.py       fits the arms once, caches scores/metrics in outputs/ for the app
 app/streamlit_app.py   the interactive deliverable (entry point + page navigation)
-app/views/             one file per page: 1 problem · 2 explore · 3 pooling · 4 models · 5 fairness · 6 budget
+app/views/             one file per page: 1 problem · 2 explore · 3 pooling · 4 models · 5 fairness · 6 budget · 7 one stop
 app/stops_map/         the Explore page's map (deck.gl component that filters the stops in the browser)
-app/common.py          shared by the pages: `src` import path, cached search sample, map component
+app/common.py          shared by the pages: `src` import path, cached data and model runs, the Run picker, map component
 scripts/download_data.py
 scripts/build_stops_parquet.py   all stops, slim columns, for the Explore page
+scripts/update_readme_results.py rewrites the Results section above from outputs/
 ```
 
 ### The app
 
-Six pages in two groups. **Overview**: the problem, then *Explore the stops*, a map of all
+Seven pages in two groups. **Overview**: the problem, then *Explore the stops*, a map of all
 3.08M stops with filters (date, hour, weekday, race, sex, age, search type, violation, outcome,
-precinct). **Analysis**: pooling, models, fairness, budget.
+precinct). **Analysis**: pooling, models, fairness, budget, one stop. Pages 4-7 share the
+sidebar *Run* picker (stratum × training mode) and read the cached runs in `outputs/`;
+without them they say to run `python -m src.train`, and pages 1-3 still work.
 
 The Explore page uses the same definitions as `src/`: the 2010-2018 period, and the
 search type resolved by `data.add_search_type`. Its *Hit rate: consent vs. rest* tab runs
@@ -159,6 +200,7 @@ git-ignored), which the browser downloads once; `.streamlit/config.toml` enables
 ```bash
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
+python -m src.train                 # fit once (a few minutes) -> outputs/, read by pages 4-7
 streamlit run app/streamlit_app.py
 ```
 

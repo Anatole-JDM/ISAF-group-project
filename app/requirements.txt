@@ -1,9 +1,11 @@
 # What the app itself imports. Streamlit Community Cloud reads this file (it looks next to
 # the entrypoint before the repo root), so a deploy doesn't install the modelling stack
 # (torch via tabpfn, xgboost, ...) from ../requirements.txt.
-# When a page starts fitting models in-app, add scikit-learn / xgboost here.
+# The model pages only READ artifacts from outputs/ (python -m src.train), which needs
+# scikit-learn at import time but not xgboost / tabpfn.
 pandas>=2.0
 numpy>=1.24
 pyarrow>=14.0
 streamlit>=1.46
 plotly>=5.0
+scikit-learn>=1.3

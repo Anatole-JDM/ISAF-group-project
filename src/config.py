@@ -91,9 +91,17 @@ QUESTIONABLE = {
     "raw_suspect_ethnicity": "raw duplicate of subject_race — reintroduces D directly",
 }
 
+# Dropped after inspecting cardinality on the real file (2026-09-24).
+DROP_EXTRA = {
+    "type":           "constant on this data — every row is a vehicular stop",
+    "reporting_area": "geographic ID with 1,718 levels; zone (137) and precinct (17) "
+                      "already carry geography at a usable granularity, and one-hot "
+                      "encoding this would swamp TabPFN's feature budget",
+}
+
 EXCLUDE_DEFAULT = (
     list(LEAKAGE) + STRATIFIERS + CONSTANT_ON_SAMPLE
-    + IDENTIFIERS + list(QUESTIONABLE)
+    + IDENTIFIERS + list(QUESTIONABLE) + list(DROP_EXTRA)
 )
 
 # --------------------------------------------------------------------------- features
