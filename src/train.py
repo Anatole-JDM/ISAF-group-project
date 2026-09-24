@@ -31,7 +31,7 @@ from . import data as D
 from . import models as M
 
 SPLIT_YEAR = 2016
-MATCHED_N = 5000
+MATCHED_N = M.TABPFN_MAX_TRAIN
 SEED = 42
 
 

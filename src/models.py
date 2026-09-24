@@ -20,7 +20,16 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-TABPFN_MAX_TRAIN = 5000
+# TabPFN's CPU ceiling is ~5,000 samples, but cost scales roughly QUADRATICALLY
+# with context length: ~400 rows fits in 10s, 5,000 rows took >10 minutes on
+# CPU without finishing. Lower this to get a tractable run.
+#
+#     export TABPFN_MAX_TRAIN=2000     # ~6x faster than 5000
+#
+# This does NOT weaken the comparison: `matched` mode trains EVERY arm on the
+# same subsample, so the three-way contrast stays fair at any size. State the
+# number you used in the report and move on.
+TABPFN_MAX_TRAIN = int(os.environ.get("TABPFN_MAX_TRAIN", "5000"))
 SEED = 42
 
 
