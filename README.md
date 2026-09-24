@@ -263,6 +263,25 @@ python scripts/build_stops_parquet.py    # -> stops.parquet
 it (it looks next to the entry point first), so deploying the app does not install the
 modelling stack.
 
+## Publishing the app
+
+The public app runs on Streamlit Community Cloud from the **`release`** branch
+(main file `app/streamlit_app.py`, Python 3.12). Every push to `release` redeploys it
+within a minute or two; pushes to `main` do not touch it, so work in progress never
+breaks the public link.
+
+`release` is `main` plus the model outputs: `outputs/` stays ignored on `main`, and is
+committed on `release` only, so the published model pages have results. To publish:
+
+```bash
+git checkout release
+git merge main
+python -m src.train                # only if the models or data changed
+git add -f outputs/ && git commit -m "Update model outputs"
+git push
+git checkout main
+```
+
 ## Deliverables (due Monday 28 September, 9:40)
 
 - [ ] Slide deck
