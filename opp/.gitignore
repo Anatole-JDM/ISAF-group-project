@@ -5,7 +5,6 @@
 *.Rproj
 *.log
 *.key
-*.md
 .RData
 */__pycache__/*
 lib/report.*.md
