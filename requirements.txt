@@ -19,4 +19,5 @@ fairlearn>=0.10
 # Viz + app
 matplotlib>=3.7
 seaborn>=0.13
-streamlit>=1.30
+streamlit>=1.46      # st.navigation(position='top')
+plotly>=5.0

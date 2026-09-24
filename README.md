@@ -130,18 +130,51 @@ src/models.py      the three arms behind one interface
 src/fairness.py    independence / separation / sufficiency + both Y codings
 src/stability.py   temporal, officer and geographic splits; PSI; coefficient drift
 src/economics.py   top-K net benefit, sensitivity, equity/efficiency frontier
-app/streamlit_app.py   the interactive deliverable
+app/streamlit_app.py   the interactive deliverable (entry point + page navigation)
+app/views/             one file per page: 1 problem · 2 explore · 3 pooling · 4 models · 5 fairness · 6 budget
+app/stops_map/         the Explore page's map (deck.gl component that filters the stops in the browser)
+app/common.py          shared by the pages: `src` import path, cached search sample, map component
 scripts/download_data.py
+scripts/build_stops_parquet.py   all stops, slim columns, for the Explore page
 ```
+
+### The app
+
+Six pages in two groups. **Overview**: the problem, then *Explore the stops*, a map of all
+3.08M stops with filters (date, hour, weekday, race, sex, age, search type, violation, outcome,
+precinct). **Analysis**: pooling, models, fairness, budget.
+
+The Explore page uses the same definitions as `src/`: the 2010-2018 period, and the
+search type resolved by `data.add_search_type`. Its *Hit rate: consent vs. rest* tab runs
+`fairness.pooled_vs_stratified` on the filtered stops, so the headline table can be
+checked within a precinct, a period or a time of day. (Precinct 2 alone shows the same
+reversal: consent −4.9 pp for Black drivers, non-consent +5.4 pp, pooled −0.2 pp.)
+
+The map filters the stops in the browser, so it updates without reloading. On first start
+the app writes a compact copy of the mapped stops to `app/static/stops/` (~11 MB,
+git-ignored), which the browser downloads once; `.streamlit/config.toml` enables serving it.
 
 ## Setup
 
 ```bash
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-python scripts/download_data.py
 streamlit run app/streamlit_app.py
 ```
+
+The two processed files the app reads are committed (`data/processed/searches.parquet`,
+`data/processed/stops.parquet`), so the app runs straight after cloning. To rebuild them
+from the raw data:
+
+```bash
+python scripts/download_data.py          # raw zip -> data/raw/ (not committed)
+rm data/processed/searches.parquet && python -c "from src import data; data.load_searches()"
+python scripts/build_stops_parquet.py    # -> stops.parquet
+```
+
+`app/requirements.txt` lists only what the app imports; Streamlit Community Cloud uses
+it (it looks next to the entry point first), so deploying the app does not install the
+modelling stack.
 
 ## Deliverables (due Monday 28 September, 9:40)
 

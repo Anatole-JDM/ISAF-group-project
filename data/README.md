@@ -1,6 +1,10 @@
 # Data
 
-Nothing in this directory is committed (see `.gitignore`).
+The raw zip (`raw/`) is never committed. The two processed files the app reads are
+committed so the app runs without a download step (see `.gitignore`):
+
+- `processed/searches.parquet` — the labelled search sample (`src.data.load_searches`)
+- `processed/stops.parquet` — all 2010-2018 stops, slim columns (`scripts/build_stops_parquet.py`)
 
 ## Source
 

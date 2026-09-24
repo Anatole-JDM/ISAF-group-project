@@ -1,0 +1,3 @@
+[server]
+# Serves app/static/ at /app/static/: the Explore page's map downloads its data from there.
+enableStaticServing = true
