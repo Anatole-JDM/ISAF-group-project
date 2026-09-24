@@ -202,7 +202,8 @@ src/stability.py   temporal, officer and geographic splits; PSI; coefficient dri
 src/economics.py   top-K net benefit, sensitivity, equity/efficiency frontier
 src/train.py       fits the arms once, caches scores/metrics in outputs/ for the app
 app/streamlit_app.py   the interactive deliverable (entry point + page navigation)
-app/views/             one file per page: 1 problem · 2 explore · 3 pooling · 4 models · 5 fairness · 6 budget · 7 one stop
+app/views/             one file per page (see The app below)
+app/model_page.py      shared layout of the three model-family pages
 app/stops_map/         the Explore page's map (deck.gl component that filters the stops in the browser)
 app/common.py          shared by the pages: `src` import path, cached data and model runs, the Run picker, map component
 scripts/download_data.py
@@ -212,13 +213,24 @@ scripts/update_readme_results.py rewrites the Results section above from outputs
 
 ### The app
 
-Seven pages in two groups. **Overview**: the problem, then *Explore the stops*, a map of all
-3.08M stops with filters (date, hour, weekday, race, sex, age, search type, violation, outcome,
-precinct). **Analysis**: pooling, models, fairness, budget, one stop. Pages 4-7 share the
-sidebar *Run* picker (stratum × training mode) and read the cached runs in `outputs/`;
-without them they say to run `python -m src.train`, and pages 1-3 still work.
+Eight pages, all in the top bar, in the order of the argument:
 
-The Explore page uses the same definitions as `src/`: the 2010-2018 period, and the
+| Page | What it shows |
+|---|---|
+| Dataset | a map of all 3.08M stops with filters (date, hour, weekday, race, sex, age, search type, violation, outcome, precinct) |
+| Problem definition | the decision and objects (`Y`, `Ŷ`, `D`), selective labels, why pooling hides the disparity |
+| White box models | the scorecard: description, metrics in every run, scores and calibration by race |
+| Black box models | the gradient-boosted trees, same layout |
+| Foundation models | TabPFN, same layout (fitted only in `matched` mode) |
+| Performance | accuracy and ranking agreement, value under a search budget, one stop |
+| Fairness testing | independence / separation / sufficiency and both Y codings, one tab per model, shared K |
+| Findings & conclusions | the measured officer and race signal, the recommendation |
+
+The model pages, Performance and Fairness testing share the sidebar *Run* picker
+(stratum × training mode) and read the cached runs in `outputs/`; without them they say
+to run `python -m src.train`, and the other pages still work.
+
+The Dataset page uses the same definitions as `src/`: the 2010-2018 period, and the
 search type resolved by `data.add_search_type`. Its *Hit rate: consent vs. rest* tab runs
 `fairness.pooled_vs_stratified` on the filtered stops, so the headline table can be
 checked within a precinct, a period or a time of day. (Precinct 2 alone shows the same

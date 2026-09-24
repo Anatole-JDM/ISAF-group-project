@@ -5,3 +5,7 @@ gatherUsageStats = false
 headless = true
 # Serves app/static/ at /app/static/: the Explore page's map downloads its data from there.
 enableStaticServing = true
+
+[client]
+# Hides the Deploy button and developer menu entries: more room for the page tabs in the top bar.
+toolbarMode = "minimal"

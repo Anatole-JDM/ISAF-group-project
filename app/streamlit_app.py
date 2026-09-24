@@ -6,35 +6,33 @@
 The app never fits models. It reads cached artifacts from outputs/ so every
 control is instant. Without them, the model pages say so and the rest still works.
 
-Pages, in the order the argument should be made to a client (one file each in views/):
-    Overview
-        1. The problem      - selective labels, stated before any model
-        2. Explore          - every stop on a map, with filters (where, when, who, search type)
-    Analysis
-        3. Pooling          - the headline table
-        4. Models           - the arms compared
-        5. Fairness         - the course taxonomy, both Y codings
-        6. Budget           - top-K economics and the equity/efficiency frontier
-        7. One stop         - every arm's score for a single test-set search
+Pages, all in the top bar, in the order of the argument (one file each in views/):
+    Dataset                      - every stop on a map, with filters
+    Problem definition           - objects, selective labels, why we stratify by search type
+    White box models             - scorecard (logistic regression)
+    Black box models             - gradient-boosted trees (XGBoost)
+    Foundation models            - tabular foundation models: TabPFN
+    Performance                  - accuracy, ranking agreement, value under a search budget, one stop
+    Fairness testing             - the course taxonomy, one tab per model
+    Findings & conclusions       - measured signal, recommendation
 """
 import streamlit as st
 
 st.set_page_config(page_title="Search Decision Support", page_icon="🚓", layout="wide")
 
-pages = {
-    "Overview": [
-        st.Page("views/problem.py", title="1 · The problem", default=True),
-        st.Page("views/explore.py", title="2 · Explore the stops"),
+page = st.navigation(
+    [
+        st.Page("views/dataset.py", title="Dataset", default=True),
+        st.Page("views/problem.py", title="Problem definition"),
+        st.Page("views/white_box.py", title="White box models"),
+        st.Page("views/black_box.py", title="Black box models"),
+        st.Page("views/foundation.py", title="Foundation models"),
+        st.Page("views/performance.py", title="Performance"),
+        st.Page("views/fairness.py", title="Fairness testing"),
+        st.Page("views/findings.py", title="Findings & conclusions"),
     ],
-    "Analysis": [
-        st.Page("views/pooling.py", title="3 · Pooling"),
-        st.Page("views/models.py", title="4 · Models"),
-        st.Page("views/fairness.py", title="5 · Fairness"),
-        st.Page("views/budget.py", title="6 · Budget"),
-        st.Page("views/one_stop.py", title="7 · One stop"),
-    ],
-}
-page = st.navigation(pages, position="top")
+    position="top",
+)
 
 st.title("Traffic-stop search decision support")
 st.caption(

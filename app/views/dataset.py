@@ -1,4 +1,4 @@
-"""2 · Explore the stops — every stop on a map, with filters (where, when, who, search type).
+"""Dataset — every stop on a map, with filters (where, when, who, search type).
 
 Data: data/processed/stops.parquet (scripts/build_stops_parquet.py), built with the same
 definitions as the analysis: 2010-2018, and search_type resolved by src.data.add_search_type.
@@ -36,15 +36,7 @@ CATEGORIES = ["subject_race", "subject_sex", "violation", "outcome", "precinct",
 FLAGS = ["arrest_made", "citation_issued", "search_conducted", "frisk_performed", "contraband_found"]
 SEARCH_TYPES = ["not searched"] + [t for t in C.SEARCH_TYPE_ORDER if t != "unresolved"]
 
-# Colors are fixed per entity so a filter never repaints the survivors (the map uses the same ones).
-RACE_CHART_COLORS = {
-    "black": "#2a78d6",
-    "white": "#eb6834",
-    "hispanic": "#1baf7a",
-    "asian/pacific islander": "#eda100",
-    "other": "#e87ba4",
-    "unknown": "#4a3aa7",
-}
+RACE_CHART_COLORS = common.RACE_COLORS
 
 
 # ---------------------------------------------------------------- Data + precomputed codes
@@ -175,7 +167,7 @@ def summarize(f: dict) -> dict:
         rates[col.split("_")[0] + "_rate"] = (np.bincount(race[good], weights=v[good], minlength=len(races))
                                              / np.bincount(race[good], minlength=len(races)).clip(1))
 
-    # The Pooling page's headline table, recomputed on the filtered searches.
+    # The headline table from Problem definition, recomputed on the filtered searches.
     search_rows = DF.loc[mask & (a["search_conducted"] == 1), ["subject_race", "search_type", C.TARGET]]
     try:
         pooling = F.pooled_vs_stratified(search_rows)
@@ -237,7 +229,7 @@ age_range = st.sidebar.slider("Age", 10, 99, (10, 99))
 st.sidebar.subheader("Stop")
 search_types = multiselect_filter(
     "Search type", "search_type",
-    help="Resolved as on the Pooling page: the most mechanical basis wins, so 'consent' means "
+    help="Resolved as in Problem definition: the most mechanical basis wins, so 'consent' means "
          "a purely discretionary search.",
 )
 violations = multiselect_filter("Violation", "violation")
@@ -259,7 +251,14 @@ filters = {
 }
 
 # ---------------------------------------------------------------- Metrics + map
-st.header("Where and when stops happen")
+st.header("Dataset")
+st.markdown(
+    "**Stanford Open Policing Project — Nashville, TN (Metropolitan Nashville PD).** "
+    f"{len(DF):,} traffic stops from 2010 to 2018 (the partial 2019 tail is dropped), of which "
+    f"{int((ARRAYS['search_conducted'] == 1).sum()):,} ended in a search: the only stops where "
+    "`contraband_found` is observed. Licence: Open Data Commons Attribution."
+)
+st.subheader("Where and when stops happen")
 
 
 def show_metrics(s: dict, container) -> None:
@@ -273,7 +272,7 @@ def show_metrics(s: dict, container) -> None:
     cols[3].metric("Search rate", pct(s["search_rate"], 2))
     cols[4].metric("Hit rate, all searches pooled", pct(s["hit_rate"], 1),
                    help="Contraband found / searches. Pooled over search types, which hides the consent "
-                        "disparity; see the 'Hit rate: consent vs. rest' tab and 3 · Pooling.")
+                        "disparity; see the 'Hit rate: consent vs. rest' tab and Problem definition.")
 
 
 def map_filters(f: dict) -> dict:
@@ -310,7 +309,7 @@ tab_pool, tab_hour, tab_trend, tab_groups, tab_table = st.tabs(
 
 with tab_pool:
     st.markdown(
-        "The Pooling page's headline table, recomputed on the stops selected by the filters. "
+        "The headline table from Problem definition, recomputed on the stops selected by the filters. "
         "Use it to check whether the reversal holds within a precinct, a period or a time of day."
     )
     pooling = summary["pooling"]
@@ -335,7 +334,7 @@ with tab_pool:
         )
         if pooling["searches"].min() < 200:
             st.warning("Some cells have fewer than 200 searches: treat those hit rates as noisy.")
-    st.page_link("views/pooling.py", label="Why pooling hides the disparity → 3 · Pooling", icon="📊")
+    st.page_link("views/problem.py", label="Why pooling hides the disparity → Problem definition", icon="📊")
 
 with tab_hour:
     by_hour = summary["by_hour"].copy()

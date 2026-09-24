@@ -61,6 +61,17 @@ def arm_name(col: str) -> str:
     return col.replace("score_", "")
 
 
+# Colors are fixed per entity so a filter never repaints the survivors (the map uses the same ones).
+RACE_COLORS = {
+    "black": "#2a78d6",
+    "white": "#eb6834",
+    "hispanic": "#1baf7a",
+    "asian/pacific islander": "#eda100",
+    "other": "#e87ba4",
+    "unknown": "#4a3aa7",
+}
+
+
 # Per-column, because `n` is a COUNT and mean_score can be NaN: a blanket
 # "{:.2%}" rendered group sizes as 494700.00% and NaN as "nan%".
 RATE_FMT = {
