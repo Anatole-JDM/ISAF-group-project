@@ -100,7 +100,7 @@ def gbm_backend() -> str:
     try:
         import xgboost  # noqa: F401
         return "xgboost"
-    except ImportError:
+    except Exception:                                    # noqa: BLE001
         return "sklearn-histgb"
 
 
@@ -139,10 +139,18 @@ class TabPFNArm:
 
 
 def tabpfn_available() -> bool:
+    """True only if TabPFN can actually be imported.
+
+    Catches Exception, not just ImportError: TabPFN pulls in skrub, which tries
+    to create ~/skrub_data at import time and raises PermissionError in a
+    sandbox. A licence/token problem surfaces later, at fit() -- see
+    train.fit_stratum, which isolates each arm so one failure does not kill the
+    run.
+    """
     try:
         import tabpfn  # noqa: F401
         return True
-    except ImportError:
+    except Exception:                                    # noqa: BLE001
         return False
 
 

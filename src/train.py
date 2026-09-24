@@ -90,12 +90,20 @@ def fit_stratum(df: pd.DataFrame, search_type: str | None = "consent",
     out["y"] = yte
 
     metrics = []
+    failed = {}
     for name, model in arms.items():
-        model.fit(Xtr, ytr)
-        p = model.predict_proba(Xte)[:, 1]
+        # Isolate each arm. TabPFN in particular can fail at fit() on a licence
+        # or token problem (TabPFN >= 9 requires a one-time licence acceptance
+        # and TABPFN_TOKEN), and that must not cost us the other two arms.
+        try:
+            model.fit(Xtr, ytr)
+            p = model.predict_proba(Xte)[:, 1]
+        except Exception as exc:                          # noqa: BLE001
+            failed[name] = f"{type(exc).__name__}: {exc}".split("\n")[0][:200]
+            continue
         out[f"score_{name}"] = p
         metrics.append(_metrics(name, ytr, yte, p))
-    return out, metrics
+    return out, metrics, failed
 
 
 def officer_signal(df: pd.DataFrame, search_type: str = "consent",
@@ -142,10 +150,12 @@ def run(search_types=("consent", "probable cause", None),
         for mode in modes:
             key = f"{st or 'pooled'}__{mode}".replace(" ", "_")
             try:
-                scores, metrics = fit_stratum(df, st, mode=mode)
+                scores, metrics, failed = fit_stratum(df, st, mode=mode)
             except Exception as exc:                      # noqa: BLE001
                 print(f"  [skip] {key}: {exc}")
                 continue
+            for arm, why in failed.items():
+                print(f"  [warn] {key}: arm {arm!r} failed -> {why}")
             if cache:
                 scores.to_parquet(C.OUTPUTS / f"scores__{key}.parquet", index=False)
                 (C.OUTPUTS / f"metrics__{key}.json").write_text(
