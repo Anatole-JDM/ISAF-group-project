@@ -1,0 +1,28 @@
+{
+  "stratum": "pooled",
+  "mode": "full_blind",
+  "split_year": 2016,
+  "gbm_backend": "xgboost",
+  "arms": [
+    {
+      "arm": "scorecard",
+      "n_train": 97937,
+      "n_test": 29185,
+      "base_rate_train": 0.190796124038923,
+      "base_rate_test": 0.25393181428816175,
+      "auc": 0.5412528075578027,
+      "pr_auc": 0.28019099599406405,
+      "brier": 0.19203351483514153
+    },
+    {
+      "arm": "gbm",
+      "n_train": 97937,
+      "n_test": 29185,
+      "base_rate_train": 0.190796124038923,
+      "base_rate_test": 0.25393181428816175,
+      "auc": 0.5613026517906244,
+      "pr_auc": 0.2942288483411327,
+      "brier": 0.1911676675081253
+    }
+  ]
+}

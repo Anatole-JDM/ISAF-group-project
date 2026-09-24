@@ -1,0 +1,28 @@
+{
+  "stratum": "probable cause",
+  "mode": "full_blind",
+  "split_year": 2016,
+  "gbm_backend": "xgboost",
+  "arms": [
+    {
+      "arm": "scorecard",
+      "n_train": 10074,
+      "n_test": 5809,
+      "base_rate_train": 0.5034742902521342,
+      "base_rate_test": 0.4821828197624376,
+      "auc": 0.5236043761916337,
+      "pr_auc": 0.5009659822567679,
+      "brier": 0.2516454616389655
+    },
+    {
+      "arm": "gbm",
+      "n_train": 10074,
+      "n_test": 5809,
+      "base_rate_train": 0.5034742902521342,
+      "base_rate_test": 0.4821828197624376,
+      "auc": 0.5296674060176078,
+      "pr_auc": 0.5033024264339626,
+      "brier": 0.25637534260749817
+    }
+  ]
+}
