@@ -1,0 +1,27 @@
+# Data — never commit. The Nashville CSV is 1.04 GB uncompressed, and the
+# Stanford ODbL attribution licence is easier to honour by linking than by
+# redistributing. scripts/download_data.py fetches it reproducibly.
+data/raw/
+data/processed/
+*.zip
+*.csv
+*.parquet
+!data/README.md
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+*.egg-info/
+
+# Model + figure outputs
+outputs/
+*.pkl
+*.joblib
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
