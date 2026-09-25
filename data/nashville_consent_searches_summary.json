@@ -1,0 +1,63 @@
+{
+ "all_stops_rows": 3088286,
+ "all_stops_columns": 107,
+ "all_stops_file_MB": 364.6,
+ "consent_rows": 58939,
+ "consent_columns": 98,
+ "consent_file_MB": 9.2,
+ "dropped_as_constant_in_sample": [
+  "search_conducted",
+  "post_search_basis",
+  "post_raw_search_consent",
+  "post_raw_search_arrest",
+  "post_raw_search_warrant",
+  "post_raw_search_inventory",
+  "post_raw_search_plain_view",
+  "dst_nonexistent",
+  "consent_sample"
+ ],
+ "target_rate": 0.1692,
+ "target_rate_by_race": {
+  "asian/pacific islander": [
+   282,
+   0.188
+  ],
+  "black": [
+   32353,
+   0.157
+  ],
+  "hispanic": [
+   4651,
+   0.079
+  ],
+  "other": [
+   133,
+   0.165
+  ],
+  "unknown": [
+   239,
+   0.1
+  ],
+  "white": [
+   21252,
+   0.208
+  ],
+  "<NA>": [
+   29,
+   0.138
+  ]
+ },
+ "columns_by_role": {
+  "analysis_helper": 7,
+  "feature": 35,
+  "feature_D3_open": 4,
+  "id": 2,
+  "post_decision_DO_NOT_USE": 11,
+  "protected": 1,
+  "protected_and_feature": 2,
+  "quality_flag": 16,
+  "robustness": 16,
+  "split_helper": 3,
+  "target": 1
+ }
+}
