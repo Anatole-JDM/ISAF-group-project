@@ -51,7 +51,6 @@ outputs/
 .idea/
 
 # Local OPP pipeline (scripts_claude): raw download, Census downloads, intermediate features
-opp_data/
 # Modelling table built by scripts_claude/build_master.py - committed on purpose
 !data/nashville_consent_searches.parquet
 !data/nashville_columns.csv

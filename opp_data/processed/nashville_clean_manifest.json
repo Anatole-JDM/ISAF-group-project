@@ -1,0 +1,96 @@
+{
+ "source": "opp_data\\tn_nashville_2020_04_01.csv\\tn_nashville_2020_04_01.csv",
+ "steps": [
+  {
+   "step": "A1",
+   "rule": "drop rows where search_conducted is NA",
+   "rows_removed": 39,
+   "rows_after": 3092312
+  },
+  {
+   "step": "A2",
+   "rule": "drop duplicates on date, time, officer_id_hash, subject_age, subject_sex, subject_race, location (keep first)",
+   "rows_removed": 3,
+   "rows_after": 3092309
+  },
+  {
+   "step": "A3",
+   "rule": "drop column violation (= reason_for_stop)",
+   "rows_removed": 0,
+   "rows_after": 3092309
+  },
+  {
+   "step": "A4",
+   "rule": "drop stops dated 2019-03-01 or later (partial month)",
+   "rows_removed": 4023,
+   "rows_after": 3088286
+  }
+ ],
+ "rows_raw": 3092351,
+ "text_NA_converted_to_missing": {
+  "time": 5465,
+  "precinct": 390217,
+  "reporting_area": 332389,
+  "zone": 390217,
+  "subject_race": 1843,
+  "subject_sex": 12793,
+  "officer_id_hash": 10,
+  "outcome": 1929,
+  "search_basis": 2960750,
+  "reason_for_stop": 8005,
+  "vehicle_registration_state": 31449,
+  "notes": 2575533,
+  "raw_suspect_ethnicity": 76
+ },
+ "rows_final": 3088286,
+ "added_columns": {
+  "stop_id": "row key, 0..n-1, stable across feature steps",
+  "geo_outside_davidson_box": "lat/lng present but outside lat (35.9, 36.5), lng (-87.2, -86.4)"
+ },
+ "n_outside_davidson_box": 20377,
+ "schema": {
+  "stop_id": "int64",
+  "raw_row_number": "string",
+  "date": "datetime64[us]",
+  "time": "string",
+  "location": "string",
+  "lat": "float64",
+  "lng": "float64",
+  "precinct": "string",
+  "reporting_area": "string",
+  "zone": "string",
+  "subject_age": "float64",
+  "subject_race": "string",
+  "subject_sex": "string",
+  "officer_id_hash": "string",
+  "type": "string",
+  "arrest_made": "boolean",
+  "citation_issued": "boolean",
+  "warning_issued": "boolean",
+  "outcome": "string",
+  "contraband_found": "boolean",
+  "contraband_drugs": "boolean",
+  "contraband_weapons": "boolean",
+  "frisk_performed": "boolean",
+  "search_conducted": "boolean",
+  "search_person": "boolean",
+  "search_vehicle": "boolean",
+  "search_basis": "string",
+  "reason_for_stop": "string",
+  "vehicle_registration_state": "string",
+  "notes": "string",
+  "raw_verbal_warning_issued": "boolean",
+  "raw_written_warning_issued": "boolean",
+  "raw_traffic_citation_issued": "boolean",
+  "raw_misd_state_citation_issued": "boolean",
+  "raw_suspect_ethnicity": "string",
+  "raw_driver_searched": "boolean",
+  "raw_passenger_searched": "boolean",
+  "raw_search_consent": "boolean",
+  "raw_search_arrest": "boolean",
+  "raw_search_warrant": "boolean",
+  "raw_search_inventory": "boolean",
+  "raw_search_plain_view": "boolean",
+  "geo_outside_davidson_box": "boolean"
+ }
+}
