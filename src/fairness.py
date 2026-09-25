@@ -182,6 +182,70 @@ def both_codings(y_true, y_pred, groups, reference: str = "white") -> dict:
 
 
 # --------------------------------------------------------------------------- headline
+def pooled_vs_stratified_ci(
+    df: pd.DataFrame,
+    target: str = C.TARGET,
+    group_col: str = C.PRIMARY_PROTECTED,
+    stratum_col: str = "search_type",
+    discretionary: str = C.SEARCH_TYPE_DISCRETIONARY,
+    reference: str = "white",
+    groups=None,
+    n_boot: int = 2000,
+    alpha: float = 0.05,
+    seed: int = 0,
+) -> pd.DataFrame:
+    """Bootstrap CIs on the hit-rate GAP in each stratum.
+
+    The gap is the claim, so the interval belongs on the gap, not on the two
+    rates separately. Resampling is within (stratum x group), which preserves
+    the group sizes and asks only "how stable is this gap".
+
+    What the deck needs this to show:
+      - consent gap CI EXCLUDES zero and is negative
+      - non-consent gap CI EXCLUDES zero and is positive
+      - pooled gap CI INCLUDES zero
+    i.e. two real effects of opposite sign that cancel under pooling. Without
+    intervals, a sceptic can dismiss the whole reversal as noise.
+    """
+    groups = groups or C.RACE_REPORTABLE
+    d = df[df[group_col].isin(groups)].copy()
+    hit = d[target].astype("string").str.strip().isin({"TRUE", "True", "1"}).astype(int)
+    d = d.assign(_hit=hit.to_numpy(), _disc=d[stratum_col].eq(discretionary).to_numpy())
+
+    rng = np.random.default_rng(seed)
+    lo_q, hi_q = 100 * alpha / 2, 100 * (1 - alpha / 2)
+    rows = []
+    for label, sub in [(discretionary, d[d["_disc"]]),
+                       (f"non-{discretionary}", d[~d["_disc"]]),
+                       ("POOLED", d)]:
+        cells = {g: sub.loc[sub[group_col] == g, "_hit"].to_numpy() for g in groups}
+        draws = {g: [] for g in groups if g != reference}
+        rates = {g: [] for g in groups}
+        for _ in range(n_boot):
+            bs = {g: v[rng.integers(0, len(v), len(v))] if len(v) else v
+                  for g, v in cells.items()}
+            ref_rate = bs[reference].mean() if len(bs[reference]) else np.nan
+            for g in groups:
+                rates[g].append(bs[g].mean() if len(bs[g]) else np.nan)
+                if g != reference:
+                    draws[g].append((bs[g].mean() if len(bs[g]) else np.nan) - ref_rate)
+        for g in groups:
+            row = {"stratum": label, "group": g, "n": len(cells[g]),
+                   "hits": int(cells[g].sum()),
+                   "hit_rate": float(cells[g].mean()) if len(cells[g]) else np.nan}
+            a = np.asarray(rates[g], dtype=float)
+            row["hit_rate_lo"] = np.nanpercentile(a, lo_q)
+            row["hit_rate_hi"] = np.nanpercentile(a, hi_q)
+            if g != reference:
+                b = np.asarray(draws[g], dtype=float)
+                row["gap_pp"] = float(np.nanmean(b) * 100)
+                row["gap_lo_pp"] = float(np.nanpercentile(b, lo_q) * 100)
+                row["gap_hi_pp"] = float(np.nanpercentile(b, hi_q) * 100)
+                row["excludes_zero"] = bool(row["gap_lo_pp"] > 0 or row["gap_hi_pp"] < 0)
+            rows.append(row)
+    return pd.DataFrame(rows)
+
+
 def pooled_vs_stratified(
     df: pd.DataFrame,
     target: str = C.TARGET,

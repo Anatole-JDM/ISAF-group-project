@@ -21,9 +21,35 @@ Hit rate by race, split by whether the search was discretionary
 | non-consent (mechanical) | 20.83% | **27.12%** | **+6.30 pp** | 15.63% | −5.20 pp |
 | **POOLED** | 20.83% | 21.66% | **+0.82 pp** | 12.07% | −8.77 pp |
 
-The Black–white gap runs in **opposite directions** across strata, so pooling
-cancels them and reports "no disparity". This is **effect modification**, not
-Simpson's paradox — the distinction matters and should be stated precisely.
+The Black–white gap runs in **opposite directions** across strata. This is
+**effect modification**, not Simpson's paradox — the distinction matters and
+should be stated precisely.
+
+### With 95% bootstrap CIs (`fairness.pooled_vs_stratified_ci`, 2,000 draws)
+
+| stratum | race | n | hit rate | gap vs white (pp) | excludes 0 |
+|---|---|---|---|---|---|
+| consent | black | 32,311 | 15.68% [15.30, 16.08] | **−5.15 [−5.80, −4.49]** | ✓ |
+| consent | hispanic | 4,645 | 7.88% [7.13, 8.65] | **−12.95 [−13.89, −12.02]** | ✓ |
+| non-consent | black | 35,352 | 27.12% [26.67, 27.62] | **+6.30 [+5.61, +6.94]** | ✓ |
+| non-consent | hispanic | 5,457 | 15.63% [14.64, 16.57] | −5.22 [−6.33, −4.17] | ✓ |
+| **POOLED** | black | 67,663 | 21.66% [21.36, 21.98] | **+0.83 [+0.35, +1.31]** | ✓ |
+| **POOLED** | hispanic | 10,102 | 12.07% [11.44, 12.71] | −8.75 [−9.46, −8.02] | ✓ |
+
+**The Black reversal is beyond doubt.** Consent [−5.80, −4.49] and non-consent
+[+5.61, +6.94] do not overlap and sit on opposite sides of zero with an 11-point
+gap between them. It cannot be dismissed as noise.
+
+**The pooled result is worse than "no disparity".** It is +0.83 [+0.35, +1.31] —
+statistically significant and pointing the WRONG WAY. A pooled analysis would not
+merely miss the disparity; it would report with confidence that Black drivers are
+searched on marginally *better* evidence than white drivers. That is a stronger
+indictment of pooling than a null result would be.
+
+**Nuance: only the Black–white comparison reverses.** Hispanic gaps are negative in
+both strata (−12.95 consent, −5.22 non-consent) with no sign flip, though the
+consent gap is 2.5x larger. Say "the Black–white comparison reverses", not "the
+gaps reverse".
 
 Not a composition artifact: consent is 44.6% of white searches, 47.8% of Black,
 46.0% of Hispanic.
