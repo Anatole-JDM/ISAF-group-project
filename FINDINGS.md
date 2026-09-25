@@ -93,9 +93,49 @@ On all available rows (49,752 train) the GBM reaches 0.5663.
 | **+ officer identity** | 0.6005 | **52%** |
 | **− driver race** | 0.5414 | ~37% |
 
-Roughly half the model's discriminative power is *which officer stopped you*.
-This is the selective-labels problem made measurable: contraband is observed only
-for officer-selected searches, so the model learns discretion, not risk.
+Officer identity is worth 52% as much as **everything else combined** — every
+driver characteristic, location and time feature put together. Officer
+heterogeneity is large and real.
+
+Note the phrasing carefully: this is NOT "52% of the model's accuracy comes from
+officers". The model is 0.0663 above chance; adding officer identity adds a further
+0.0342.
+
+`officer_id_hash` is excluded from every deployed model (`config.IDENTIFIERS`). It
+is added only in this controlled ablation. It would be wrong to deploy: at the
+moment of decision the officer is *constant across his own choice set*, so it
+cannot discriminate between the drivers he is choosing among — zero decision value
+whatever it does to AUC.
+
+### 4.1 But the model is NOT memorising officers (2026-09-25)
+
+Leave-one-officer-group-out, 5-fold `GroupKFold` so no officer appears in both
+train and test, against a random-split control:
+
+| split | AUC | folds |
+|---|---|---|
+| grouped by officer (**unseen** officers) | 0.5922 ± 0.0143 | .584 .602 .615 .577 .582 |
+| random (officers seen in both) | 0.6013 ± 0.0099 | .621 .599 .596 .594 .597 |
+| **gap** | **−0.0092** | inside the ±0.014 fold noise |
+
+1,477 officers, median 10 searches each; the top 10 officers are 10.2% of the
+sample. (Both figures exceed the 0.5663 temporal-split number because random and
+grouped CV do not span the 2016 regime shift — compare the two rows to each other,
+not to the headline.)
+
+**This test came back negative, and it corrects an overstatement.** `stability.py`
+predicted that if performance collapsed on held-out officers, the model had learned
+discretion rather than risk. It did not collapse. So:
+
+- ✅ Officers differ substantially in outcome rates — knowing *which* officer is
+  informative.
+- ❌ The model is **not** officer-specific. Its learned stop-features → contraband
+  mapping transfers to officers it has never seen.
+
+Both are true simultaneously. The defensible claim is about officer *heterogeneity*,
+not about the model memorising individuals. Earlier drafts of this document said
+"the model learns discretion, not risk" — that is stronger than the evidence
+supports and has been corrected here.
 
 ---
 
