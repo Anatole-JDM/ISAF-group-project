@@ -147,10 +147,40 @@ never seen in training. The model fits year-correlated structure that cannot
 transfer. No single column causes it (each scores 0.55-0.65 alone); the *joint*
 pattern of 41 vintage-stamped floats fingerprints the release year.
 
-These features cannot be repaired before the deadline — `build_nbh_features.py`
-reads `opp_data/`, which does not exist on this machine, so the vintage cannot be
-frozen. Keep the runs as a negative result; `config.NEVER_JOIN` now blocks them
-from any new mode.
+**Can they be repaired? Tested, 2026-09-25.** Re-running `build_nbh_features.py`
+with a frozen vintage is impossible here (`opp_data/` is absent), but in-place
+repair using only the shipped parquet was measured:
+
+| repair | groups | median distinct years/group | tripwire AUC |
+|---|---|---|---|
+| none (as shipped) | — | — | **0.9983** |
+| per-`location` median | 13,476 | 1 | 0.7629 |
+| lat/lng 3dp median (~110 m) | 7,829 | 2 | 0.6806 |
+| lat/lng 2dp median (~1.1 km) | 832 | 5 | **0.6044** |
+| z-score within `acs_vintage` | — | — | 0.9985 |
+| 2dp median + within-vintage z-score | — | — | 0.9984 |
+
+Two conclusions:
+
+1. **Normalisation does not work.** Z-scoring within vintage leaves the tripwire at
+   0.9985. The year signal is not in the levels; it is in the joint 36-dimensional
+   pattern, which per-column scaling preserves. Same reason a rank transform fails.
+2. **Spatial averaging works only by destroying the feature.** Leakage falls
+   monotonically as the grid coarsens, but the best result (0.6044) needs a ~1.1 km
+   grid — and these are 800 m and 1,200 m radius measurements. Averaging an 800 m
+   feature over a cell wider than its own radius no longer measures a neighbourhood;
+   it measures a rough part of town, which `precinct` and `zone` already encode.
+
+So the accurate statement is not "cannot be repaired" but: **you can trade leakage
+for spatial resolution, and by the time the leakage is acceptable the feature has
+no resolution left.** 0.60 is still well above chance and would keep contaminating a
+temporal split.
+
+The one clean subset is `nbh800_residents_2010` / `nbh1200_residents_2010` — 2010
+decennial counts rather than ACS estimates, so they carry no vintage. Two columns,
+measured to add nothing.
+
+`config.NEVER_JOIN` blocks the contaminated columns from any new mode.
 
 **The race-proxy finding in 5 above is unaffected, and was conservative.** The
 vintage contamination handicapped it. On a random split, with the temporal
