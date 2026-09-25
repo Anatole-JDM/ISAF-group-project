@@ -62,8 +62,11 @@ def fit_stratum(df: pd.DataFrame, search_type: str | None = "consent",
                 mode: str = "matched", matched_n: int = MATCHED_N,
                 split_year: int = SPLIT_YEAR, seed: int = SEED):
     """Fit every available arm on one stratum. Returns (scores_df, metrics_list)."""
+    # Mode is a set of flags, not an enum: "blind" drops race, "nbh" joins the
+    # neighbourhood features, "matched" subsamples. They compose.
     X, y, meta = D.build_xy(df, search_type=search_type,
-                            include_protected=not mode.endswith("blind"))
+                            include_protected="blind" not in mode,
+                            include_nbh="nbh" in mode)
     X = X.reset_index(drop=True)
     y = pd.Series(np.asarray(y)).reset_index(drop=True)
     meta = meta.reset_index(drop=True)
@@ -154,7 +157,7 @@ def officer_signal(df: pd.DataFrame, search_type: str = "consent",
 # Practical effect: drops the `pooled` stratum, whose 29,185 test rows were ~45
 # minutes of TabPFN prediction on CPU.
 def run(search_types=("consent",),
-        modes=("matched", "full", "full_blind"), cache: bool = True) -> dict:
+        modes=("matched", "full", "full_blind", "full_blind_nbh", "full_nbh"), cache: bool = True) -> dict:
     df = D.load_searches()
     C.OUTPUTS.mkdir(parents=True, exist_ok=True)
     results = {}

@@ -20,6 +20,16 @@ STOPS_ZIP = DATA_RAW / "tn_nashville.csv.zip"
 STOPS_CSV_INNER = "tn_nashville_2020_04_01.csv"
 LABELLED_PARQUET = DATA_PROC / "searches.parquet"
 
+# The team's canonical consent-search file, built by scripts_claude/. Carries 41
+# ACS-derived neighbourhood features at 800m and 1200m radii. Verified clean:
+# build_nbh_features.py never reads contraband_found (it loads only stop_id,
+# date, lat, lng, geo_outside_davidson_box, location plus census data), so these
+# cannot leak the outcome. Joins to our frame on raw_row_number with all 58,865
+# consent rows matching; their extra 74 are the 2019 tail we drop.
+NBH_PARQUET = ROOT / "data" / "nashville_consent_searches.parquet"
+NBH_JOIN_KEY = "raw_row_number"
+NBH_PREFIX = "nbh"
+
 # --------------------------------------------------------------------------- target
 TARGET = "contraband_found"
 

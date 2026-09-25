@@ -169,11 +169,24 @@ def sklearn_safe(df: pd.DataFrame) -> pd.DataFrame:
 
 
 # --------------------------------------------------------------------------- frame
+def load_nbh_features() -> pd.DataFrame:
+    """The team's ACS neighbourhood features, keyed by raw_row_number.
+
+    41 columns at 800m and 1200m radii: population density, racial shares,
+    poverty, no-vehicle share, renter share, unemployment, education,
+    residential stability, income percentile, plus quality flags.
+    """
+    t = pd.read_parquet(C.NBH_PARQUET)
+    cols = [C.NBH_JOIN_KEY] + [c for c in t.columns if c.startswith(C.NBH_PREFIX)]
+    return t[cols].copy()
+
+
 def build_xy(
     df: pd.DataFrame,
     search_type: str | None = "consent",
     include_questionable: bool = False,
     include_protected: bool = True,
+    include_nbh: bool = False,
     y_coding: str = C.Y_NATIVE,
 ):
     """Return (X, y, meta) for one stratum.
@@ -209,6 +222,17 @@ def build_xy(
     # and zone are strong proxies in a segregated city.
     if not include_protected:
         drop |= {c for c in C.PROTECTED if c != "subject_age"}
+
+    # Neighbourhood composition is the point of the blind experiment: nbh*_share_black
+    # and friends are explicit, MEASURABLE race proxies. Joining them into a model
+    # that has had subject_race removed quantifies how much race is recoverable from
+    # geography alone -- turning "fairness through unawareness does not work" from an
+    # assertion into a number.
+    if include_nbh:
+        nbh = load_nbh_features()
+        before = len(d)
+        d = d.merge(nbh, on=C.NBH_JOIN_KEY, how="left", validate="one_to_one")
+        assert len(d) == before, f"nbh join changed row count {before} -> {len(d)}"
 
     X = sklearn_safe(d.drop(columns=[c for c in drop if c in d.columns], errors="ignore"))
     meta = d[["officer_id_hash", "precinct", "year", "search_type", C.PRIMARY_PROTECTED]].copy()
