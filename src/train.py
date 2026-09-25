@@ -141,7 +141,19 @@ def officer_signal(df: pd.DataFrame, search_type: str = "consent",
     return out
 
 
-def run(search_types=("consent", "probable cause", None),
+# CONSENT ONLY -- the group's decision, and the right one: consent searches are
+# the purely discretionary ones, so they are where officer judgement (and
+# therefore bias) actually operates. The other strata are mechanical.
+#
+# This does NOT retire the pooling comparison. fairness.pooled_vs_stratified()
+# reads the full searches frame and is what JUSTIFIES this scope: pooled shows
+# no black-white disparity (+0.82pp) while consent-only shows -5.16pp. Keep that
+# table in the deck as the reason the scope is defensible; it costs seconds and
+# needs no model.
+#
+# Practical effect: drops the `pooled` stratum, whose 29,185 test rows were ~45
+# minutes of TabPFN prediction on CPU.
+def run(search_types=("consent",),
         modes=("matched", "full", "full_blind"), cache: bool = True) -> dict:
     df = D.load_searches()
     C.OUTPUTS.mkdir(parents=True, exist_ok=True)
