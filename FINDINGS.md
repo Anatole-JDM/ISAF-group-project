@@ -124,8 +124,42 @@ predict the outcome the model is supposed to be for.
 | `full_nbh` | ✓ | ✓ | **0.5498** |
 
 Adding 41 carefully-built ACS features makes the model **worse**, with and without
-race. They are proxies for race, not for contraband: added variance, no signal to
-offset it, and it fails to transfer across the 2016 regime split.
+race.
+
+**CORRECTED 2026-09-25 — the mechanism is temporal leakage, not "added variance".**
+An earlier version of this entry attributed the drop to variance from extra
+features. That was wrong. The real cause, verified independently:
+
+| tripwire: predict WHICH SIDE OF THE 2016 SPLIT a row is on | AUC |
+|---|---|
+| **from the 41 nbh columns** | **0.9981** |
+| from src's baseline features | 0.7121 |
+
+ACS estimates are re-stamped per release, so every `nbh*` column describes the
+**place-year**, not the place. Two columns make it explicit:
+
+- `acs_vintage` is exactly `year - 1` (cross-tab perfectly diagonal)
+- `acs_window_overlaps_stop` is True **only in 2010** (7,909 rows) — a pure year
+  dummy with zero support on the test side
+
+With a temporal split at 2016, every test row therefore carries vintage values
+never seen in training. The model fits year-correlated structure that cannot
+transfer. No single column causes it (each scores 0.55-0.65 alone); the *joint*
+pattern of 41 vintage-stamped floats fingerprints the release year.
+
+These features cannot be repaired before the deadline — `build_nbh_features.py`
+reads `opp_data/`, which does not exist on this machine, so the vintage cannot be
+frozen. Keep the runs as a negative result; `config.NEVER_JOIN` now blocks them
+from any new mode.
+
+**The race-proxy finding in 5 above is unaffected, and was conservative.** The
+vintage contamination handicapped it. On a random split, with the temporal
+confound removed:
+
+| predict race from | temporal split | random split |
+|---|---|---|
+| nbh features only | 0.6915 | **0.7339** |
+| non-race stop features | 0.6995 | **0.7184** |
 
 ---
 
@@ -282,6 +316,42 @@ row. Measured locally on CPU: **209s to score 9,113 rows** from a 500-row contex
 roughly 4x that from 2,000. Cost is driven by how many people you score, not by how
 much you train. A department scoring millions of stops needs GPUs or an external
 API — and sending stop records to a third party is its own governance problem.
+
+---
+
+## 11. The one feature block that helps (2026-09-25)
+
+Seven cyclical/calendar columns from `scripts_claude/build_time_features.py`
+(`config.TIME_EXTRA`), joined on `raw_row_number`:
+
+`hour_sin`, `hour_cos`, `month_sin`, `month_cos`, `time_heaped`,
+`is_federal_holiday`, `is_holiday_window`
+
+| mode | scorecard | gbm | Δ gbm |
+|---|---|---|---|
+| `full` | 0.5516 | 0.5663 | — |
+| **`full_time`** | **0.5564** | **0.5733** | **+0.0070** |
+
+PR-AUC also improves, 0.2552 → 0.2702. The cyclical encodings are the only
+genuinely *new* information in the teammate parquet — they make 23:00 and 00:00
+adjacent, which src's integer `hour` cannot express. Everything else is either a
+re-encoding of a column src already has (`plate_*` recodes
+`vehicle_registration_state`) or vintage-contaminated (finding 5).
+
+Report it honestly: +0.0070 on a 0.0663 above-chance signal is ~11% relative, and
+the app still fires its "best AUC < 0.65 → do not deploy" banner. It does not
+change the recommendation.
+
+### Columns that must never be joined (`config.NEVER_JOIN`)
+
+| column(s) | evidence |
+|---|---|
+| 11 × `post_*` | components of the target; `P(contraband \| post_contraband_drugs) = 1.000` |
+| all 41 `nbh*` | split tripwire AUC 0.9981 (finding 5) |
+| `acs_vintage` | exactly `year - 1` |
+| `acs_window_overlaps_stop` | True only in 2010; pure year dummy |
+| `plate_missing` | 0.13% pre-2017 vs 8-9% in 2017-18 — a recording change |
+| `hour`, `month`, `day_of_week`, `minute_of_day` | duplicate encodings src already builds; coexisting clock encodings split the scorecard coefficient under L2 |
 
 ---
 

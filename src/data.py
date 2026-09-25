@@ -177,8 +177,16 @@ def load_nbh_features() -> pd.DataFrame:
     residential stability, income percentile, plus quality flags.
     """
     t = pd.read_parquet(C.NBH_PARQUET)
-    cols = [C.NBH_JOIN_KEY] + [c for c in t.columns if c.startswith(C.NBH_PREFIX)]
+    cols = [C.NBH_JOIN_KEY] + [c for c in t.columns
+                               if c.startswith(C.NBH_PREFIX) and c not in C.NEVER_JOIN]
     return t[cols].copy()
+
+
+def load_time_extra() -> pd.DataFrame:
+    """The seven safe cyclical/calendar columns, keyed by raw_row_number."""
+    t = pd.read_parquet(C.NBH_PARQUET)
+    cols = [c for c in C.TIME_EXTRA if c in t.columns and c not in C.NEVER_JOIN]
+    return t[[C.NBH_JOIN_KEY] + cols].copy()
 
 
 def build_xy(
@@ -187,6 +195,7 @@ def build_xy(
     include_questionable: bool = False,
     include_protected: bool = True,
     include_nbh: bool = False,
+    include_time_extra: bool = False,
     y_coding: str = C.Y_NATIVE,
 ):
     """Return (X, y, meta) for one stratum.
@@ -233,6 +242,12 @@ def build_xy(
         before = len(d)
         d = d.merge(nbh, on=C.NBH_JOIN_KEY, how="left", validate="one_to_one")
         assert len(d) == before, f"nbh join changed row count {before} -> {len(d)}"
+
+    if include_time_extra:
+        te = load_time_extra()
+        before = len(d)
+        d = d.merge(te, on=C.NBH_JOIN_KEY, how="left", validate="one_to_one")
+        assert len(d) == before, f"time join changed row count {before} -> {len(d)}"
 
     X = sklearn_safe(d.drop(columns=[c for c in drop if c in d.columns], errors="ignore"))
     meta = d[["officer_id_hash", "precinct", "year", "search_type", C.PRIMARY_PROTECTED]].copy()

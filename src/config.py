@@ -30,6 +30,33 @@ NBH_PARQUET = ROOT / "data" / "nashville_consent_searches.parquet"
 NBH_JOIN_KEY = "raw_row_number"
 NBH_PREFIX = "nbh"
 
+# Seven cyclical/calendar columns from scripts_claude/build_time_features.py that
+# are safe AND genuinely new. Everything else in that parquet is either a
+# re-encoding of something src already has, or vintage-contaminated (see below).
+TIME_EXTRA = [
+    "hour_sin", "hour_cos",        # cyclical clock: makes 23:00 and 00:00 adjacent,
+    "month_sin", "month_cos",      # which an integer `hour` cannot express
+    "time_heaped",                 # minute is :00 or :30 -- officer rounding, 6.2% of stops
+    "is_federal_holiday", "is_holiday_window",
+]
+
+# NEVER JOIN. Each verified on this machine, 2026-09-25:
+#   nbh*            the 41 ACS columns predict WHICH SIDE OF THE 2016 SPLIT a row
+#                   is on at AUC 0.9981. ACS is re-stamped per release, so every
+#                   column describes the PLACE-YEAR, not the place. With a temporal
+#                   split, every test row carries vintages never seen in training.
+#                   This is why full_nbh AUC FELL (0.5663 -> 0.5498). Keep the runs
+#                   as a negative result; do not add nbh to any new mode.
+#   acs_vintage     exactly year - 1 (cross-tab perfectly diagonal)
+#   acs_window_overlaps_stop  True only in 2010 (7,909 rows); a pure year dummy
+#                   with zero test support
+#   plate_missing   0.13% pre-2017 vs 8-9% in 2017-18 -- a recording change
+#   hour/month/day_of_week/minute_of_day  duplicate encodings src already builds;
+#                   coexisting clock encodings split the scorecard coefficient
+#                   under L2, the same harm DROP_EXTRA cites for reason_for_stop
+NEVER_JOIN = ["acs_vintage", "acs_window_overlaps_stop", "plate_missing",
+              "hour", "month", "day_of_week", "minute_of_day", "year"]
+
 # --------------------------------------------------------------------------- target
 TARGET = "contraband_found"
 
