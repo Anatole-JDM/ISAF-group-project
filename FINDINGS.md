@@ -178,6 +178,113 @@ columns carry a `post_` prefix and can be dropped mechanically.
 
 ---
 
+## 10. TabPFN-specific experiments (`src/tabpfn_experiments.py`, 2026-09-25)
+
+Hosted inference, consent searches, fixed 3,000-row evaluation subsample (identical
+across every arm and configuration, so AUCs here sit slightly below the main run's
+9,113-row numbers — sampling noise, not a discrepancy).
+
+### 10.1 The learning curve is FLAT
+
+| n_train | scorecard | gbm | tabpfn |
+|---|---|---|---|
+| 100 | 0.5211 | 0.5362 | 0.5189 |
+| 250 | 0.5131 | 0.5202 | 0.5046 |
+| 500 | 0.5338 | 0.5257 | 0.5348 |
+| 1,000 | 0.5265 | 0.5090 | **0.5371** |
+| 2,000 | 0.5214 | 0.5323 | **0.5460** |
+| 5,000 | 0.5131 | 0.5365 | **0.5393** |
+
+Fifty times more training data changes nothing. **The ceiling is absence of signal,
+not lack of data** — with real signal and a data-starved model, AUC would climb with
+n. TabPFN leads from n=1,000, consistent with its small-data claim, but see 10.2:
+the margin is inside the noise.
+
+### 10.2 The ranked list is essentially arbitrary — the deployment killer
+
+Five different random training contexts of the same size, same test set:
+
+| arm | AUC mean ± sd | spread | per-row pred sd | **top-200 Jaccard** |
+|---|---|---|---|---|
+| tabpfn | 0.5306 ± 0.0090 | 0.0242 | 0.0255 | **0.078** |
+| gbm | 0.5258 ± 0.0041 | 0.0118 | 0.0943 | **0.071** |
+
+Two things, both serious:
+
+1. **Context variance exceeds between-model variance.** TabPFN's AUC moves 0.024
+   just from *which* rows are in the training sample. The entire spread across the
+   three model families is 0.020. So "TabPFN beat XGBoost" is not a finding — it is
+   noise, and any single-seed model comparison here is unreliable.
+2. **Top-200 Jaccard ≈ 0.07 for BOTH arms.** Resample the training data and roughly
+   **93% of the 200 highest-risk stops change**. The top-K list *is* the deployed
+   policy (see finding 7), so the policy is close to arbitrary. This is a stronger
+   argument against deployment than any AUC, because it holds regardless of accuracy.
+
+### 10.3 Equal scores, incompatible explanations
+
+Permutation importance (AUC drop), and the Spearman rank correlation between arms:
+
+| feature | gbm | scorecard | tabpfn |
+|---|---|---|---|
+| **subject_race** | 0.0025 | 0.0181 | **0.0382** |
+| precinct | 0.0112 | 0.0141 | 0.0014 |
+| zone | 0.0107 | −0.0022 | −0.0099 |
+| month | 0.0131 | −0.0002 | 0.0008 |
+| subject_age | 0.0105 | 0.0003 | 0.0055 |
+| hour | 0.0102 | 0.0004 | 0.0011 |
+
+| Spearman | gbm | scorecard | tabpfn |
+|---|---|---|---|
+| gbm | 1.000 | 0.079 | **−0.321** |
+| scorecard | 0.079 | 1.000 | 0.758 |
+| tabpfn | −0.321 | 0.758 | 1.000 |
+
+Three models within 0.02 AUC of each other **disagree about what drives the
+prediction** — GBM and TabPFN are *negatively* rank-correlated. Interpretability is
+therefore not a property you can read off a single model: pick a different arm with
+identical accuracy and you get a different story about why.
+
+**And TabPFN leans hardest on race.** `subject_race` is its single largest feature
+by a wide margin (0.0382), fifteen times the GBM's reliance (0.0025).
+
+### 10.4 TabPFN is the best-calibrated arm, in every group
+
+Brier within each racial group (lower is better):
+
+| arm | black | hispanic | white |
+|---|---|---|---|
+| **tabpfn** | **0.1517** | **0.1771** | **0.1844** |
+| scorecard | 0.1542 | 0.1802 | 0.1887 |
+| gbm | 0.1631 | 0.1794 | 0.1997 |
+
+Calibration is the sufficiency leg of the taxonomy, and TabPFN wins it outright.
+Note Brier is sensitive to base rate, which differs by group, so compare *within*
+a column, not across.
+
+**The tension worth putting on a slide:** the best-calibrated arm is also the one
+most dependent on the protected attribute. Sufficiency and independence pull in
+opposite directions here, in one model, measurably.
+
+### 10.5 More compute does not help
+
+| thinking | AUC | Brier | seconds |
+|---|---|---|---|
+| off | 0.5360 | 0.1656 | 7.4 |
+| medium | 0.5352 | 0.1682 | 34.9 |
+| high | 0.5368 | 0.1670 | 24.3 |
+
+Fit-time compute up to ~5x, AUC unchanged. More evidence there is nothing to find.
+
+### 10.6 Deployability: inference cost scales with the TEST set
+
+TabPFN learns in context, so it re-processes the training context for every test
+row. Measured locally on CPU: **209s to score 9,113 rows** from a 500-row context,
+roughly 4x that from 2,000. Cost is driven by how many people you score, not by how
+much you train. A department scoring millions of stops needs GPUs or an external
+API — and sending stop records to a third party is its own governance problem.
+
+---
+
 ## 9. Recommendation to the client: do not deploy
 
 Not because the model is unfair *or* because it is inaccurate, but because every
