@@ -173,7 +173,12 @@ def run(search_types=("consent",),
                 (C.OUTPUTS / f"metrics__{key}.json").write_text(
                     json.dumps({"stratum": st or "pooled", "mode": mode,
                                 "split_year": SPLIT_YEAR,
+                                "matched_n": MATCHED_N,
                                 "gbm_backend": M.gbm_backend(),
+                                "tabpfn_backend": M.TABPFN_BACKEND,
+                                "tabpfn_version": ("client" if M.TABPFN_BACKEND == "client"
+                                                   else M.TABPFN_VERSION),
+                                "failed_arms": failed,
                                 "arms": [asdict(m) for m in metrics]}, indent=2)
                 )
             results[key] = (scores, metrics)
