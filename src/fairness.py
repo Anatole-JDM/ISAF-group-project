@@ -101,6 +101,53 @@ def sufficiency(rates: pd.DataFrame, reference: str = "white") -> pd.Series:
     return rates["PPV"] - rates.loc[reference, "PPV"]
 
 
+def group_rates_ci(y_true, y_pred, groups, n_boot: int = 2000,
+                   alpha: float = 0.05, seed: int = 0) -> pd.DataFrame:
+    """Percentile bootstrap CIs on the per-group rates.
+
+    WHY THIS IS NOT OPTIONAL HERE. Subgroup sizes are wildly uneven -- on the
+    consent test set, white n=3,368 and black n=4,947 but hispanic n=689, and at
+    a top-K of 2,000 only ~12 hispanic drivers are selected. A TPR or PPV built
+    on a dozen cases is not a measurement, and reporting it as a bare point
+    estimate invites a question you cannot answer.
+
+    Resampling is done WITHIN each group, with the decision rule held fixed
+    (y_pred is passed in already thresholded), so the interval reflects sampling
+    variability in the group's rates and not variability in where the cutoff
+    happened to fall.
+    """
+    y_true = np.asarray(y_true).astype(int)
+    y_pred = np.asarray(y_pred).astype(int)
+    g = pd.Series(groups).reset_index(drop=True)
+    rng = np.random.default_rng(seed)
+    lo_q, hi_q = 100 * alpha / 2, 100 * (1 - alpha / 2)
+
+    rows = []
+    for grp, idx in g.groupby(g).groups.items():
+        i = np.asarray(idx)
+        yt, yp = y_true[i], y_pred[i]
+        draws = {k: [] for k in ("selection_rate", "TPR", "FPR", "PPV", "base_rate")}
+        for _ in range(n_boot):
+            b = rng.integers(0, len(i), len(i))
+            t, p = yt[b], yp[b]
+            tp = int(((t == 1) & (p == 1)).sum()); fp = int(((t == 0) & (p == 1)).sum())
+            fn = int(((t == 1) & (p == 0)).sum()); tn = int(((t == 0) & (p == 0)).sum())
+            draws["selection_rate"].append(p.mean())
+            draws["base_rate"].append(t.mean())
+            draws["TPR"].append(tp / (tp + fn) if (tp + fn) else np.nan)
+            draws["FPR"].append(fp / (fp + tn) if (fp + tn) else np.nan)
+            draws["PPV"].append(tp / (tp + fp) if (tp + fp) else np.nan)
+        row = {"group": grp, "n": len(i), "n_selected": int(yp.sum())}
+        for k, v in draws.items():
+            a = np.asarray(v, dtype=float)
+            row[k] = np.nanmean(a)
+            row[f"{k}_lo"] = np.nanpercentile(a, lo_q)
+            row[f"{k}_hi"] = np.nanpercentile(a, hi_q)
+            row[f"{k}_width"] = row[f"{k}_hi"] - row[f"{k}_lo"]
+        rows.append(row)
+    return pd.DataFrame(rows).set_index("group")
+
+
 def calibration_by_group(y_true, y_score, groups, bins: int = 10) -> pd.DataFrame:
     """Observed frequency vs predicted score, per group. Sufficiency, continuous form."""
     d = pd.DataFrame({

@@ -463,6 +463,41 @@ change the recommendation.
 
 ---
 
+## 12. Fairness metrics with confidence intervals (2026-09-25)
+
+`fairness.group_rates_ci` — percentile bootstrap, 2,000 draws within each group,
+decision rule held fixed. gbm / `full_time`, top-K = 2,000 of 9,113.
+
+| race | n | selected | selection rate | TPR | PPV | FPR |
+|---|---|---|---|---|---|---|
+| white | 3,368 | 1,356 | 40.3% [38.6, 41.9] | 46.6% [43.3, 50.1] | 29.5% [27.0, 32.0] | 38.1% [36.3, 40.0] |
+| black | 4,947 | 611 | 12.4% [11.5, 13.3] | 15.8% [13.5, 18.1] | 24.9% [21.5, 28.2] | 11.5% [10.6, 12.5] |
+| **hispanic** | 689 | **12** | 1.7% [0.9, 2.8] | 4.8% [1.0, 9.4] | **42.1% [11.1, 72.7]** | 1.2% [0.3, 2.2] |
+
+**The hispanic PPV is ±30.8pp and must not be reported as a point estimate.** Only
+12 hispanic drivers are selected at K=2,000, so the interval spans 11% to 73%.
+Earlier drafts quoted "41.7%" as if it were a finding; it is not.
+
+### Which metrics survive a small subgroup depends on the denominator
+
+| metric | conditions on | hispanic n | usable |
+|---|---|---|---|
+| PPV | those **selected** | 12 | ✗ ±30.8pp |
+| TPR | those **with contraband** | ~104 | ~ ±4.2pp |
+| **FPR** | those **without contraband** | ~585 | ✓ **±0.9pp** |
+| selection rate | **all** drivers in the group | 689 | ✓ ±0.95pp |
+
+This is a fortunate alignment rather than a lucky one: **predictive equality (FPR)
+is both the metric that matters most for the harm argument and the one that
+survives the small sample**, because it conditions on the large group (innocent
+drivers) rather than the small one (those the model picked). The hispanic FPR
+claim — 1.2% [0.3, 2.2] against white 38.1% [36.3, 40.0] — is solid.
+
+General rule for the deck: report FPR and selection rate for every group; report
+PPV and TPR for white and black only, with intervals; and say why.
+
+---
+
 ## 9. Recommendation to the client: do not deploy
 
 Not because the model is unfair *or* because it is inaccurate, but because every
