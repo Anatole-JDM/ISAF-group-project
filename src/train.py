@@ -66,7 +66,8 @@ def fit_stratum(df: pd.DataFrame, search_type: str | None = "consent",
     # neighbourhood features, "matched" subsamples. They compose.
     X, y, meta = D.build_xy(df, search_type=search_type,
                             include_protected="blind" not in mode,
-                            include_nbh="nbh" in mode,
+                            include_nbh=("nbh" in mode and "frozen" not in mode),
+                            include_nbh_frozen="frozen" in mode,
                             include_time_extra="time" in mode)
     X = X.reset_index(drop=True)
     y = pd.Series(np.asarray(y)).reset_index(drop=True)
@@ -158,7 +159,8 @@ def officer_signal(df: pd.DataFrame, search_type: str = "consent",
 # Practical effect: drops the `pooled` stratum, whose 29,185 test rows were ~45
 # minutes of TabPFN prediction on CPU.
 def run(search_types=("consent",),
-        modes=("matched", "full", "full_time", "full_blind", "full_blind_nbh", "full_nbh"), cache: bool = True) -> dict:
+        modes=("matched", "full", "full_time", "full_nbh_frozen", "full_time_nbh_frozen",
+               "full_blind", "full_blind_nbh_frozen", "full_blind_nbh", "full_nbh"), cache: bool = True) -> dict:
     df = D.load_searches()
     C.OUTPUTS.mkdir(parents=True, exist_ok=True)
     results = {}

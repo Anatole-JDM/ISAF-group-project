@@ -182,6 +182,31 @@ def load_nbh_features() -> pd.DataFrame:
     return t[cols].copy()
 
 
+def load_nbh_frozen(pin: int | None = None) -> pd.DataFrame:
+    """Neighbourhood features at ONE fixed ACS release, keyed by raw_row_number.
+
+    Removes the vintage contamination that makes the shipped nbh columns a
+    near-perfect year fingerprint (tripwire AUC 0.9983 -> ~0.60), while keeping
+    the full 800m/1200m resolution that spatial averaging would destroy.
+
+    loc_key in the vintage table is "lat,lng" at 6 decimals. Coverage is ~70% of
+    consent stops (13% have no lat/lng at all); the rest impute.
+    """
+    pin = C.NBH_PIN_VINTAGE if pin is None else pin
+    v = pd.read_parquet(C.NBH_VINTAGE_PARQUET)
+    num = [c for c in v.columns
+           if c.startswith(C.NBH_PREFIX) and c not in C.NEVER_JOIN
+           and pd.api.types.is_numeric_dtype(v[c])]
+    frozen = v.loc[v["acs_vintage"] == pin].set_index("loc_key")[num]
+    frozen = frozen[~frozen.index.duplicated()]
+
+    t = pd.read_parquet(C.NBH_PARQUET)[[C.NBH_JOIN_KEY, "lat", "lng"]].copy()
+    t["loc_key"] = (t["lat"].map(lambda x: f"{x:.6f}") + "," +
+                    t["lng"].map(lambda x: f"{x:.6f}"))
+    out = t[[C.NBH_JOIN_KEY]].join(frozen, on=t["loc_key"])
+    return out.rename(columns={c: f"frz_{c}" for c in num})
+
+
 def load_time_extra() -> pd.DataFrame:
     """The seven safe cyclical/calendar columns, keyed by raw_row_number."""
     t = pd.read_parquet(C.NBH_PARQUET)
@@ -195,6 +220,7 @@ def build_xy(
     include_questionable: bool = False,
     include_protected: bool = True,
     include_nbh: bool = False,
+    include_nbh_frozen: bool = False,
     include_time_extra: bool = False,
     y_coding: str = C.Y_NATIVE,
 ):
@@ -242,6 +268,12 @@ def build_xy(
         before = len(d)
         d = d.merge(nbh, on=C.NBH_JOIN_KEY, how="left", validate="one_to_one")
         assert len(d) == before, f"nbh join changed row count {before} -> {len(d)}"
+
+    if include_nbh_frozen:
+        fz = load_nbh_frozen()
+        before = len(d)
+        d = d.merge(fz, on=C.NBH_JOIN_KEY, how="left", validate="one_to_one")
+        assert len(d) == before, f"frozen-nbh join changed rows {before} -> {len(d)}"
 
     if include_time_extra:
         te = load_time_extra()

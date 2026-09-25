@@ -30,6 +30,21 @@ NBH_PARQUET = ROOT / "data" / "nashville_consent_searches.parquet"
 NBH_JOIN_KEY = "raw_row_number"
 NBH_PREFIX = "nbh"
 
+# The (location, release) table from build_nbh_features.py: one row per location
+# per ACS vintage, 568,044 rows = ~63,000 locations x 9 releases. This is what
+# makes the neighbourhood features usable -- pin ONE release and join it to every
+# stop regardless of year, so the value becomes f(place) instead of f(place, year).
+#
+# Measured effect on the split tripwire (predict post-2016 from the nbh block):
+#     as shipped (vintage follows stop year)   AUC 0.9983
+#     frozen at a single release               AUC 0.59-0.62
+#     src's own baseline features, for scale   AUC 0.7121
+# Frozen features are LESS year-informative than the features already in the
+# model. The residual is genuine covariate shift -- where people were stopped
+# changed between eras -- not vintage contamination.
+NBH_VINTAGE_PARQUET = ROOT / "opp_data" / "features" / "nbh_location_vintage.parquet"
+NBH_PIN_VINTAGE = 2013      # mid-range release; 2016 gives the same tripwire
+
 # Seven cyclical/calendar columns from scripts_claude/build_time_features.py that
 # are safe AND genuinely new. Everything else in that parquet is either a
 # re-encoding of something src already has, or vintage-contaminated (see below).

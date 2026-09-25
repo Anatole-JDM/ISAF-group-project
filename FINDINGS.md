@@ -182,6 +182,44 @@ measured to add nothing.
 
 `config.NEVER_JOIN` blocks the contaminated columns from any new mode.
 
+### RESOLVED 2026-09-25: the proper fix, and what it reveals
+
+The teammate supplied `opp_data/features/nbh_location_vintage.parquet` — one row
+per (location, ACS release), 568,044 rows = ~63,000 locations x 9 releases. Pinning
+a single release and joining it to every stop regardless of year makes each value
+`f(place)` instead of `f(place, year)`, keeping full 800m/1200m resolution.
+
+| predict post-2016 from | AUC |
+|---|---|
+| nbh **as shipped** | 0.9983 |
+| nbh **frozen at one release** | **0.59-0.62** |
+| src's own baseline features, for scale | **0.7121** |
+
+Frozen features are **less** year-informative than the features already in the
+model. The residual ~0.6 is genuine covariate shift — stops fell from 444k (2012)
+to 204k (2018) and the geographic mix moved — not vintage contamination.
+
+**And the substantive answer is still no.**
+
+| mode | scorecard | gbm | vs baseline |
+|---|---|---|---|
+| `full` (baseline) | 0.5516 | 0.5663 | — |
+| `full_nbh` (contaminated) | 0.5377 | 0.5498 | −0.0165 |
+| **`full_nbh_frozen`** | 0.5442 | **0.5636** | **−0.0027** |
+| `full_time` | 0.5564 | 0.5733 | +0.0070 |
+| `full_time_nbh_frozen` | 0.5495 | **0.5757** | +0.0094 |
+
+Freezing recovers +0.0138 of the 0.0165 the contamination cost, so the diagnosis
+was right and the repair works. But repaired, the features still add nothing:
+`full_nbh_frozen` sits *below* the plain baseline, and the best combination beats
+`full_time` by +0.0024 — **one tenth of the 0.024 context-resampling noise measured
+in finding 10.2.**
+
+This is a stronger result than either alternative. We did not conclude "census
+features do not help" from a contaminated run; we found the contamination, fixed
+it properly, and the answer was still no. **Neighbourhood socioeconomic composition
+genuinely does not predict contraband** — consistent with everything else here.
+
 **The race-proxy finding in 5 above is unaffected, and was conservative.** The
 vintage contamination handicapped it. On a random split, with the temporal
 confound removed:
