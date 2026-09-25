@@ -1,0 +1,369 @@
+<!doctype html>
+<!--
+  Streamlit component: deck.gl map of all stops, filtered in the browser.
+  The data (app/static/stops/stops.bin.gz, written by app/views/explore.py; one byte-packed column per field) is fetched once. After that,
+  Streamlit only sends the filter values; filtering 2.9M rows + rebuilding the layer takes ~100 ms here,
+  and the map updates in place (no reload, pan/zoom kept).
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<script src="https://cdn.jsdelivr.net/npm/deck.gl@9.3.11/dist.min.js"></script>
+<style>
+  :root {
+    --panel: rgba(255, 255, 255, 0.94); --ink: #0b0b0b; --ink-2: #52514e; --line: #deddd6;
+    --accent: #2a78d6; --accent-ink: #ffffff; --track: #deddd6;
+  }
+  body.dark {
+    --panel: rgba(26, 26, 25, 0.94); --ink: #ffffff; --ink-2: #c3c2b7; --line: #3a3a37;
+    --accent: #3987e5; --accent-ink: #ffffff; --track: #3a3a37;
+  }
+  html, body { margin: 0; height: 100%; font: 13px/1.3 "Source Sans Pro", system-ui, sans-serif; color: var(--ink); }
+  #map { position: absolute; inset: 0; border-radius: 8px; overflow: hidden; background: #e8e8e4; }
+  body.dark #map { background: #1a1a19; }
+  .panel {
+    position: absolute; z-index: 2; background: var(--panel); border: 1px solid var(--line);
+    border-radius: 8px; padding: 6px 8px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+    display: flex; align-items: center; gap: 8px;
+  }
+  #toolbar { top: 10px; left: 10px; }
+  #timebar { bottom: 26px; left: 50%; transform: translateX(-50%); min-width: 440px; }
+  #stats { top: 10px; right: 10px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  #legend { bottom: 26px; left: 10px; flex-direction: column; align-items: flex-start; gap: 3px; }
+  .seg { display: flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  .seg button, #timebar button {
+    border: 0; background: transparent; color: var(--ink); padding: 5px 10px; cursor: pointer; font: inherit;
+  }
+  .seg button + button { border-left: 1px solid var(--line); }
+  .seg button.on { background: var(--accent); color: var(--accent-ink); }
+  .seg button:disabled { opacity: 0.4; cursor: default; }
+  .lbl { color: var(--ink-2); }
+  #timebar button { border: 1px solid var(--line); border-radius: 6px; min-width: 32px; }
+  #hour { flex: 1; accent-color: var(--accent); }
+  #hourLabel { min-width: 150px; font-variant-numeric: tabular-nums; }
+  #hourLabel b { font-weight: 600; }
+  .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+  .ramp { width: 140px; height: 10px; border-radius: 3px; }
+  .ramp-labels { display: flex; justify-content: space-between; width: 140px; color: var(--ink-2); font-size: 11px; }
+  #attrib { position: absolute; right: 6px; bottom: 4px; z-index: 2; font-size: 10px; color: var(--ink-2); }
+  #loading {
+    position: absolute; inset: 0; z-index: 5; display: flex; flex-direction: column; gap: 10px;
+    align-items: center; justify-content: center; background: var(--panel);
+  }
+  .bar { width: 260px; height: 6px; background: var(--track); border-radius: 3px; overflow: hidden; }
+  #barfill { height: 100%; width: 30%; background: var(--accent); animation: slide 1.1s ease-in-out infinite alternate; }
+  @keyframes slide { from { margin-left: 0; } to { margin-left: 70%; } }
+  .tip b { font-weight: 600; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div id="toolbar" class="panel">
+  <div class="seg" id="layerSeg">
+    <button data-v="heatmap" class="on">Heatmap</button><button data-v="hexagon">Hexagons 3D</button><button data-v="points">Points</button>
+  </div>
+  <span class="lbl">Color</span>
+  <div class="seg" id="colorSeg">
+    <button data-v="race" class="on">Race</button><button data-v="outcome">Outcome</button>
+  </div>
+</div>
+<div id="stats" class="panel">–</div>
+<div id="timebar" class="panel">
+  <button id="play" title="Play through the day, hour by hour">▶</button>
+  <input id="hour" type="range" min="0" max="23" step="1" value="0" aria-label="Hour of day">
+  <span id="hourLabel"></span>
+  <button id="clearHour" title="Back to the sidebar's hour range">✕</button>
+</div>
+<div id="legend" class="panel"></div>
+<div id="attrib">Basemap © Esri, HERE, Garmin, © OpenStreetMap contributors</div>
+<div id="loading"><div>Loading the stops into the browser…</div><div class="bar"><div id="barfill"></div></div></div>
+
+<script>
+const HEIGHT = 640;
+const MAX_POINTS = 100000;
+const PLAY_MS = 700;
+const HEAT = [[255, 255, 178], [254, 217, 118], [254, 178, 76], [253, 141, 60], [240, 59, 32], [189, 0, 38]];
+const GRAY = [138, 137, 132];
+// Same fixed entity colors as the Streamlit charts; point maps use three hues + gray.
+const RACE_RGB = {black: [42, 120, 214], white: [235, 104, 52], hispanic: [27, 175, 122]};
+const OUTCOME_RGB = {warning: [42, 120, 214], citation: [235, 104, 52], arrest: [27, 175, 122]};
+
+const $ = (id) => document.getElementById(id);
+const state = {layer: "heatmap", colorBy: "race", hour: null, playing: null, filters: null, dark: null};
+let D = null;          // loaded data
+let deckgl = null;
+let viewState = {longitude: -86.78, latitude: 36.165, zoom: 10, pitch: 0, bearing: 0};
+let started = false;
+
+// ------------------------------------------------------------------ Streamlit protocol
+function send(type, data = {}) {
+  window.parent.postMessage({isStreamlitMessage: true, type, ...data}, "*");
+}
+window.addEventListener("message", (event) => {
+  if (!event.data || event.data.type !== "streamlit:render") return;
+  const {args, theme} = event.data;
+  setTheme(theme && theme.base === "dark");
+  state.filters = args.filters;
+  if (!started) { started = true; load(args.version); } else if (D) { update(); }
+});
+send("streamlit:componentReady", {apiVersion: 1});
+send("streamlit:setFrameHeight", {height: HEIGHT});
+
+function setTheme(dark) {
+  if (dark === state.dark) return;
+  state.dark = dark;
+  document.body.classList.toggle("dark", dark);
+  if (D) update();
+}
+
+// ------------------------------------------------------------------ Data loading
+async function load(version) {
+  const path = location.pathname;
+  const base = path.slice(0, path.indexOf("/component/")) + "/app/static/stops/";
+  const meta = await (await fetch(`${base}meta.json?v=${version}`)).json();
+  const resp = await fetch(`${base}stops.bin.gz?v=${version}`);
+  const unzipped = resp.body.pipeThrough(new DecompressionStream("gzip"));
+  const buf = new Uint8Array(await new Response(unzipped).arrayBuffer());
+  const col = {};
+  for (const c of meta.columns) {
+    const T = c.dtype === "uint16" ? Uint16Array : Uint8Array;
+    col[c.name] = new T(buf.buffer, c.offset, meta.n);
+  }
+  const colorTable = (labels, rgb) => {
+    const table = Array(256).fill(GRAY);
+    labels.forEach((label, code) => { if (rgb[label]) table[code] = rgb[label]; });
+    return table;
+  };
+  D = {
+    meta, col, n: meta.n,
+    cellCounts: new Uint32Array(meta.cells.lat.length),
+    matches: new Uint32Array(meta.n), sample: new Uint32Array(MAX_POINTS), m: 0, total: 0,
+    colors: {
+      race: {codes: col.subject_race, table: colorTable(meta.categories.subject_race, RACE_RGB)},
+      outcome: {codes: col.outcome, table: colorTable(meta.categories.outcome, OUTCOME_RGB)},
+    },
+  };
+  $("loading").remove();
+  deckgl = new deck.Deck({
+    parent: $("map"),
+    initialViewState: viewState,
+    controller: true,
+    onViewStateChange: ({viewState: vs}) => { viewState = vs; },
+    getTooltip,
+    layers: [],
+  });
+  update();
+}
+
+// ------------------------------------------------------------------ Filtering (same rules as app.py build_mask)
+function allowedTable(codes) {
+  if (codes == null) return null;
+  const ok = new Uint8Array(256);   // 255 = missing, never allowed once a filter is active
+  for (const c of codes) ok[c] = 1;
+  return ok;
+}
+
+function applyFilters() {
+  const f = state.filters;
+  const {col, n, cellCounts, matches, sample} = D;
+  const hours = state.hour != null ? [state.hour, state.hour] : f.hours;
+  const [hLo, hHi] = hours || [0, 255];
+  const [dLo, dHi] = f.days || [0, 65535];
+  const [aLo, aHi] = f.ages || [0, 255];
+  const useHour = hours != null, useDay = f.days != null, useAge = f.ages != null;
+  const wdOk = allowedTable(f.weekdays);
+  const cats = Object.entries(f.cats)
+    .filter(([, codes]) => codes != null)
+    .map(([name, codes]) => [col[name], allowedTable(codes)]);
+  const flagMask = f.flags;
+  const {hour, day, weekday, age, flags, cell} = col;
+
+  cellCounts.fill(0);
+  let total = 0;
+  rows: for (let i = 0; i < n; i++) {
+    if (useHour) { const h = hour[i]; if (h < hLo || h > hHi) continue; }
+    if (useDay) { const d = day[i]; if (d < dLo || d > dHi) continue; }
+    if (wdOk !== null && !wdOk[weekday[i]]) continue;
+    if (useAge) { const a = age[i]; if (a < aLo || a > aHi) continue; }
+    for (let k = 0; k < cats.length; k++) { if (!cats[k][1][cats[k][0][i]]) continue rows; }
+    if (flagMask && (flags[i] & flagMask) !== flagMask) continue;
+    matches[total++] = i;
+    cellCounts[cell[i]]++;
+  }
+  // Point layer: every k-th match. Rows are sorted by grid cell and date, so this spreads the sample
+  // evenly over space and time.
+  const m = Math.min(total, MAX_POINTS);
+  for (let j = 0; j < m; j++) sample[j] = matches[Math.floor(j * total / m)];
+  D.total = total;
+  D.m = m;
+}
+
+// ------------------------------------------------------------------ Layers
+// Esri gray canvas tiles (no API key needed): the base goes under the data, the labels on top of it.
+const tileLayers = {};
+function tiles(kind) {
+  const service = `World_${state.dark ? "Dark" : "Light"}_Gray_${kind}`;
+  if (!tileLayers[service]) {
+    tileLayers[service] = new deck.TileLayer({
+      id: service,
+      data: `https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/${service}/MapServer/tile/{z}/{y}/{x}`,
+      minZoom: 0, maxZoom: 16, tileSize: 256,
+      renderSubLayers: (props) => {
+        const [[west, south], [east, north]] = props.tile.boundingBox;
+        return new deck.BitmapLayer(props, {data: null, image: props.data, bounds: [west, south, east, north]});
+      },
+    });
+  }
+  return tileLayers[service];
+}
+
+function dataLayer() {
+  const {cellCounts} = D;
+  const {lat, lng} = D.meta.cells;
+  if (state.layer === "points") {
+    const {m, sample, col} = D;
+    const q = D.meta.quant;
+    const {codes, table} = D.colors[state.colorBy];
+    const positions = new Float32Array(m * 2);
+    const colors = new Uint8Array(m * 3);
+    for (let j = 0; j < m; j++) {
+      const i = sample[j];
+      positions[2 * j] = q.lng0 + col.lng[i] * q.lng_step;
+      positions[2 * j + 1] = q.lat0 + col.lat[i] * q.lat_step;
+      const c = table[codes[i]];
+      colors[3 * j] = c[0]; colors[3 * j + 1] = c[1]; colors[3 * j + 2] = c[2];
+    }
+    return new deck.ScatterplotLayer({
+      id: "points",
+      data: {length: m, attributes: {getPosition: {value: positions, size: 2}, getFillColor: {value: colors, size: 3, normalized: true}}},
+      getRadius: 25, radiusUnits: "meters", radiusMinPixels: 1.5, radiusMaxPixels: 6, opacity: 0.6,
+      pickable: true, autoHighlight: true,
+    });
+  }
+  const cells = [];
+  for (let k = 0; k < cellCounts.length; k++) {
+    if (cellCounts[k]) cells.push({p: [lng[k], lat[k]], w: cellCounts[k]});
+  }
+  if (state.layer === "heatmap") {
+    return new deck.HeatmapLayer({
+      id: "heatmap", data: cells, getPosition: (d) => d.p, getWeight: (d) => d.w,
+      radiusPixels: 30, colorRange: HEAT, aggregation: "SUM",
+    });
+  }
+  return new deck.HexagonLayer({
+    id: "hexagon", data: cells, getPosition: (d) => d.p,
+    getColorWeight: (d) => d.w, colorAggregation: "SUM",
+    getElevationWeight: (d) => d.w, elevationAggregation: "SUM",
+    radius: 250, elevationScale: 4, extruded: true, coverage: 0.9, colorRange: HEAT, colorScaleType: "quantile",
+    gpuAggregation: false, pickable: true, autoHighlight: true,
+  });
+}
+
+function update() {
+  if (!D || !state.filters) return;
+  applyFilters();
+  deckgl.setProps({layers: [tiles("Base"), dataLayer(), tiles("Reference")]});
+  renderChrome();
+}
+
+// ------------------------------------------------------------------ Tooltip, stats, legend, controls
+function getTooltip({layer, object, index}) {
+  if (!layer) return null;
+  const style = {background: "var(--panel)", color: "var(--ink)", border: "1px solid var(--line)",
+                 borderRadius: "6px", fontSize: "12px", padding: "6px 8px"};
+  if (layer.id === "hexagon" && object) {
+    return {html: `<b>${Math.round(object.elevationValue).toLocaleString("en-US")}</b> stops`, style};
+  }
+  if (layer.id === "points" && index >= 0) {
+    const i = D.sample[index];
+    const {col, meta} = D;
+    const cat = (name) => meta.categories[name][col[name][i]] ?? "unknown";
+    const date = new Date((meta.day0 + col.day[i]) * 86400000).toISOString().slice(0, 10);
+    const hour = col.hour[i] === 255 ? "?" : String(col.hour[i]).padStart(2, "0") + ":00";
+    const age = col.age[i] || "?";
+    return {
+      html: `<b>${date}</b> at ${hour}<br>${cat("subject_race")} ${cat("subject_sex")}, ${age}` +
+            `<br>${cat("violation")}<br>Outcome: <b>${cat("outcome")}</b> · search: ${cat("search_type")}`,
+      style,
+    };
+  }
+  return null;
+}
+
+function renderChrome() {
+  const {total, m} = D;
+  $("stats").textContent = state.layer === "points" && total > m
+    ? `${total.toLocaleString("en-US")} stops on the map · ${m.toLocaleString("en-US")} sampled`
+    : `${total.toLocaleString("en-US")} stops on the map`;
+
+  const h = state.hour;
+  $("hourLabel").innerHTML = h == null
+    ? "All hours <span class='lbl'>(sidebar range)</span>"
+    : `<b>${String(h).padStart(2, "0")}:00–${String(h).padStart(2, "0")}:59</b>`;
+  $("hour").value = h == null ? 0 : h;
+  $("play").textContent = state.playing ? "❚❚" : "▶";
+  $("clearHour").disabled = h == null;
+
+  document.querySelectorAll("#colorSeg button").forEach((b) => { b.disabled = state.layer !== "points"; });
+
+  const legend = $("legend");
+  if (state.layer === "points") {
+    const entries = state.colorBy === "race"
+      ? [...Object.entries(RACE_RGB), ["other / unknown / asian-PI", GRAY]]
+      : Object.entries(OUTCOME_RGB);
+    legend.innerHTML = entries.map(([label, c]) =>
+      `<div><span class="dot" style="background:rgb(${c})"></span>${label}</div>`).join("");
+  } else {
+    const stops = HEAT.map((c) => `rgb(${c})`).join(",");
+    legend.innerHTML = `<div class="ramp" style="background:linear-gradient(90deg,${stops})"></div>` +
+                       `<div class="ramp-labels"><span>fewer stops</span><span>more</span></div>`;
+  }
+}
+
+function segmented(id, key, onChange) {
+  $(id).addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b || b.disabled) return;
+    state[key] = b.dataset.v;
+    $(id).querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b));
+    if (onChange) onChange();
+    update();
+  });
+}
+segmented("layerSeg", "layer", () => {
+  const pitch = state.layer === "hexagon" ? 45 : 0;
+  if (viewState.pitch !== pitch) {
+    viewState = {...viewState, pitch, transitionDuration: 500};
+    deckgl.setProps({initialViewState: viewState});
+  }
+});
+segmented("colorSeg", "colorBy");
+
+function stopPlaying() {
+  clearInterval(state.playing);
+  state.playing = null;
+}
+$("play").addEventListener("click", () => {
+  if (!D) return;
+  if (state.playing) { stopPlaying(); renderChrome(); return; }
+  if (state.hour == null || state.hour === 23) state.hour = 0;
+  update();
+  state.playing = setInterval(() => {
+    if (state.hour >= 23) { stopPlaying(); state.hour = null; } else { state.hour += 1; }
+    update();
+  }, PLAY_MS);
+  renderChrome();
+});
+$("hour").addEventListener("input", (e) => {
+  stopPlaying();
+  state.hour = +e.target.value;
+  update();
+});
+$("clearHour").addEventListener("click", () => {
+  stopPlaying();
+  state.hour = null;
+  update();
+});
+</script>
+</body>
+</html>
