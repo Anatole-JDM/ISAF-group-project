@@ -1,8 +1,10 @@
 # Nashville traffic stops — features and data augmentation
 
 **What this document covers:** every feature built so far, where its data comes from, exactly how it was computed, how it was validated, and what it cannot be trusted for. Features planned but not yet built are listed at the end.
-**Status:** 2026-09-24, branch `cleaned-data`.
-**Companion documents:** `nashville_cleaning_protocol.md` (how the base table was cleaned) · `feature_engineering_plan.md` (design rationale and decisions).
+**Status:** 2026-09-26, branch `main`.
+**Companion documents:** `nashville_cleaning_protocol.md` (how the base table was cleaned) · `feature_engineering_plan.md` (design rationale) · `FINDINGS.md` (model results; section 5 and 11 test these features).
+
+> **Read section 3.9 before using any `nbh*` column.** As built, the 41 neighbourhood columns jointly identify the year of the stop. With a split by time, that makes them a proxy for the period. The models use them only through a frozen-release repair, and even then they add nothing to predicting contraband.
 
 ---
 
@@ -10,30 +12,32 @@
 
 | Block | Status | Output |
 |---|---|---|
-| Cleaned base table | ✅ built | `opp_data/processed/nashville_clean.parquet` — 3,088,286 stops |
-| Step 1 — Neighbourhood context (Census ACS) | ✅ built, validated | `opp_data/features/nbh_features.parquet` — 44 feature/flag columns |
-| Step 3 — Registration plate | ✅ built | `opp_data/features/plate_features.parquet` — 6 features |
+| Cleaned base table | ✅ built | `opp_data/processed/nashville_clean.parquet` — 3,088,286 stops (local) |
+| Step 1 — Neighbourhood context (Census ACS) | ✅ built, validated — **use only frozen at one release (3.9)** | `opp_data/features/nbh_features.parquet` (local), `nbh_location_vintage.parquet` (local, needed for the frozen version) |
+| Step 3 — Registration plate | ✅ built — not used by the models (recodes a column they already have) | `opp_data/features/plate_features.parquet` (local) |
+| Step 6 — Time | ✅ built — **7 columns used by the models** (section 5) | `opp_data/features/time_features.parquet` (local) |
+| Modelling table (all of the above, consent sample) | ✅ built | `data/nashville_consent_searches.parquet` + `data/nashville_columns.csv` (in git) |
 | Step 2 — Who is stopped here vs. who lives here | ⏳ designed, not built | — |
 | Step 5 — Policing activity nearby | ⏳ designed, not built | — |
-| Step 6 — Time (hour, weekday, darkness, holidays) | ⏳ designed, not built | — |
 | Step 4 — Road type | ⏸ parked by the team | — |
-| Single modelling table (all features joined) | ⏳ not built | — |
 
-Every feature table has exactly one row per `stop_id` (3,088,286 rows), so they join one-to-one onto the cleaned table.
+Every feature table has exactly one row per `stop_id` (3,088,286 rows), so they join one-to-one onto the cleaned table. The models in `src/` join on `raw_row_number`, which both pipelines keep: all 58,865 consent rows match.
 
 ### The modelling sample
 
 The target is defined on **consent-only searches**: `search_conducted` and `raw_search_consent` are TRUE, and none of the other four raw search flags (arrest, warrant, inventory, plain view) is set. This excludes searches that also had a non-discretionary justification.
 
-| | Consent-only searches | Contraband found |
-|---|---|---|
-| All | **58,939** | **16.9%** |
-| Black | 32,353 | 15.7% |
-| White | 21,252 | 20.8% |
-| Hispanic | 4,651 | 7.9% |
-| Asian / Pacific Islander | 282 | 18.8% |
+**Period: 2010-01-01 to 2018-12-31** (team decision, aligned with `src/config.py`). `data/nashville_consent_searches.parquet` still contains the 74 searches from January–February 2019 (58,939 rows): filter `date < 2019-01-01`.
 
-`contraband_found` has no missing values in this sample. **95.2%** of these searches (56,083) have neighbourhood features at 800 m.
+| 2010–2018 | Consent-only searches | Contraband found |
+|---|---|---|
+| All | **58,865** | **16.9%** |
+| Black | 32,311 | 15.7% |
+| White | 21,227 | 20.8% |
+| Hispanic | 4,645 | 7.9% |
+| Asian / Pacific Islander | 282 | — (too few to report) |
+
+`contraband_found` has no missing values in this sample. The two pipelines (`scripts_claude/` and `src/`) were built independently and produce the same 58,865 rows, group by group.
 
 ---
 
@@ -171,15 +175,55 @@ Circles with **no residents at all** leave every feature missing: 14,304 stops a
 
 For most features, differences between places dominate: changes over time are 2–8% of the variation. Smoothing across releases would add lag and blur real neighbourhood change, so it was not applied.
 
+**This check was insufficient.** It measures each feature's change over time *separately*. It does not measure what a model can do with all 41 columns *together*, which is to recognise the year. See 3.9.
+
 ### 3.8 Limitations — state these in the deck
 
 1. **Uniform composition within a tract.** The allocation assumes each tract's ACS make-up applies equally to all its blocks.
 2. **Residents located as in 2010.** Davidson grew ~12% between 2010 and 2018, much of it in new developments (the Gulch, downtown). Blocks that were nearly empty in 2010 are under-weighted, increasingly so for later stops.
 3. **Sampling noise in small counts.** Tracts have a median of only 143 unemployed people and 74 car-less households; the counts' coefficients of variation are **0.39** and **0.46** (vs 0.12–0.18 for renters, Black residents, degree holders). `unemployment_rel` removes the business cycle (29.5% → 21.2% of variation over time) but the remainder is mostly noise. These two are the least reliable neighbourhood features.
-4. **Neighbourhood ≠ driver.** The circle describes where the stop happened, not who the driver is. This is weakest on interstates and parkways, where through-traffic dominates (decision D4, open).
-5. **Neighbourhood racial make-up is a proxy for the driver's race.** Whether it enters the model or only the fairness analysis is decision D3 (open).
+4. **Neighbourhood ≠ driver.** The circle describes where the stop happened, not who the driver is. This is weakest on interstates and parkways, where through-traffic dominates (decision D4, moot while the features are not model inputs).
+5. **Neighbourhood racial make-up is a proxy for the driver's race.** Measured: the neighbourhood columns predict the driver's race at AUC 0.69–0.73 (section 3.9). They are therefore used in the fairness analysis, not as model inputs (D3).
 6. **Coverage.** 6.7% of stops have no usable coordinates and get no neighbourhood features. A ZIP-code fallback was planned but not built.
 7. **Medians** (`_approx`) are approximations; use `income_pctile` for income.
+8. **As built, the columns identify the year** (section 3.9). Use them only frozen at a single release.
+
+### 3.9 The columns identify the year: the flaw, the fix, and what it shows
+
+*Found in review by leottawa (`FINDINGS.md`, section 5; commits `222f4e8` → `e14dba2` on `tawa`).*
+
+**The flaw.** Rule B gives each stop the Census release of the year before it, so each value describes the **place in a given year**, not the place. Two columns make this explicit: `acs_vintage` is exactly `year − 1`, and `acs_window_overlaps_stop` is TRUE only in 2010. But the problem is not limited to them. Taken together, the 41 `nbh*` columns form a fingerprint of the release:
+
+| Predict which side of the 2016 split a stop is on, from | AUC |
+|---|---|
+| the 41 `nbh*` columns, as built | **0.998** |
+| the base features already in the model, for scale | 0.712 |
+
+With a split by time (train before 2016, test from 2016), every test stop carries release values never seen in training, and the hit rate rises across the split (16.1% → 21.4%). A model can therefore learn year-related patterns that do not transfer. No single column causes it (each one alone scores 0.55–0.65); it is their combination. The per-feature check in 3.7 could not see this.
+
+**Why the design missed it.** Rule B answered the question "does the feature use information from after the stop?" (it does not, and the columns contain no outcome data). It did not ask "can the feature reveal *when* the stop happened?", which is what matters once the evaluation splits by time.
+
+**The fix.** Take one release for every stop, regardless of its year, from the location × release table (`opp_data/features/nbh_location_vintage.parquet`, 568,044 rows = ~63,000 locations × 9 releases). Each value then describes the place only. `src/config.py` pins the **2013 release** (`NBH_PIN_VINTAGE`; 2016 gives the same result).
+
+| Predict post-2016 from | AUC |
+|---|---|
+| `nbh*` as built | 0.998 |
+| **`nbh*` frozen at one release** | **0.59–0.62** |
+| base features already in the model | 0.712 |
+
+Frozen, the columns carry *less* information about the period than the features already in the model. The remaining ~0.6 is genuine change in where stops happened over time, not a release artefact.
+
+**What it shows.**
+
+| Model (XGBoost, AUC) | Without neighbourhood | + neighbourhood as built | + neighbourhood frozen |
+|---|---|---|---|
+| Base features | **0.5663** | 0.5498 (−0.0165) | 0.5636 (−0.0027) |
+
+1. **The neighbourhood does not predict contraband.** Repaired, the features still add nothing. The small gain in some combinations (+0.002) is a tenth of the variation obtained just by changing the training sample (0.024).
+2. **The neighbourhood predicts race.** From the neighbourhood columns alone, the driver's race (Black vs white) is predicted with AUC **0.69** (time split) to **0.73** (random split). This is better than any model predicts contraband. It is direct evidence that removing `subject_race` does not make a model race-blind.
+3. **Decision D3 is therefore settled by the evidence:** the neighbourhood features are **not model inputs**. They are the evidence for the proxy analysis in the fairness section (course step 2: identify the variables that carry the unfairness).
+
+**Practical consequence.** The frozen version needs `nbh_location_vintage.parquet` (88.7 MB), which is local only (`opp_data/` is not in git). Whoever reruns the frozen experiments needs that file shared outside GitHub, or has to rerun `build_nbh_features.py`.
 
 ---
 
@@ -225,7 +269,33 @@ The group's headline 21.6% exists only because 85% of missing-plate searches hap
 
 ### 4.4 Not built
 
-`plate_state_cannabis_legal_at_stop` (recreational cannabis legal in the plate's state on the stop date) was designed as a hypothesis only. It is ethically loaded, would rest on ~2,000 out-of-state consent searches, and needs sourced legalisation dates. It needs a team decision.
+`plate_state_cannabis_legal_at_stop` (recreational cannabis legal in the plate's state on the stop date) was designed as a hypothesis only. It is ethically loaded, would rest on ~2,000 out-of-state consent searches, and needs sourced legalisation dates. Not built; worth one sentence in the deck as a hypothesis deliberately not tested.
+
+### 4.5 Use in the models
+
+**Not used.** The models in `src/` already include `vehicle_registration_state`, and these columns only recode it. `plate_missing` is on the never-join list (`config.NEVER_JOIN`) because of the 2017 recording change.
+
+---
+
+## 4b. Step 6 — Time
+
+Built by `build_time_features.py` from `date` and `time`. Times are local Nashville clock times, converted to UTC with daylight saving time before computing the sun's position.
+
+| Feature | Definition |
+|---|---|
+| `hour`, `hour_missing`, `minute_of_day` | clock time; hour = −1 and a flag for the 5,465 stops without a time |
+| `hour_sin`, `hour_cos` | cyclical time of day: makes 23:59 and 00:01 neighbours |
+| `day_of_week`, `is_weekend`, `month`, `month_sin`, `month_cos` | calendar |
+| `is_federal_holiday`, `is_holiday_window` | observed US federal holidays, and ±1 day |
+| `is_dst` | daylight saving time in effect (65.3% of stops) |
+| `sun_elevation_deg`, `light_period`, `is_dark` | sun's height; day / twilight / dark (dark = sun more than 6° below the horizon) |
+| `minutes_after_civil_dusk`, `in_intertwilight` | for the veil-of-darkness test: the window 17:00–20:38, where the same clock time is light on some days and dark on others (535,077 stops) |
+| `time_heaped` | time recorded at :00 or :30 (officer rounding; 4.66% vs 3.33% expected) |
+| `dst_ambiguous`, `dst_nonexistent` | the repeated / skipped hour of a DST switch (500 / 1 stops) |
+
+**Checks built into the script:** the sun's maximum height on the solstices and equinox matches its exact astronomical value (77.27° vs 77.28°, 30.40° vs 30.40°); no stop between 11:00 and 14:00 comes out dark, every stop between 01:00 and 04:00 does; sunset on 21 June 2015 computes to 20:07 CDT.
+
+**Use in the models:** 7 columns (`config.TIME_EXTRA`): `hour_sin`, `hour_cos`, `month_sin`, `month_cos`, `time_heaped`, `is_federal_holiday`, `is_holiday_window`. They are the one feature block that improves the models: XGBoost AUC 0.5663 → **0.5733** (+0.007), PR-AUC 0.2552 → 0.2702 (`FINDINGS.md`, section 11). That is about 11% of a very small signal and does not change the recommendation. The other time columns duplicate encodings `src/` already builds and are on the never-join list.
 
 ---
 
@@ -240,7 +310,7 @@ Not engineered, but usable as they are (see the cleaning protocol for their qual
 | `subject_race` | protected attribute — for evaluation |
 | `reason_for_stop` | 9 categories; mix drifts over time (registration 1.3% → 11.4%) |
 | `precinct`, `zone`, `reporting_area` | police geography; missingness changes in 2017 (~19% → ~0.1%) |
-| `date`, `time` | raw; the Step 6 features will be derived from them |
+| `date`, `time` | raw; the Step 6 features are derived from them (section 4b) |
 
 **Excluded from any model (recorded after the search decision):** `search_basis`, all `raw_search_*` flags, `search_person`, `search_vehicle`, `frisk_performed`, `contraband_drugs`, `contraband_weapons`, `arrest_made`, `citation_issued`, `warning_issued`, `outcome`, `notes`. `officer_id_hash` is kept out of the features and used for grouped validation and the officer-level analysis.
 
@@ -250,6 +320,9 @@ Not engineered, but usable as they are (see the cleaning protocol for their qual
 
 | Feature | Why it tracks time | Handling |
 |---|---|---|
+| **all 41 `nbh*` columns, jointly** | each stop gets the release of its year, so together they identify the year (AUC 0.998) | **freeze at one release** (section 3.9) |
+| `acs_vintage` | exactly `year − 1` | never a feature |
+| `acs_window_overlaps_stop` | TRUE only in 2010 | never a feature |
 | `unemployment_rate` | business cycle | use `unemployment_rel` |
 | `plate_missing` | recording change in 2017 | data-quality flag only |
 | `plate_out_of_state` | share triples over the period | keep, monitor in stability analysis |
@@ -268,19 +341,22 @@ Not engineered, but usable as they are (see the cleaning protocol for their qual
 | D5 | no smoothing across releases | team, on the variance evidence |
 | — | `unemployment_rel` added | team |
 | — | robustness radius 1,200 m (400 m left 18.7% of stops with < 100 residents) | team |
-| D3 | neighbourhood racial make-up: model input, or fairness analysis only | **open** |
-| D4 | neighbourhood features on interstate/parkway stops | **open** |
-| — | cannabis feature | **open** |
+| — | period 2010–2018 (the two months of 2019 would make a meaningless yearly fold) | team, aligned with `src/` |
+| D6 | neighbourhood features frozen at the **2013 release** for any model use | leottawa, on the year-identification evidence (3.9) |
+| D3 | neighbourhood racial make-up: **not a model input**; used as evidence in the proxy analysis | settled by the evidence (3.9): adds nothing to contraband, predicts race at 0.69–0.73 |
+| — | time features: the 7 columns of `config.TIME_EXTRA` enter the models | leottawa (+0.007 AUC) |
+| — | plate features: not used (recode `vehicle_registration_state`) | leottawa |
+| D4 | neighbourhood features on interstate/parkway stops | moot while the features are not model inputs |
+| — | cannabis feature | not built |
 
 ---
 
-## 8. Still to build
+## 8. Still to build (optional — none is needed for the deliverables)
 
 | Step | Features | Depends on |
 |---|---|---|
+| — | rebuild the neighbourhood features frozen at one release inside `build_nbh_features.py`, so the modelling table ships the safe version | a `--pin-vintage` option |
 | 2 | recent stop composition by race within 800 m (previous 365 days, stop counts only); disparity ratio vs residents; driver–neighbourhood congruence (fairness analysis only) | Step 1 circles |
-| 6 | hour, missing-hour flag, weekday, month, weekend, holidays, darkness at the time and place of the stop | cleaned table only |
 | 5 | stops within 800 m over the previous 30 / 365 days, distinct officers, share of night stops, trend | cleaned table only |
 | 4 | road type, intersection vs address (parked) | cleaned table only |
 | — | ZIP-code fallback for the 6.7% without coordinates | ZIP-level ACS fetch |
-| — | one modelling table joining the cleaned table and all feature tables on `stop_id` | all of the above |
