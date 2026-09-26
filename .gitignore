@@ -54,3 +54,6 @@ outputs/
 # Modelling table built by scripts_claude/build_master.py - committed on purpose
 !data/nashville_consent_searches.parquet
 !data/nashville_columns.csv
+
+# Local pipeline outputs (scripts_claude) - rebuildable, too big for GitHub
+opp_data/
