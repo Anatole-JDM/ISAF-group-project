@@ -30,6 +30,22 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 # same subsample, so the three-way contrast stays fair at any size. State the
 # number you used in the report and move on.
 TABPFN_MAX_TRAIN = int(os.environ.get("TABPFN_MAX_TRAIN", "5000"))
+
+# Where TabPFN runs.
+#   local  (default) -- weights on this machine. On CPU this is SLOW, and the
+#           cost is driven by the TEST set, not the training set: measured 209s
+#           to predict 9,113 rows from a 500-row context, and roughly 4x that
+#           from a 2,000-row context. A full run is ~1 hour on CPU.
+#   client -- Prior Labs' hosted inference (pip install tabpfn-client). Runs on
+#           their GPUs, uses the same TABPFN_TOKEN, and turns that hour into
+#           under a minute. NOTE: this uploads the feature matrix to a third
+#           party. Fine here -- the Stanford Open Policing data is already
+#           public and de-identified under an open licence -- but it is a
+#           deliberate choice, not an incidental one.
+#
+#     pip install --upgrade tabpfn-client
+#     export TABPFN_BACKEND=client TABPFN_TOKEN=...
+TABPFN_BACKEND = os.environ.get("TABPFN_BACKEND", "local").strip().lower() or "local"
 SEED = 42
 
 
@@ -162,11 +178,21 @@ class TabPFNArm:
     """
 
     def __init__(self, max_train: int = TABPFN_MAX_TRAIN, seed: int = SEED,
-                 version: str | None = TABPFN_VERSION):
+                 version: str | None = TABPFN_VERSION,
+                 backend: str = TABPFN_BACKEND):
         self.max_train, self.seed, self.version = max_train, seed, version
+        self.backend = backend
         self.prep = self.clf = None
 
     def _make(self):
+        if self.backend == "client":
+            # Hosted inference. `version` does not apply -- the server picks the
+            # checkpoint -- so it is recorded as "client" in the metrics JSON
+            # rather than silently reported as whatever TABPFN_VERSION said.
+            from tabpfn_client import TabPFNClassifier as ClientClassifier
+
+            return ClientClassifier()
+
         from tabpfn import TabPFNClassifier
 
         if not self.version:

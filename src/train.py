@@ -62,8 +62,13 @@ def fit_stratum(df: pd.DataFrame, search_type: str | None = "consent",
                 mode: str = "matched", matched_n: int = MATCHED_N,
                 split_year: int = SPLIT_YEAR, seed: int = SEED):
     """Fit every available arm on one stratum. Returns (scores_df, metrics_list)."""
+    # Mode is a set of flags, not an enum: "blind" drops race, "nbh" joins the
+    # neighbourhood features, "matched" subsamples. They compose.
     X, y, meta = D.build_xy(df, search_type=search_type,
-                            include_protected=not mode.endswith("blind"))
+                            include_protected="blind" not in mode,
+                            include_nbh=("nbh" in mode and "frozen" not in mode),
+                            include_nbh_frozen="frozen" in mode,
+                            include_time_extra="time" in mode)
     X = X.reset_index(drop=True)
     y = pd.Series(np.asarray(y)).reset_index(drop=True)
     meta = meta.reset_index(drop=True)
@@ -141,8 +146,21 @@ def officer_signal(df: pd.DataFrame, search_type: str = "consent",
     return out
 
 
-def run(search_types=("consent", "probable cause", None),
-        modes=("matched", "full", "full_blind"), cache: bool = True) -> dict:
+# CONSENT ONLY -- the group's decision, and the right one: consent searches are
+# the purely discretionary ones, so they are where officer judgement (and
+# therefore bias) actually operates. The other strata are mechanical.
+#
+# This does NOT retire the pooling comparison. fairness.pooled_vs_stratified()
+# reads the full searches frame and is what JUSTIFIES this scope: pooled shows
+# no black-white disparity (+0.82pp) while consent-only shows -5.16pp. Keep that
+# table in the deck as the reason the scope is defensible; it costs seconds and
+# needs no model.
+#
+# Practical effect: drops the `pooled` stratum, whose 29,185 test rows were ~45
+# minutes of TabPFN prediction on CPU.
+def run(search_types=("consent",),
+        modes=("matched", "full", "full_time", "full_nbh_frozen", "full_time_nbh_frozen",
+               "full_blind", "full_blind_nbh_frozen", "full_blind_nbh", "full_nbh"), cache: bool = True) -> dict:
     df = D.load_searches()
     C.OUTPUTS.mkdir(parents=True, exist_ok=True)
     results = {}
@@ -161,7 +179,12 @@ def run(search_types=("consent", "probable cause", None),
                 (C.OUTPUTS / f"metrics__{key}.json").write_text(
                     json.dumps({"stratum": st or "pooled", "mode": mode,
                                 "split_year": SPLIT_YEAR,
+                                "matched_n": MATCHED_N,
                                 "gbm_backend": M.gbm_backend(),
+                                "tabpfn_backend": M.TABPFN_BACKEND,
+                                "tabpfn_version": ("client" if M.TABPFN_BACKEND == "client"
+                                                   else M.TABPFN_VERSION),
+                                "failed_arms": failed,
                                 "arms": [asdict(m) for m in metrics]}, indent=2)
                 )
             results[key] = (scores, metrics)
