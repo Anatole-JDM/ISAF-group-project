@@ -213,7 +213,7 @@ scripts/update_readme_results.py rewrites the Results section above from outputs
 
 ### The app
 
-Nine pages, all in the top bar, in the order of the argument:
+Ten pages, all in the top bar, in the order of the argument:
 
 | Page | What it shows |
 |---|---|
@@ -222,8 +222,9 @@ Nine pages, all in the top bar, in the order of the argument:
 | White box models | the scorecard: description, metrics in every run, scores and calibration by race |
 | Black box models | the gradient-boosted trees, same layout |
 | Foundation models | TabPFN, same layout (fitted only in `matched` mode) |
-| Performance | accuracy and ranking agreement, value under a search budget, one stop |
-| Fairness testing | independence / separation / sufficiency and both Y codings, one tab per model, shared K |
+| Performance | accuracy and ranking agreement, value under a search budget, one stop; XPER; DeLong tests on every pair of models |
+| Stability | resampling the training rows (top-200 overlap), learning curve, rank agreement and feature-importance distance between the models, TabPFN settings and the configuration we report |
+| Fairness testing | independence / separation / sufficiency and both Y codings, one tab per model, shared K; χ² and TOST; FPDP: which features carry the disparity (run on the race-blind officer-behaviour model) |
 | Officer features (comparison) | what officer-history features (`scripts_claude/`) would add (AUC, PLTR, XGBoost SHAP / stability / surrogate, fairness, economics, officer outcome test), shown for comparison only: they are not usable when deciding whether to search a given driver. Reads the committed `data/*.json` and `reports/xgboost_officer/` |
 | Findings & conclusions | the measured officer and race signal, the recommendation |
 

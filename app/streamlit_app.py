@@ -13,6 +13,7 @@ Pages, all in the top bar, in the order of the argument (one file each in views/
     Black box models             - gradient-boosted trees (XGBoost)
     Foundation models            - tabular foundation models: TabPFN
     Performance                  - accuracy, ranking agreement, value under a search budget, one stop
+    Stability                    - resampling, learning curve, distance among models, settings
     Fairness testing             - the course taxonomy, one tab per model
     Officer features (comparison) - what officer-history features would add; not usable in deployment
     Findings & conclusions       - measured signal, recommendation
@@ -29,6 +30,7 @@ page = st.navigation(
         st.Page("views/black_box.py", title="Black box models"),
         st.Page("views/foundation.py", title="Foundation models"),
         st.Page("views/performance.py", title="Performance"),
+        st.Page("views/stability.py", title="Stability"),
         st.Page("views/fairness.py", title="Fairness testing"),
         st.Page("views/officers.py", title="Officer features (comparison)"),
         st.Page("views/findings.py", title="Findings & conclusions"),
