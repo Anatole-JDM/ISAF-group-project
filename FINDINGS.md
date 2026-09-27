@@ -946,6 +946,81 @@ A pooled AUC flatters any model whose features vary mainly between decision-make
 
 ---
 
+## 22. FPDP and PDP — the instructor's mitigation method, run (2026-09-27)
+
+### 22.1 FPDP: no single feature repairs parity
+
+The deck's Fairness Partial Dependence Plot: freeze feature X_A at one value for
+every row, rescore with the already-fitted model, recompute the fairness statistic.
+A "candidate variable" is one whose freezing lifts the p-value above 0.05.
+
+Run on `officer_TRULY_blind` (χ² = 65, p = 5.8e-16 unfrozen), 32 features, each
+frozen at its median / 10th / 90th percentile (mode for categoricals), best result kept:
+
+| frozen feature | χ² | p | repairs parity? | χ² drop |
+|---|---|---|---|---|
+| `off_consent_hit_rate_365d_shrunk` | 23.4 | 1.3e-06 | **no** | 42.1 |
+| `off_experience_days` | 31.5 | 2.0e-08 | no | 34.0 |
+| `hour_sin` | 33.6 | 6.7e-09 | no | 31.9 |
+| `zone` | 35.8 | 2.2e-09 | no | 29.7 |
+| `off_stops_today_before` | 40.3 | 2.2e-10 | no | 25.2 |
+
+**0 of 32 features repair parity.** The best single intervention takes χ² from 65 to
+23, still p = 1.3e-06.
+
+This is a **stronger** result than the deck's own German Credit example, where
+freezing `Telephone` restored parity at near-zero accuracy cost. Here:
+
+> The unfairness is not localisable in any one feature. It is distributed across the
+> whole feature set, so no single-variable mitigation can repair it — which is a
+> direct argument that the disparity is structural rather than incidental.
+
+### 22.2 PDP: the model is not flat
+
+Partial dependence spread (max − min predicted probability):
+
+| feature | spread |
+|---|---|
+| `off_consent_hit_rate_365d_shrunk` | **0.150** |
+| `off_minutes_since_first_stop_today` | 0.093 |
+| `subject_age` | 0.068 |
+| `off_hit_rate_365d_shrunk` | 0.052 |
+| `off_stops_today_before` | 0.051 |
+
+The officer's own recent hit rate moves the predicted probability by 15 percentage
+points across its range — by far the dominant effect, consistent with XPER and with
+finding 21.2.
+
+Caveat the deck itself raises (PDP's independence assumption): `precinct` and `zone`
+are strongly dependent in a segregated city, so their PD curves average over
+combinations that do not occur.
+
+## 23. Acknowledged limitations — what we did NOT do
+
+Stated explicitly rather than left to be discovered:
+
+1. **The threshold test was not run.** Selective labels are diagnosed throughout but
+   never corrected. The remedy exists and is *in this repository* —
+   `opp/lib/threshold_test.R` and `opp/stan/threshold_test_hierarchical_identified.stan`,
+   by the authors of the data (Simoiu, Corbett-Davies & Goel). It requires R + Stan
+   and was out of scope for the time available. Every hit-rate comparison here is
+   therefore subject to inframarginality: equal average hit rates are consistent with
+   different search thresholds when the underlying risk distributions differ.
+2. **No multiple-testing correction.** Dozens of tests are reported without
+   Bonferroni or FDR adjustment. The headline effects are far too large for this to
+   matter (χ² = 863, p = 1e-214), but the smaller comparisons should be read with it
+   in mind.
+3. **Base-rate drift is unaddressed.** 16.1% train to 21.4% test. The models are
+   calibrated on one base rate and evaluated on another; Brier and calibration-by-race
+   both inherit this.
+4. **The 2016 split is motivated, not tested.** It is chosen for the Driving While
+   Black report and the documented MNPD practice change. No sensitivity analysis over
+   alternative split years was run.
+5. **Global surrogate not fitted.** Taught in the deck (sl. 84-86) with a fidelity
+   number; not attempted here.
+
+---
+
 ## 9. Recommendation to the client: do not deploy
 
 Not because the model is unfair *or* because it is inaccurate, but because every
