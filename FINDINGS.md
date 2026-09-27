@@ -661,6 +661,64 @@ up (+0.311), TabPFN says it pushed it down (−0.008).
 
 ---
 
+## 17. The officer ablation at full scale — a clean 2x2 (2026-09-27)
+
+Scott asked for TabPFN with the officer features. Run as an **ablation**, both arms,
+all 49,752 training rows, full 9,113-row test set:
+
+| features | arm | encoded cols | AUC | Brier |
+|---|---|---|---|---|
+| without officer | gbm | 117 | 0.5663 | 0.1695 |
+| without officer | tabpfn | 117 | 0.5730 | 0.1683 |
+| **with officer** | gbm | 539 | 0.6005 | 0.1676 |
+| **with officer** | **tabpfn** | 539 | **0.6018** | **0.1670** |
+
+| arm | Δ | share of above-chance signal |
+|---|---|---|
+| tabpfn | +0.0288 | +39% |
+| gbm | +0.0342 | +52% |
+
+1,477 officers; 421 have ≥25 training searches and survive `min_frequency=25`, the
+rest collapse to "infrequent". TabPFN ingested 539 columns without difficulty (67s).
+
+**Three observations.**
+
+1. **With officer identity the model families converge.** Without it they sit 0.007
+   apart; with it, 0.001. The information is in the feature, not the algorithm.
+2. **TabPFN gains proportionally less** (+39% vs +52%) because it already extracted
+   more from the base features — so the officer signal is partly redundant with what
+   a stronger model finds anyway.
+3. **The ceiling is still 0.60.** That is the highest number anywhere in this
+   project: foundation model, every training row, plus officer identity. Ten points
+   above chance.
+
+### Why it stays out of the deployed model
+
+This is an ablation, not a recommendation, and the reason is not fairness squeamishness:
+
+**At the moment of decision the officer is CONSTANT across their own choice set.**
+Officer Smith is choosing among the drivers *he* stopped. His identity is identical
+for every option in front of him, so it cannot discriminate between them. A feature
+that does not vary across the decision-maker's options has **zero decision value**,
+whatever it does to test-set AUC.
+
+Supporting reasons: it models the officer's hit rate rather than the driver's risk;
+it launders past selection behaviour into future justification; and deploying it
+would route searches toward high-hit-rate officers whose rates reflect whom they
+chose to search in the first place.
+
+The general principle, worth stating in the presentation:
+
+> **A feature can improve AUC and still have no decision value, if it does not vary
+> across the options the decision-maker actually faces. Test-set performance and
+> deployment usefulness are different things.**
+
+It would become legitimate under a *different* decision — a supervisor choosing which
+officers' consent practices to audit. Different question, different model, and
+arguably the more useful one given finding 4.
+
+---
+
 ## 9. Recommendation to the client: do not deploy
 
 Not because the model is unfair *or* because it is inaccurate, but because every
