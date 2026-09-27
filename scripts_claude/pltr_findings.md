@@ -81,8 +81,9 @@ comparison. Officers with >= 30 white and >= 30 Black consent searches (163 offi
 - The outcome gap is **systemic**: **77%** of officers find less on Black drivers than on white drivers
   (median gap -4.4 points); **28** have a significant negative gap vs ~4 expected by chance, 2 a significant
   positive one. Even the least skewed group shows a 6-point gap.
-- **Concentration:** the most skewed 20% of officers do **24.5%** of consent searches of Black drivers but
-  13.9% of those of white drivers.
+- **Concentration:** the most skewed 20% of these officers (33) do **24.5%** of the Black-driver consent
+  searches made by the 163 officers analysed (**12.8% of all** 32,311 in 2010-2018), but 13.9% of their
+  white-driver consent searches.
 
 ### Hispanic vs white drivers (43 officers - wide intervals)
 | Officers, by search skew (Hispanic / white) | Skew range | Hit rate, all | on white | on Hispanic |
@@ -91,8 +92,10 @@ comparison. Officers with >= 30 white and >= 30 Black consent searches (163 offi
 | Most skewed 20% | 4.5-34x | **5.0%** | 9.2% | **1.7%** |
 
 - Median skew **2.3x**; skew vs overall success **rho = -0.65 [-0.82, -0.42]**.
-- The 9 most skewed officers carry out **half (49.7%)** of all Hispanic consent searches in the sample, and
-  **98%** of their consent searches of Hispanic drivers find nothing.
+- The 9 most skewed officers (0.6% of the 1,477 who made consent searches) carry out **a quarter (24.7%) of
+  all** consent searches of Hispanic drivers in 2010-2018 (1,146 of 4,645; half of those made by the 43
+  officers analysed), and **98%** of their consent searches of Hispanic drivers find nothing.
+  *(Corrected 27 Sep: an earlier version said "half of all"; 49.7% is the share among the 43 officers.)*
 - 91% of officers find less on Hispanic drivers; 8 significant vs ~1 expected by chance, 0 positive.
 
 ### How to say it
@@ -218,7 +221,7 @@ deviation.
 | 2 | officer's past hit rate on this driver's race <= 17.9% AND overall past hit rate <= 12.9% | 0.64 | 15% | 14% |
 | 3 | driver Hispanic | 0.71 | 8% | 8% |
 | 4 | driver white | 1.21 | 36% | 8% |
-| 5 | experienced officer (> 569 days) AND first stop of the day (<= 5.5 min since first stop) | 1.24 | 21% | 8% |
+| 5 | experienced officer (> 569 days) AND first stop of the calendar day (<= 5.5 min since first stop; a third after midnight) | 1.24 | 21% | 8% |
 | 6 | officer's previous search less than ~1h50 ago | 0.79 | 10% | 6% |
 | 7 | male driver AND officer with <= 9 consent searches in the past year | 0.86 | 19% | 6% |
 | 8 | early morning (~4:30-7:30) AND officer not among the busiest | 1.46 | 2.5% | 5% |

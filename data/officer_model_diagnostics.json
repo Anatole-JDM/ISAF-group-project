@@ -3657,6 +3657,220 @@
    }
   }
  },
+ "F_within_officer_auc": {
+  "full_time/scorecard": {
+   "pooled_auc": 0.5552,
+   "within_officer_auc": 0.5385,
+   "ci95_resampling_officers": [
+    0.5178,
+    0.5593
+   ],
+   "officers": 209,
+   "searches": 7005,
+   "share_of_officers_below_0.5": 0.3732,
+   "share_of_score_variance_between_officers": 0.242
+  },
+  "full_time/xgboost": {
+   "pooled_auc": 0.5694,
+   "within_officer_auc": 0.5435,
+   "ci95_resampling_officers": [
+    0.524,
+    0.5606
+   ],
+   "officers": 209,
+   "searches": 7005,
+   "share_of_officers_below_0.5": 0.3158,
+   "share_of_score_variance_between_officers": 0.2384
+  },
+  "full_time_officer/scorecard": {
+   "pooled_auc": 0.6271,
+   "within_officer_auc": 0.5109,
+   "ci95_resampling_officers": [
+    0.4906,
+    0.5286
+   ],
+   "officers": 209,
+   "searches": 7005,
+   "share_of_officers_below_0.5": 0.4402,
+   "share_of_score_variance_between_officers": 0.6031
+  },
+  "full_time_officer/xgboost": {
+   "pooled_auc": 0.6397,
+   "within_officer_auc": 0.5549,
+   "ci95_resampling_officers": [
+    0.534,
+    0.5742
+   ],
+   "officers": 209,
+   "searches": 7005,
+   "share_of_officers_below_0.5": 0.3397,
+   "share_of_score_variance_between_officers": 0.5214
+  },
+  "full_time_officer/pltr": {
+   "pooled_auc": 0.6358,
+   "within_officer_auc": 0.5237,
+   "ci95_resampling_officers": [
+    0.5016,
+    0.5452
+   ],
+   "officers": 209,
+   "searches": 7005,
+   "share_of_officers_below_0.5": 0.445,
+   "share_of_score_variance_between_officers": 0.5872
+  },
+  "full_time_officer/pltr_sparse": {
+   "pooled_auc": 0.63,
+   "within_officer_auc": 0.5,
+   "ci95_resampling_officers": [
+    0.4798,
+    0.5191
+   ],
+   "officers": 209,
+   "searches": 7005,
+   "share_of_officers_below_0.5": 0.4833,
+   "share_of_score_variance_between_officers": 0.5999
+  },
+  "full_time_officer_blind/scorecard": {
+   "pooled_auc": 0.6225,
+   "within_officer_auc": 0.4888,
+   "ci95_resampling_officers": [
+    0.4683,
+    0.5106
+   ],
+   "officers": 209,
+   "searches": 7005,
+   "share_of_officers_below_0.5": 0.555,
+   "share_of_score_variance_between_officers": 0.6383
+  },
+  "full_time_officer_blind/xgboost": {
+   "pooled_auc": 0.6324,
+   "within_officer_auc": 0.5454,
+   "ci95_resampling_officers": [
+    0.525,
+    0.5656
+   ],
+   "officers": 209,
+   "searches": 7005,
+   "share_of_officers_below_0.5": 0.3684,
+   "share_of_score_variance_between_officers": 0.5225
+  },
+  "full_time_officer_blind/pltr": {
+   "pooled_auc": 0.6306,
+   "within_officer_auc": 0.5043,
+   "ci95_resampling_officers": [
+    0.4837,
+    0.5275
+   ],
+   "officers": 209,
+   "searches": 7005,
+   "share_of_officers_below_0.5": 0.5215,
+   "share_of_score_variance_between_officers": 0.6156
+  },
+  "full_time_officer_blind/pltr_sparse": {
+   "pooled_auc": 0.6284,
+   "within_officer_auc": 0.4905,
+   "ci95_resampling_officers": [
+    0.4701,
+    0.5123
+   ],
+   "officers": 209,
+   "searches": 7005,
+   "share_of_officers_below_0.5": 0.5598,
+   "share_of_score_variance_between_officers": 0.6182
+  },
+  "officer_only/scorecard": {
+   "pooled_auc": 0.6217,
+   "within_officer_auc": 0.4431,
+   "ci95_resampling_officers": [
+    0.4217,
+    0.4627
+   ],
+   "officers": 209,
+   "searches": 7005,
+   "share_of_officers_below_0.5": 0.6938,
+   "share_of_score_variance_between_officers": 0.6782
+  },
+  "officer_only/xgboost": {
+   "pooled_auc": 0.6318,
+   "within_officer_auc": 0.5324,
+   "ci95_resampling_officers": [
+    0.5118,
+    0.5531
+   ],
+   "officers": 209,
+   "searches": 7005,
+   "share_of_officers_below_0.5": 0.4115,
+   "share_of_score_variance_between_officers": 0.5553
+  }
+ },
+ "G_first_stop_check": {
+  "scope": "consent searches 2011-2018 (2010 = warm-up); first = no earlier stop by this officer on the same calendar day",
+  "searches": 50839,
+  "share_at_first_stop": 0.3319,
+  "hit_rate_first_vs_later": [
+   0.2094,
+   0.1579
+  ],
+  "by_hour_band": {
+   "00-03": {
+    "hit_first": 0.2026,
+    "hit_later": 0.1506,
+    "n_first": 5755,
+    "n_later": 5139
+   },
+   "04-07": {
+    "hit_first": 0.2483,
+    "hit_later": 0.1929,
+    "n_first": 725,
+    "n_later": 1436
+   },
+   "08-11": {
+    "hit_first": 0.1541,
+    "hit_later": 0.1042,
+    "n_first": 1849,
+    "n_later": 2830
+   },
+   "12-15": {
+    "hit_first": 0.2272,
+    "hit_later": 0.1623,
+    "n_first": 2456,
+    "n_later": 5366
+   },
+   "16-19": {
+    "hit_first": 0.2361,
+    "hit_later": 0.1548,
+    "n_first": 3659,
+    "n_later": 7707
+   },
+   "20-23": {
+    "hit_first": 0.1976,
+    "hit_later": 0.1699,
+    "n_first": 2429,
+    "n_later": 11488
+   }
+  },
+  "share_of_first_stop_searches_between_00_and_04": 0.3411,
+  "by_officer_daily_stop_volume": {
+   "low": {
+    "median_stops_per_active_day": 2.8456,
+    "share_at_first_stop": 0.4373,
+    "hit_first": 0.2121,
+    "hit_later": 0.1642
+   },
+   "mid": {
+    "median_stops_per_active_day": 3.7821,
+    "share_at_first_stop": 0.3247,
+    "hit_first": 0.2197,
+    "hit_later": 0.1633
+   },
+   "high": {
+    "median_stops_per_active_day": 5.0663,
+    "share_at_first_stop": 0.2324,
+    "hit_first": 0.1897,
+    "hit_later": 0.1484
+   }
+  }
+ },
  "caveats": [
   "Selective labels: only searches that were made are observed.",
   "Economics treat each search as independent and ignore deterrence and the value of the contraband; the break-even hit rate is an assumption, shown over a range.",

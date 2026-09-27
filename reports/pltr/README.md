@@ -25,7 +25,7 @@ The white box is the **19-term PLTR** on the same 33 inputs and the same time sp
 | Brier score | – | 0.161 (no-skill 0.168) | 0.157-0.166 |
 | AUC on random split (vs time split) | – | **[--fit]** | – |
 
-For reference, same test set: 61-term PLTR (1-SE) 0.636 [0.622, 0.649]; logistic scorecard + officer 0.627; **XGBoost + officer 0.640**; team scorecard without officer features 0.555. White box vs team scorecard: **+0.075 [+0.060, +0.091]** (paired bootstrap). Officer holdout (officers never seen in training): 0.629 [0.597, 0.659]. CV > test because the CV folds mix years and the hit rate rises after 2016 (drift, not leakage: on pure noise the CV gives 0.505).
+For reference, same test set: 61-term PLTR (1-SE) 0.636 [0.622, 0.649]; logistic scorecard + officer 0.627; **XGBoost + officer 0.640**; team scorecard without officer features 0.555. White box vs team scorecard: **+0.075 [+0.060, +0.091]** (paired bootstrap). Officer holdout (officers never seen in training): 0.629 [0.597, 0.659]. **Inside each officer's own test searches (the decision an officer actually faces): 0.500 [0.480, 0.519]** — the gain is entirely between officers; the model identifies which officer, not which driver (`data/officer_model_diagnostics.json` §F; `MASTER.md` §5.3). CV > test because the CV folds mix years and the hit rate rises after 2016 (drift, not leakage: on pure noise the CV gives 0.505).
 
 **Economic** (top 22% flagged = the team's budget, 2,005 of 9,113): 7,108 searches avoided (78%), 1,304 of 1,946 finds lost (67%) · **cost per find 3.12 searches** (vs 4.68 if all searched; hit rate 32.0% vs 21.4%; XGBoost 2.97) · milder cut: dropping only the lowest-scored 20% avoids 1,632 fruitless searches and loses 191 finds (10%) · gains curve: `reports/pltr/gains_curve.png`
 
@@ -39,7 +39,7 @@ For reference, same test set: 61-term PLTR (1-SE) 0.636 [0.622, 0.649]; logistic
 | 2 | Officer's past hit rate on this driver's race <= 17.9% AND his overall past hit rate <= 12.9% | 0.64 | 15% | officers who rarely find anything keep finding nothing |
 | 3 | Driver Hispanic | 0.71 | 8% | lower hit rate on Hispanic drivers (history of looser searches) |
 | 4 | Driver white | 1.21 | 36% | higher hit rate on white drivers |
-| 5 | Officer experience > 569 days AND <= 5.5 min since his first stop of the day | 1.24 | 21% | first searches of an experienced officer's shift succeed more |
+| 5 | Officer experience > 569 days AND <= 5.5 min since his first stop of the calendar day | 1.24 | 21% | a search at the officer's first stop of the day succeeds more (20.9% vs 15.8%, in every time band; a third are after midnight, so not "start of shift" — diagnostics §G) |
 | 6 | Officer's previous search < ~110 min ago | 0.79 | 10% | repeat searches succeed less (momentum rather than evidence) |
 | 7 | Male driver AND officer with <= 9 consent searches in the past year | 0.86 | 19% | occasional searchers do worse on men |
 | 8 | Hour ~4:30-7:30 AND officer not among the busiest | 1.46 | 2.5% | early-morning searches succeed more |
@@ -85,7 +85,7 @@ Top 22% flagged, test 2016-2018 (white 3,368 · Black 4,947 · Hispanic 689). Ga
 
 **3 key messages:**
 1. A 19-rule model anyone can read reaches AUC 0.630 — 0.01 below XGBoost and +0.075 over the team's scorecard: here interpretability costs almost nothing.
-2. The rules describe officers, not drivers: track record, shift rhythm, repeat searches — and officers who over-search Hispanic drivers find less.
+2. The rules describe officers, not drivers: track record, first stop of the day vs later ones, repeat searches — and officers who over-search Hispanic drivers find less.
 3. Race-aware it is calibrated but flags almost no minority drivers (and uses race); race-blind it flags groups almost equally for 0.002 AUC but over-scores minority drivers by 5-7 points. Not deployable to score drivers; usable to review officers.
 
 ## 2.7 Q&A
@@ -98,4 +98,4 @@ Top 22% flagged, test 2016-2018 (white 3,368 · Black 4,947 · Hispanic 689). Ga
 | Isn't using driver race unlawful? | Yes; the race-aware model is a diagnostic. The race-blind version is the deployable candidate, and it fails calibration (2.5). |
 | Why are some odds ratios "per SD"? | Numeric inputs are standardised in the linear part (same as the team scorecard); rules are 0/1, so their odds ratio is for the rule being true. |
 
-**Known weakness:** only the head of the model is stable (about 20% of variable combinations repeat across splits, carrying ~60% of the importance), so present the core terms only; PLTR and logistic lose more than XGBoost in 2018 (0.605 vs 0.628) — retrain yearly; term 5 ("first stop of the day") shares Julia's possible recording artefact for `off_minutes_since_first_stop_today`, to check with Scott; the disparity features are computed from the race of the officer's past drivers.
+**Known weakness:** only the head of the model is stable (about 20% of variable combinations repeat across splits, carrying ~60% of the importance), so present the core terms only; PLTR and logistic lose more than XGBoost in 2018 (0.605 vs 0.628) — retrain yearly; term 5 ("first stop of the day"): checked, not leakage and not only an artefact — the effect holds in every time band and for low- and high-volume officers, but a third of these searches are after midnight, so read it as "first stop of the calendar day", not "start of shift" (`data/officer_model_diagnostics.json` §G); the disparity features are computed from the race of the officer's past drivers.
