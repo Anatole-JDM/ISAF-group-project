@@ -413,8 +413,28 @@ Two things, both serious:
    noise, and any single-seed model comparison here is unreliable.
 2. **Top-200 Jaccard ≈ 0.07 for BOTH arms.** Resample the training data and roughly
    **93% of the 200 highest-risk stops change**. The top-K list *is* the deployed
-   policy (see finding 7), so the policy is close to arbitrary. This is a stronger
-   argument against deployment than any AUC, because it holds regardless of accuracy.
+   policy (see finding 7), so the policy is close to arbitrary.
+
+**RECONCILED 2026-09-27 — always normalise by chance.** A teammate's XGBoost run
+reported a top-k overlap of 0.811, which looks like a flat contradiction of 0.078.
+It is not: the two used different K and N, and Jaccard has a chance floor that
+depends on both. Normalised:
+
+| measurement | K | N | observed | chance | **x chance** |
+|---|---|---|---|---|---|
+| this finding | 200 | 3,000 | 0.078 | 0.034 | **2.3x** |
+| like-for-like, base features | 200 | 9,113 | 0.025 | 0.011 | **2.3x** |
+| like-for-like, **+ officer features** | 200 | 9,113 | 0.066 | 0.011 | **6.0x** |
+| teammate's run | 2,005 | 9,113 | 0.811 | 0.123 | **6.6x** |
+
+His K is 22% of the test set, where two *random* top-k lists already overlap at
+Jaccard 0.123. Ours is 2%, where chance is 0.011. Once normalised the two runs
+**agree**: base features sit at 2.3x chance, officer features at ~6x under either
+protocol. Report the multiple, not the raw Jaccard, or the number means nothing.
+
+Note also that his perturbation is 10 model SEEDS on a fixed training set, while
+ours resamples the TRAINING DATA. Seed variation is the weaker perturbation, so the
+two are measuring different kinds of stability even after normalisation.
 
 ### 10.3 Equal scores, incompatible explanations
 
@@ -716,6 +736,63 @@ The general principle, worth stating in the presentation:
 It would become legitimate under a *different* decision — a supervisor choosing which
 officers' consent practices to audit. Different question, different model, and
 arguably the more useful one given finding 4.
+
+---
+
+## 18. Officer BEHAVIOUR features — the strongest model, and a real correction (2026-09-27)
+
+A teammate built 25 time-aware officer features into the consent table: rolling
+365-day windows, empirical-Bayes shrunk (k=20), 2010 held out as a warm-up year, and
+independently brute-force verified against 400 random stops. These are **officer
+behaviour**, not officer identity, and the distinction matters:
+
+| | officer ID | officer behaviour |
+|---|---|---|
+| form | 1,477-level categorical | `off_consent_hit_rate_365d_shrunk`, `off_searches_today_before`, `off_last_search_hit`, `off_hit_gap_black_white`, ... |
+| a NEW officer | **no value** — unseen level | **works from day one** |
+| what it encodes | individual memorisation | a transferable behavioural pattern |
+
+### Results
+
+| model | test AUC |
+|---|---|
+| `full_time` base | 0.5713 |
+| **`full_time_officer`** | **0.6417** |
+| `full_time_officer_blind` (race removed) | 0.6362 |
+
+Independently replicated here: base 0.5663 -> **+officer 0.6425**, matching his
+0.6417 to four decimals. **+0.070 AUC — double what officer ID gave (+0.034)**, and
+the blind variant keeps 0.636, so it is not race in disguise.
+
+### It transfers to unseen officers
+
+This is what officer ID cannot do. His officer-holdout split has
+`test_officers_seen_in_training: 0`, and GroupKFold gives:
+
+    random k-fold        0.6798
+    officer groupkfold   0.6687      gap only -0.011
+
+### Corrections to earlier findings
+
+1. **Finding 10.2 is narrowed.** "The ranked list is arbitrary" was measured on a
+   near-signal-free model. With officer features, ranking stability roughly triples
+   relative to chance (2.3x -> 6.0x). The arbitrariness was largely a property of a
+   model with nothing to rank on, not of the problem. At K=200 roughly 88% of the
+   list still churns, so the concern is softened rather than removed.
+2. **Finding 4's framing was too broad.** The "constant across the officer's own
+   choice set" objection is correct for a STOP-LEVEL decision — Officer Smith's own
+   hit rate is identical for every driver in front of him. But it does not make the
+   features invalid: for a supervisor deciding which officers' consent practices to
+   audit, or which stops get review, they vary and carry real decision value. The
+   objection is about *which decision is being modelled*, not about the features.
+
+### What it adds to the fairness argument
+
+`off_hit_gap_black_white` and `off_log_search_ratio_black_white` measure **each
+officer's own racial disparity** as a feature. And the descriptive spread is large:
+officer consent hit rates run **5.9% in the lowest decile to 31.9% in the highest**,
+a 5.4x range. Officer heterogeneity is not a nuisance term — it is most of what is
+predictable here, which is exactly the selective-labels thesis.
 
 ---
 
