@@ -213,7 +213,7 @@ scripts/update_readme_results.py rewrites the Results section above from outputs
 
 ### The app
 
-Eight pages, all in the top bar, in the order of the argument:
+Nine pages, all in the top bar, in the order of the argument:
 
 | Page | What it shows |
 |---|---|
@@ -224,6 +224,7 @@ Eight pages, all in the top bar, in the order of the argument:
 | Foundation models | TabPFN, same layout (fitted only in `matched` mode) |
 | Performance | accuracy and ranking agreement, value under a search budget, one stop |
 | Fairness testing | independence / separation / sufficiency and both Y codings, one tab per model, shared K |
+| Officer features (comparison) | what officer-history features (`scripts_claude/`) would add (AUC, PLTR, XGBoost SHAP / stability / surrogate, fairness, economics, officer outcome test), shown for comparison only: they are not usable when deciding whether to search a given driver. Reads the committed `data/*.json` and `reports/xgboost_officer/` |
 | Findings & conclusions | the measured officer and race signal, the recommendation |
 
 The model pages, Performance and Fairness testing share the sidebar *Run* picker
