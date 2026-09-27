@@ -27,6 +27,30 @@ LAD = {r["key"]: r for r in S["ladder"]}
 DISC = {"consent  (our sample)", "probable cause", "plain view"}
 RACE_SHARE = S["xper"]["phi"]["subject_race"] / S["xper"]["sum_phi"]
 
+NAME = {"scorecard": "Scorecard", "gbm": "XGBoost", "tabpfn": "TabPFN"}
+
+
+def _delong_rows():
+    """Built from outputs/significance__consent__matched.json, which
+    scripts/run_significance.py regenerates.
+
+    This table used to be quoted from an interactive run and no longer reproduced: it
+    reported gbm vs tabpfn at -0.0026 (p 0.691) against the artifact's -0.0051
+    (p 0.413), and carried a decision-tree arm absent from the matched scores.
+    """
+    sig = S.get("significance")
+    if not sig:
+        return [["run scripts/run_significance.py", "", "", "", "", ""]]
+    rows = []
+    for r in sig["pairs"]:
+        flag = "SIGNIFICANT" if r["p_value"] < 0.05 else "not significant"
+        pval = "<0.001" if r["p_value"] < 0.001 else f"{r['p_value']:.3f}"
+        rows.append([f"{NAME.get(r['a'], r['a'])} vs {NAME.get(r['b'], r['b'])}",
+                     f"{r['auc_a']:.4f}", f"{r['auc_b']:.4f}",
+                     f"{r['diff']:+.4f}".replace("-", "−"), pval, flag])
+    return rows
+
+
 TITLE = {
     "cover": True,
     "headline": ["Should a police force let a model", "decide who gets searched?"],
@@ -166,15 +190,12 @@ SLIDES = [
     {
         "kicker": "Significance", "title": "Are the three actually different? No.",
         "table": {
-            "headers": ["Comparison", "Δ AUC", "95% CI", "p", ""],
-            "rows": [["XGBoost vs TabPFN", "−0.0026", "[−0.0157, +0.0104]", "0.691", "not significant"],
-                     ["XGBoost vs tree", "+0.0062", "[−0.0091, +0.0215]", "0.431", "not significant"],
-                     ["Tree vs TabPFN", "−0.0088", "[−0.0212, +0.0036]", "0.163", "not significant"],
-                     ["Scorecard vs XGBoost", "−0.0173", "[−0.0317, −0.0028]", "0.019", "SIGNIFICANT"],
-                     ["Scorecard vs TabPFN", "−0.0199", "[−0.0291, −0.0108]", "<0.001", "SIGNIFICANT"]],
-            "col_w": [3.0, 1.3, 2.3, 1.0, 1.9],
+            "headers": ["Comparison", "AUC a", "AUC b", "Δ AUC", "p", ""],
+            "rows": _delong_rows(),
+            "col_w": [2.8, 1.1, 1.1, 1.2, 1.0, 1.9],
         },
-        "callout": "DeLong paired test on correlated AUCs. The two black boxes are statistically "
+        "callout": "DeLong paired test on correlated AUCs, recomputed from the cached scores by "
+                   "scripts/run_significance.py. The two black boxes are statistically "
                    "indistinguishable, so we do not rank them — any choice between them must be "
                    "made on the other three dimensions.",
         "notes": "Why it matters: 'which model is most accurate' is the wrong question on this data. "
