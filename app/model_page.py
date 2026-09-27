@@ -127,7 +127,7 @@ def render(arm: str, title: str, description: str, missing_hint: str, explain_to
         st.caption("Train < 2016, test ≥ 2016 (the regime split). `full_blind` removes race from the "
                    "features; the gap to `full` is what race contributes.")
 
-    scores, meta = common.run_selector()
+    scores, meta = common.run_selector(require_arm=arm)
     col = f"score_{arm}"
     st.subheader(f"Selected run: {st.session_state['run_stratum']} / {st.session_state['run_mode']}")
     if col not in scores:
