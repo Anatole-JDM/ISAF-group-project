@@ -796,6 +796,51 @@ predictable here, which is exactly the selective-labels thesis.
 
 ---
 
+## 19. The full matrix — and race stops mattering (2026-09-27)
+
+All three modes x both arms, full training set (49,752), full test set (9,113):
+
+| mode | cols | gbm | **tabpfn** | Δ |
+|---|---|---|---|---|
+| `full_time` | 17 | 0.5733 | **0.5798** | +0.0065 |
+| `full_time_officer` | 42 | 0.6459 | **0.6529** | +0.0070 |
+| `full_time_officer_blind` | 40 | 0.6428 | **0.6498** | +0.0070 |
+
+Brier follows the same order: TabPFN best in every row (0.1591 vs 0.1608 in the
+best configuration). The gbm column replicates the teammate's XGBoost run within
+0.004 (his 0.5713 / 0.6417 / 0.6362).
+
+**TabPFN wins every configuration**, by a consistent +0.007. Note the contrast with
+officer *ID*, where the arms converged to 0.001 apart: ID is 421 sparse one-hot
+columns where model family matters little, while behaviour is 25 dense numerics
+where TabPFN's strengths show.
+
+### The finding: race matters because nothing else did
+
+| model | with race | race removed | cost of removing race |
+|---|---|---|---|
+| base | 0.5663 | 0.5414 | **−0.0249** |
+| **+ officer behaviour** | 0.6529 | 0.6498 | **−0.0031** |
+
+**An 8x reduction.** XPER (finding 13) measured race at 73.5% of the above-chance
+signal in the base model. Once the model has genuine behavioural features about how
+the search decision is actually made, removing race costs almost nothing — at
+*higher* accuracy.
+
+This converts the fairness result from a negative into a constructive one:
+
+> The model leaned on race because it had nothing else to lean on. Give it real
+> signal about the decision process and race becomes close to irrelevant.
+
+**Caveats before this goes on a slide.** The group fairness metrics (FPR gaps,
+selection rates, chi-square, TOST) in findings 12 and 15 were computed on the BASE
+model and have not been recomputed here — a race-blind model can still produce
+disparate selection through proxies, and `off_hit_gap_black_white` is itself a
+race-derived feature. 0.65 is also still a weak model. What this shows is that the
+*dependence on the protected attribute* collapses, not that the model is fair.
+
+---
+
 ## 9. Recommendation to the client: do not deploy
 
 Not because the model is unfair *or* because it is inaccurate, but because every
