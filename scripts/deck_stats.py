@@ -119,6 +119,10 @@ def main() -> None:
                     "chi2": d["chi2"], "tost": d["tost"], "n_cols": d["n_cols"],
                     "auc_within": d.get("auc_within_officer")})
 
+    sig = OUT / "significance__consent__matched.json"
+    if sig.exists():
+        s["significance"] = json.loads(sig.read_text())
+
     s["xper"] = json.loads((OUT / "xper_scorecard.json").read_text())
     fp = json.loads((OUT / "fpdp_pdp.json").read_text())
     s["fpdp"] = {"n_features": len(fp["fpdp"]), "base_chi2": fp["base_chi2"],
