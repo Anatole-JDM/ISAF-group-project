@@ -5,9 +5,12 @@ Outputs
   data/nashville_columns.csv                role of every column in that file                       - TRACKED in git
   opp_data/processed/nashville_master.parquet  all 3,088,286 stops (audit model) - local only (~400 MB)
 
+Inputs: opp_data/processed/nashville_clean.parquet and opp_data/features/{nbh,plate,time,officer}_features
+.parquet. Run build_officer_features.py before this script.
+
 Column roles (see nashville_columns.csv)
-  id / target / protected / protected_and_feature / feature / feature_D3_open / robustness /
-  quality_flag / split_helper / analysis_helper / post_decision_DO_NOT_USE
+  id / target / protected / protected_and_feature / feature / feature_race_derived /
+  feature_D3_open / robustness / quality_flag / split_helper / analysis_helper / post_decision_DO_NOT_USE
 Every column recorded at or after the search decision is renamed with the prefix `post_` so it
 cannot be mistaken for a predictor. The build stops if any column has no role.
 
@@ -42,6 +45,9 @@ TIME_FEATURES = ['hour', 'hour_missing', 'minute_of_day', 'hour_sin', 'hour_cos'
                  'is_holiday_window', 'is_dst', 'sun_elevation_deg', 'light_period', 'is_dark']
 RACE_SHARES = ['share_black', 'share_white', 'share_hispanic', 'share_asian']
 NBH_FLAGS = ['circle_truncated', 'low_residents', 'income_weight_missing', 'residents_2010']
+OFFICER_DISPARITY = ['off_consent_white_past', 'off_consent_black_past', 'off_consent_hisp_past',
+                     'off_log_search_ratio_black_white', 'off_log_search_ratio_hisp_white',
+                     'off_hit_gap_black_white', 'off_hit_gap_hisp_white']
 
 
 def role(c):
@@ -90,6 +96,15 @@ def role(c):
         return 'feature', 'registration plate' + (' (share rises over time - monitor)' if c == 'plate_out_of_state' else '')
     if c in TIME_FEATURES:
         return 'feature', 'time of the stop'
+    if c.startswith('off_'):
+        if c in ('off_experience_censored', 'off_history_warmup'):
+            return 'quality_flag', 'officer history incomplete (active before 2010 / stop in 2010)'
+        if c == 'off_hit_rate_same_race_past':
+            return ('feature_race_derived', "officer's past hit rate on drivers of THIS driver's race - "
+                    'uses the driver race: never in a race-blind model')
+        if c in OFFICER_DISPARITY:
+            return 'feature', "officer disparity over the officer's past stops (search skew / outcome gap by race)"
+        return 'feature', 'officer track record, strictly from past stops'
     return None, None
 
 
@@ -100,9 +115,11 @@ def main():
     nbh = pd.read_parquet(FEAT / 'nbh_features.parquet')
     plate = pd.read_parquet(FEAT / 'plate_features.parquet')
     time = pd.read_parquet(FEAT / 'time_features.parquet')
+    officer = pd.read_parquet(FEAT / 'officer_features.parquet').drop(
+        columns=['raw_row_number', 'date', 'consent_sample'])
 
     m = base
-    for name, t in [('nbh', nbh), ('plate', plate), ('time', time)]:
+    for name, t in [('nbh', nbh), ('plate', plate), ('time', time), ('officer', officer)]:
         clash = (set(t.columns) & set(m.columns)) - {'stop_id'}
         assert not clash, f'{name}: duplicate column names {clash}'
         m = m.merge(t, on='stop_id', how='left', validate='one_to_one')

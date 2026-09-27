@@ -1,0 +1,1683 @@
+{
+ "built_utc": "2026-09-26T23:08:44.886456+00:00",
+ "rows": 58865,
+ "split_year": 2016,
+ "topk_share": 0.22,
+ "splits": {
+  "temporal": {
+   "n_train": 49752,
+   "n_test": 9113,
+   "base_rate_train": 0.161,
+   "base_rate_test": 0.2135,
+   "models": {
+    "full_time": {
+     "scorecard": {
+      "auc": 0.5552,
+      "auc_ci95": [
+       0.5412,
+       0.5691
+      ],
+      "pr_auc": 0.2585,
+      "brier": 0.1694,
+      "n_features": 17,
+      "seconds": 4.8,
+      "fairness_topk": {
+       "k": 2005,
+       "share_selected": 0.22,
+       "white": {
+        "n": 3368,
+        "selection_rate": [
+         0.4855,
+         [
+          0.4693,
+          0.5036
+         ]
+        ],
+        "false_positive_rate": [
+         0.4739,
+         [
+          0.4555,
+          0.4952
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.2728,
+         [
+          0.2512,
+          0.2947
+         ]
+        ]
+       },
+       "black": {
+        "n": 4947,
+        "selection_rate": [
+         0.0705,
+         [
+          0.0642,
+          0.0788
+         ]
+        ],
+        "false_positive_rate": [
+         0.0703,
+         [
+          0.0628,
+          0.0793
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.1977,
+         [
+          0.1629,
+          0.2418
+         ]
+        ]
+       },
+       "hispanic": {
+        "n": 689,
+        "selection_rate": [
+         0.0,
+         [
+          0.0,
+          0.0
+         ]
+        ],
+        "false_positive_rate": [
+         0.0,
+         [
+          0.0,
+          0.0
+         ]
+        ],
+        "hit_rate_of_selected": [
+         NaN,
+         [
+          NaN,
+          NaN
+         ]
+        ]
+       }
+      }
+     },
+     "xgboost": {
+      "auc": 0.5694,
+      "auc_ci95": [
+       0.5555,
+       0.5836
+      ],
+      "pr_auc": 0.2675,
+      "brier": 0.1689,
+      "n_features": 17,
+      "seconds": 5.9,
+      "fairness_topk": {
+       "k": 2005,
+       "share_selected": 0.22,
+       "white": {
+        "n": 3368,
+        "selection_rate": [
+         0.4053,
+         [
+          0.3885,
+          0.4221
+         ]
+        ],
+        "false_positive_rate": [
+         0.385,
+         [
+          0.3663,
+          0.4043
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.2923,
+         [
+          0.2669,
+          0.3192
+         ]
+        ]
+       },
+       "black": {
+        "n": 4947,
+        "selection_rate": [
+         0.1213,
+         [
+          0.1122,
+          0.1315
+         ]
+        ],
+        "false_positive_rate": [
+         0.115,
+         [
+          0.1053,
+          0.125
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.2367,
+         [
+          0.204,
+          0.2709
+         ]
+        ]
+       },
+       "hispanic": {
+        "n": 689,
+        "selection_rate": [
+         0.0232,
+         [
+          0.0131,
+          0.0334
+         ]
+        ],
+        "false_positive_rate": [
+         0.0154,
+         [
+          0.0067,
+          0.0272
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.4375,
+         [
+          0.1818,
+          0.6923
+         ]
+        ]
+       }
+      }
+     }
+    },
+    "full_time_officer": {
+     "scorecard": {
+      "auc": 0.6271,
+      "auc_ci95": [
+       0.6129,
+       0.6406
+      ],
+      "pr_auc": 0.3218,
+      "brier": 0.1617,
+      "n_features": 33,
+      "seconds": 4.5,
+      "vs_full_time": {
+       "delta_auc": 0.0719,
+       "ci95": [
+        0.0596,
+        0.0849
+       ]
+      },
+      "fairness_topk": {
+       "k": 2005,
+       "share_selected": 0.22,
+       "white": {
+        "n": 3368,
+        "selection_rate": [
+         0.399,
+         [
+          0.382,
+          0.4152
+         ]
+        ],
+        "false_positive_rate": [
+         0.3523,
+         [
+          0.335,
+          0.3704
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.3423,
+         [
+          0.3172,
+          0.3672
+         ]
+        ]
+       },
+       "black": {
+        "n": 4947,
+        "selection_rate": [
+         0.1263,
+         [
+          0.1163,
+          0.1346
+         ]
+        ],
+        "false_positive_rate": [
+         0.1107,
+         [
+          0.1002,
+          0.1193
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.2944,
+         [
+          0.2596,
+          0.3275
+         ]
+        ]
+       },
+       "hispanic": {
+        "n": 689,
+        "selection_rate": [
+         0.016,
+         [
+          0.0073,
+          0.0261
+         ]
+        ],
+        "false_positive_rate": [
+         0.012,
+         [
+          0.005,
+          0.021
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.3636,
+         [
+          0.1,
+          0.6667
+         ]
+        ]
+       }
+      }
+     },
+     "xgboost": {
+      "auc": 0.6397,
+      "auc_ci95": [
+       0.6268,
+       0.6523
+      ],
+      "pr_auc": 0.3263,
+      "brier": 0.1614,
+      "n_features": 33,
+      "seconds": 6.1,
+      "vs_full_time": {
+       "delta_auc": 0.0703,
+       "ci95": [
+        0.056,
+        0.0843
+       ]
+      },
+      "fairness_topk": {
+       "k": 2005,
+       "share_selected": 0.22,
+       "white": {
+        "n": 3368,
+        "selection_rate": [
+         0.3471,
+         [
+          0.3294,
+          0.3609
+         ]
+        ],
+        "false_positive_rate": [
+         0.2961,
+         [
+          0.2782,
+          0.3113
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.3644,
+         [
+          0.3385,
+          0.3908
+         ]
+        ]
+       },
+       "black": {
+        "n": 4947,
+        "selection_rate": [
+         0.1512,
+         [
+          0.1406,
+          0.1601
+         ]
+        ],
+        "false_positive_rate": [
+         0.1338,
+         [
+          0.1234,
+          0.1426
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.2874,
+         [
+          0.2558,
+          0.3186
+         ]
+        ]
+       },
+       "hispanic": {
+        "n": 689,
+        "selection_rate": [
+         0.1001,
+         [
+          0.0798,
+          0.1227
+         ]
+        ],
+        "false_positive_rate": [
+         0.0855,
+         [
+          0.0642,
+          0.1086
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.2754,
+         [
+          0.1768,
+          0.3869
+         ]
+        ]
+       }
+      },
+      "top_features_gain": {
+       "num__off_consent_hit_rate_365d_shrunk": 0.0251,
+       "cat__subject_race_white": 0.0241,
+       "cat__subject_race_hispanic": 0.0212,
+       "num__off_hit_rate_same_race_past": 0.021,
+       "num__off_hit_rate_365d_shrunk": 0.0154,
+       "cat__subject_sex_male": 0.0152,
+       "num__off_minutes_since_first_stop_today": 0.0137,
+       "num__time_heaped": 0.0128,
+       "cat__subject_sex_female": 0.0128,
+       "cat__zone_723": 0.0103,
+       "cat__precinct_1": 0.0099,
+       "cat__zone_721": 0.0098,
+       "cat__zone_611": 0.0097,
+       "cat__zone_311": 0.0096,
+       "cat__zone_533": 0.0095
+      }
+     },
+     "pltr": {
+      "auc": 0.6332,
+      "auc_ci95": [
+       0.6197,
+       0.6468
+      ],
+      "pr_auc": 0.3266,
+      "brier": 0.161,
+      "n_features": 33,
+      "seconds": 953.9,
+      "fairness_topk": {
+       "k": 2005,
+       "share_selected": 0.22,
+       "white": {
+        "n": 3368,
+        "selection_rate": [
+         0.3824,
+         [
+          0.3652,
+          0.4011
+         ]
+        ],
+        "false_positive_rate": [
+         0.336,
+         [
+          0.316,
+          0.3552
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.3455,
+         [
+          0.3206,
+          0.3714
+         ]
+        ]
+       },
+       "black": {
+        "n": 4947,
+        "selection_rate": [
+         0.1385,
+         [
+          0.1291,
+          0.148
+         ]
+        ],
+        "false_positive_rate": [
+         0.1185,
+         [
+          0.1079,
+          0.1285
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.3109,
+         [
+          0.2766,
+          0.3463
+         ]
+        ]
+       },
+       "hispanic": {
+        "n": 689,
+        "selection_rate": [
+         0.0189,
+         [
+          0.0094,
+          0.029
+         ]
+        ],
+        "false_positive_rate": [
+         0.0154,
+         [
+          0.0069,
+          0.0261
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.3077,
+         [
+          0.0769,
+          0.5556
+         ]
+        ]
+       }
+      },
+      "vs_scorecard_full_time": {
+       "delta_auc": 0.078,
+       "ci95": [
+        0.064,
+        0.0918
+       ]
+      },
+      "pltr": {
+       "linear_terms": 137,
+       "rules_extracted": 652,
+       "rules_after_dedup": 644,
+       "selected_linear": 41,
+       "selected_rules": 105,
+       "lasso_C": 0.31622776601683794,
+       "cv_auc_at_C": 0.6663,
+       "cv_auc_by_C": {
+        "0.001": 0.5,
+        "0.003162": 0.6107,
+        "0.01": 0.6399,
+        "0.03162": 0.6547,
+        "0.1": 0.6652,
+        "0.3162": 0.6663,
+        "1": 0.6633,
+        "3.162": 0.6597,
+        "10": 0.6574
+       },
+       "gamma": 1.0,
+       "pilot_C": 1.0
+      }
+     }
+    },
+    "full_time_officer_blind": {
+     "scorecard": {
+      "auc": 0.6225,
+      "auc_ci95": [
+       0.6081,
+       0.637
+      ],
+      "pr_auc": 0.3156,
+      "brier": 0.1621,
+      "n_features": 30,
+      "seconds": 3.9,
+      "vs_full_time": {
+       "delta_auc": 0.0673,
+       "ci95": [
+        0.0507,
+        0.0839
+       ]
+      },
+      "fairness_topk": {
+       "k": 2005,
+       "share_selected": 0.22,
+       "white": {
+        "n": 3368,
+        "selection_rate": [
+         0.274,
+         [
+          0.2596,
+          0.2895
+         ]
+        ],
+        "false_positive_rate": [
+         0.234,
+         [
+          0.2171,
+          0.25
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.364,
+         [
+          0.3281,
+          0.3946
+         ]
+        ]
+       },
+       "black": {
+        "n": 4947,
+        "selection_rate": [
+         0.1888,
+         [
+          0.1784,
+          0.2
+         ]
+        ],
+        "false_positive_rate": [
+         0.169,
+         [
+          0.1575,
+          0.1803
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.2794,
+         [
+          0.2534,
+          0.3089
+         ]
+        ]
+       },
+       "hispanic": {
+        "n": 689,
+        "selection_rate": [
+         0.1858,
+         [
+          0.1567,
+          0.2119
+         ]
+        ],
+        "false_positive_rate": [
+         0.1624,
+         [
+          0.13,
+          0.1892
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.2578,
+         [
+          0.183,
+          0.3284
+         ]
+        ]
+       }
+      }
+     },
+     "xgboost": {
+      "auc": 0.6324,
+      "auc_ci95": [
+       0.6182,
+       0.6457
+      ],
+      "pr_auc": 0.3268,
+      "brier": 0.1617,
+      "n_features": 30,
+      "seconds": 5.7,
+      "vs_full_time": {
+       "delta_auc": 0.063,
+       "ci95": [
+        0.0476,
+        0.0785
+       ]
+      },
+      "fairness_topk": {
+       "k": 2005,
+       "share_selected": 0.22,
+       "white": {
+        "n": 3368,
+        "selection_rate": [
+         0.2595,
+         [
+          0.2439,
+          0.2736
+         ]
+        ],
+        "false_positive_rate": [
+         0.2148,
+         [
+          0.198,
+          0.229
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.3833,
+         [
+          0.3522,
+          0.4167
+         ]
+        ]
+       },
+       "black": {
+        "n": 4947,
+        "selection_rate": [
+         0.1965,
+         [
+          0.1857,
+          0.2074
+         ]
+        ],
+        "false_positive_rate": [
+         0.1755,
+         [
+          0.1639,
+          0.1871
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.2809,
+         [
+          0.2513,
+          0.3104
+         ]
+        ]
+       },
+       "hispanic": {
+        "n": 689,
+        "selection_rate": [
+         0.1858,
+         [
+          0.1582,
+          0.2148
+         ]
+        ],
+        "false_positive_rate": [
+         0.1658,
+         [
+          0.1346,
+          0.1967
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.2422,
+         [
+          0.1719,
+          0.3232
+         ]
+        ]
+       }
+      }
+     },
+     "pltr": {
+      "auc": 0.6293,
+      "auc_ci95": [
+       0.615,
+       0.6426
+      ],
+      "pr_auc": 0.3218,
+      "brier": 0.1613,
+      "n_features": 30,
+      "seconds": 757.6,
+      "fairness_topk": {
+       "k": 2005,
+       "share_selected": 0.22,
+       "white": {
+        "n": 3368,
+        "selection_rate": [
+         0.2699,
+         [
+          0.2553,
+          0.2825
+         ]
+        ],
+        "false_positive_rate": [
+         0.2228,
+         [
+          0.2056,
+          0.2389
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.385,
+         [
+          0.3555,
+          0.418
+         ]
+        ]
+       },
+       "black": {
+        "n": 4947,
+        "selection_rate": [
+         0.193,
+         [
+          0.1823,
+          0.204
+         ]
+        ],
+        "false_positive_rate": [
+         0.1727,
+         [
+          0.1608,
+          0.185
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.2796,
+         [
+          0.2545,
+          0.3086
+         ]
+        ]
+       },
+       "hispanic": {
+        "n": 689,
+        "selection_rate": [
+         0.1785,
+         [
+          0.1524,
+          0.2083
+         ]
+        ],
+        "false_positive_rate": [
+         0.1573,
+         [
+          0.127,
+          0.1864
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.252,
+         [
+          0.181,
+          0.3355
+         ]
+        ]
+       }
+      },
+      "vs_scorecard_full_time": {
+       "delta_auc": 0.0741,
+       "ci95": [
+        0.0575,
+        0.0907
+       ]
+      },
+      "pltr": {
+       "linear_terms": 128,
+       "rules_extracted": 521,
+       "rules_after_dedup": 513,
+       "selected_linear": 35,
+       "selected_rules": 92,
+       "lasso_C": 0.31622776601683794,
+       "cv_auc_at_C": 0.656,
+       "cv_auc_by_C": {
+        "0.001": 0.5,
+        "0.003162": 0.6383,
+        "0.01": 0.6398,
+        "0.03162": 0.6479,
+        "0.1": 0.656,
+        "0.3162": 0.656,
+        "1": 0.6534,
+        "3.162": 0.6499,
+        "10": 0.6477
+       },
+       "gamma": 1.0,
+       "pilot_C": 1.0
+      }
+     }
+    },
+    "officer_only": {
+     "scorecard": {
+      "auc": 0.6217,
+      "auc_ci95": [
+       0.6076,
+       0.6352
+      ],
+      "pr_auc": 0.3145,
+      "brier": 0.1619,
+      "n_features": 15,
+      "seconds": 3.2
+     },
+     "xgboost": {
+      "auc": 0.6318,
+      "auc_ci95": [
+       0.6181,
+       0.6453
+      ],
+      "pr_auc": 0.3161,
+      "brier": 0.1623,
+      "n_features": 15,
+      "seconds": 4.2
+     }
+    }
+   }
+  },
+  "officer_holdout": {
+   "n_train": 40173,
+   "n_test": 1845,
+   "base_rate_train": 0.157,
+   "base_rate_test": 0.2,
+   "models": {
+    "full_time": {
+     "scorecard": {
+      "auc": 0.5514,
+      "auc_ci95": [
+       0.5204,
+       0.5842
+      ],
+      "pr_auc": 0.2267,
+      "brier": 0.1614,
+      "n_features": 17,
+      "seconds": 2.4,
+      "fairness_topk": {
+       "k": 406,
+       "share_selected": 0.22,
+       "white": {
+        "n": 661,
+        "selection_rate": [
+         0.4584,
+         [
+          0.4236,
+          0.494
+         ]
+        ],
+        "false_positive_rate": [
+         0.4603,
+         [
+          0.4204,
+          0.505
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.2343,
+         [
+          0.1894,
+          0.2835
+         ]
+        ]
+       },
+       "black": {
+        "n": 1045,
+        "selection_rate": [
+         0.0938,
+         [
+          0.078,
+          0.1139
+         ]
+        ],
+        "false_positive_rate": [
+         0.094,
+         [
+          0.0761,
+          0.116
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.1837,
+         [
+          0.106,
+          0.2644
+         ]
+        ]
+       },
+       "hispanic": {
+        "n": 119,
+        "selection_rate": [
+         0.0,
+         [
+          0.0,
+          0.0
+         ]
+        ],
+        "false_positive_rate": [
+         0.0,
+         [
+          0.0,
+          0.0
+         ]
+        ],
+        "hit_rate_of_selected": [
+         NaN,
+         [
+          NaN,
+          NaN
+         ]
+        ]
+       }
+      }
+     },
+     "xgboost": {
+      "auc": 0.5564,
+      "auc_ci95": [
+       0.5226,
+       0.5882
+      ],
+      "pr_auc": 0.2288,
+      "brier": 0.1625,
+      "n_features": 17,
+      "seconds": 3.5,
+      "fairness_topk": {
+       "k": 406,
+       "share_selected": 0.22,
+       "white": {
+        "n": 661,
+        "selection_rate": [
+         0.3918,
+         [
+          0.354,
+          0.4304
+         ]
+        ],
+        "false_positive_rate": [
+         0.379,
+         [
+          0.3353,
+          0.4199
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.2625,
+         [
+          0.2062,
+          0.319
+         ]
+        ]
+       },
+       "black": {
+        "n": 1045,
+        "selection_rate": [
+         0.1349,
+         [
+          0.1153,
+          0.1531
+         ]
+        ],
+        "false_positive_rate": [
+         0.1281,
+         [
+          0.107,
+          0.1491
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.227,
+         [
+          0.1599,
+          0.2919
+         ]
+        ]
+       },
+       "hispanic": {
+        "n": 119,
+        "selection_rate": [
+         0.0168,
+         [
+          0.0,
+          0.042
+         ]
+        ],
+        "false_positive_rate": [
+         0.0098,
+         [
+          0.0,
+          0.0303
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.5,
+         [
+          0.0,
+          1.0
+         ]
+        ]
+       }
+      }
+     }
+    },
+    "full_time_officer": {
+     "scorecard": {
+      "auc": 0.6257,
+      "auc_ci95": [
+       0.5948,
+       0.6553
+      ],
+      "pr_auc": 0.2819,
+      "brier": 0.1555,
+      "n_features": 33,
+      "seconds": 2.5,
+      "vs_full_time": {
+       "delta_auc": 0.0743,
+       "ci95": [
+        0.0471,
+        0.1028
+       ]
+      },
+      "fairness_topk": {
+       "k": 406,
+       "share_selected": 0.22,
+       "white": {
+        "n": 661,
+        "selection_rate": [
+         0.3464,
+         [
+          0.3071,
+          0.3835
+         ]
+        ],
+        "false_positive_rate": [
+         0.3075,
+         [
+          0.2648,
+          0.3487
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.3231,
+         [
+          0.2676,
+          0.3821
+         ]
+        ]
+       },
+       "black": {
+        "n": 1045,
+        "selection_rate": [
+         0.1636,
+         [
+          0.1421,
+          0.1847
+         ]
+        ],
+        "false_positive_rate": [
+         0.1575,
+         [
+          0.1354,
+          0.181
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.2164,
+         [
+          0.1559,
+          0.2789
+         ]
+        ]
+       },
+       "hispanic": {
+        "n": 119,
+        "selection_rate": [
+         0.0084,
+         [
+          0.0,
+          0.0252
+         ]
+        ],
+        "false_positive_rate": [
+         0.0,
+         [
+          0.0,
+          0.0
+         ]
+        ],
+        "hit_rate_of_selected": [
+         1.0,
+         [
+          1.0,
+          1.0
+         ]
+        ]
+       }
+      }
+     },
+     "xgboost": {
+      "auc": 0.643,
+      "auc_ci95": [
+       0.6142,
+       0.6687
+      ],
+      "pr_auc": 0.3038,
+      "brier": 0.1538,
+      "n_features": 33,
+      "seconds": 4.2,
+      "vs_full_time": {
+       "delta_auc": 0.0866,
+       "ci95": [
+        0.055,
+        0.1204
+       ]
+      },
+      "fairness_topk": {
+       "k": 406,
+       "share_selected": 0.22,
+       "white": {
+        "n": 661,
+        "selection_rate": [
+         0.3374,
+         [
+          0.3026,
+          0.3699
+         ]
+        ],
+        "false_positive_rate": [
+         0.2996,
+         [
+          0.26,
+          0.3384
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.3229,
+         [
+          0.2622,
+          0.385
+         ]
+        ]
+       },
+       "black": {
+        "n": 1045,
+        "selection_rate": [
+         0.1617,
+         [
+          0.1392,
+          0.1856
+         ]
+        ],
+        "false_positive_rate": [
+         0.1457,
+         [
+          0.124,
+          0.1707
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.2663,
+         [
+          0.197,
+          0.3355
+         ]
+        ]
+       },
+       "hispanic": {
+        "n": 119,
+        "selection_rate": [
+         0.0924,
+         [
+          0.042,
+          0.1429
+         ]
+        ],
+        "false_positive_rate": [
+         0.0882,
+         [
+          0.039,
+          0.1457
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.1818,
+         [
+          0.0,
+          0.4444
+         ]
+        ]
+       }
+      },
+      "top_features_gain": {
+       "num__off_consent_hit_rate_365d_shrunk": 0.0286,
+       "cat__subject_race_hispanic": 0.0212,
+       "cat__subject_race_white": 0.0197,
+       "num__off_hit_rate_same_race_past": 0.0164,
+       "num__off_hit_rate_365d_shrunk": 0.0146,
+       "cat__zone_321": 0.0137,
+       "num__off_minutes_since_first_stop_today": 0.0128,
+       "num__time_heaped": 0.0114,
+       "cat__subject_sex_male": 0.0114,
+       "cat__zone_311": 0.0111,
+       "cat__subject_sex_female": 0.0111,
+       "cat__zone_723": 0.011,
+       "cat__precinct_2": 0.0103,
+       "cat__zone_725": 0.0101,
+       "cat__zone_125": 0.01
+      }
+     },
+     "pltr": {
+      "auc": 0.6349,
+      "auc_ci95": [
+       0.6039,
+       0.6628
+      ],
+      "pr_auc": 0.2806,
+      "brier": 0.1548,
+      "n_features": 33,
+      "seconds": 572.5,
+      "fairness_topk": {
+       "k": 406,
+       "share_selected": 0.22,
+       "white": {
+        "n": 661,
+        "selection_rate": [
+         0.3691,
+         [
+          0.3335,
+          0.4078
+         ]
+        ],
+        "false_positive_rate": [
+         0.3194,
+         [
+          0.2811,
+          0.3636
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.3402,
+         [
+          0.2849,
+          0.3956
+         ]
+        ]
+       },
+       "black": {
+        "n": 1045,
+        "selection_rate": [
+         0.1416,
+         [
+          0.1196,
+          0.1617
+         ]
+        ],
+        "false_positive_rate": [
+         0.1304,
+         [
+          0.1081,
+          0.152
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.25,
+         [
+          0.1838,
+          0.3201
+         ]
+        ]
+       },
+       "hispanic": {
+        "n": 119,
+        "selection_rate": [
+         0.084,
+         [
+          0.042,
+          0.1345
+         ]
+        ],
+        "false_positive_rate": [
+         0.0882,
+         [
+          0.0396,
+          0.149
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.1,
+         [
+          0.0,
+          0.3333
+         ]
+        ]
+       }
+      },
+      "vs_scorecard_full_time": {
+       "delta_auc": 0.0834,
+       "ci95": [
+        0.0543,
+        0.1164
+       ]
+      },
+      "pltr": {
+       "linear_terms": 135,
+       "rules_extracted": 658,
+       "rules_after_dedup": 655,
+       "selected_linear": 26,
+       "selected_rules": 111,
+       "lasso_C": 0.31622776601683794,
+       "cv_auc_at_C": 0.6688,
+       "cv_auc_by_C": {
+        "0.001": 0.5,
+        "0.003162": 0.6429,
+        "0.01": 0.6442,
+        "0.03162": 0.6566,
+        "0.1": 0.6678,
+        "0.3162": 0.6688,
+        "1": 0.6661,
+        "3.162": 0.6622,
+        "10": 0.6595
+       },
+       "gamma": 1.0,
+       "pilot_C": 1.0
+      }
+     }
+    },
+    "full_time_officer_blind": {
+     "scorecard": {
+      "auc": 0.6164,
+      "auc_ci95": [
+       0.5872,
+       0.6455
+      ],
+      "pr_auc": 0.2756,
+      "brier": 0.1561,
+      "n_features": 30,
+      "seconds": 2.3,
+      "vs_full_time": {
+       "delta_auc": 0.065,
+       "ci95": [
+        0.0312,
+        0.0987
+       ]
+      },
+      "fairness_topk": {
+       "k": 406,
+       "share_selected": 0.22,
+       "white": {
+        "n": 661,
+        "selection_rate": [
+         0.2209,
+         [
+          0.1936,
+          0.2587
+         ]
+        ],
+        "false_positive_rate": [
+         0.1905,
+         [
+          0.1585,
+          0.229
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.3425,
+         [
+          0.271,
+          0.4164
+         ]
+        ]
+       },
+       "black": {
+        "n": 1045,
+        "selection_rate": [
+         0.223,
+         [
+          0.1981,
+          0.2493
+         ]
+        ],
+        "false_positive_rate": [
+         0.2092,
+         [
+          0.1819,
+          0.2373
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.2361,
+         [
+          0.1828,
+          0.289
+         ]
+        ]
+       },
+       "hispanic": {
+        "n": 119,
+        "selection_rate": [
+         0.2017,
+         [
+          0.1345,
+          0.2689
+         ]
+        ],
+        "false_positive_rate": [
+         0.1765,
+         [
+          0.1116,
+          0.2561
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.25,
+         [
+          0.0888,
+          0.4318
+         ]
+        ]
+       }
+      }
+     },
+     "xgboost": {
+      "auc": 0.6379,
+      "auc_ci95": [
+       0.6052,
+       0.6658
+      ],
+      "pr_auc": 0.3017,
+      "brier": 0.1544,
+      "n_features": 30,
+      "seconds": 3.8,
+      "vs_full_time": {
+       "delta_auc": 0.0815,
+       "ci95": [
+        0.0432,
+        0.1218
+       ]
+      },
+      "fairness_topk": {
+       "k": 406,
+       "share_selected": 0.22,
+       "white": {
+        "n": 661,
+        "selection_rate": [
+         0.23,
+         [
+          0.1952,
+          0.2617
+         ]
+        ],
+        "false_positive_rate": [
+         0.1905,
+         [
+          0.1558,
+          0.2263
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.3684,
+         [
+          0.2877,
+          0.4509
+         ]
+        ]
+       },
+       "black": {
+        "n": 1045,
+        "selection_rate": [
+         0.2144,
+         [
+          0.1895,
+          0.2355
+         ]
+        ],
+        "false_positive_rate": [
+         0.1951,
+         [
+          0.1695,
+          0.2188
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.2589,
+         [
+          0.2023,
+          0.3166
+         ]
+        ]
+       },
+       "hispanic": {
+        "n": 119,
+        "selection_rate": [
+         0.2101,
+         [
+          0.1429,
+          0.2857
+         ]
+        ],
+        "false_positive_rate": [
+         0.2157,
+         [
+          0.1368,
+          0.2985
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.12,
+         [
+          0.0,
+          0.2653
+         ]
+        ]
+       }
+      }
+     },
+     "pltr": {
+      "auc": 0.6247,
+      "auc_ci95": [
+       0.5951,
+       0.6538
+      ],
+      "pr_auc": 0.2744,
+      "brier": 0.1551,
+      "n_features": 30,
+      "seconds": 535.8,
+      "fairness_topk": {
+       "k": 406,
+       "share_selected": 0.22,
+       "white": {
+        "n": 661,
+        "selection_rate": [
+         0.2617,
+         [
+          0.23,
+          0.295
+         ]
+        ],
+        "false_positive_rate": [
+         0.2103,
+         [
+          0.1778,
+          0.244
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.3873,
+         [
+          0.3201,
+          0.458
+         ]
+        ]
+       },
+       "black": {
+        "n": 1045,
+        "selection_rate": [
+         0.1952,
+         [
+          0.1717,
+          0.2172
+         ]
+        ],
+        "false_positive_rate": [
+         0.1821,
+         [
+          0.1591,
+          0.2075
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.2402,
+         [
+          0.1794,
+          0.301
+         ]
+        ]
+       },
+       "hispanic": {
+        "n": 119,
+        "selection_rate": [
+         0.2017,
+         [
+          0.1261,
+          0.2689
+         ]
+        ],
+        "false_positive_rate": [
+         0.1961,
+         [
+          0.1238,
+          0.2643
+         ]
+        ],
+        "hit_rate_of_selected": [
+         0.1667,
+         [
+          0.037,
+          0.3333
+         ]
+        ]
+       }
+      },
+      "vs_scorecard_full_time": {
+       "delta_auc": 0.0732,
+       "ci95": [
+        0.0373,
+        0.1125
+       ]
+      },
+      "pltr": {
+       "linear_terms": 126,
+       "rules_extracted": 535,
+       "rules_after_dedup": 532,
+       "selected_linear": 23,
+       "selected_rules": 82,
+       "lasso_C": 0.31622776601683794,
+       "cv_auc_at_C": 0.6595,
+       "cv_auc_by_C": {
+        "0.001": 0.5,
+        "0.003162": 0.6429,
+        "0.01": 0.6443,
+        "0.03162": 0.6529,
+        "0.1": 0.658,
+        "0.3162": 0.6595,
+        "1": 0.6561,
+        "3.162": 0.6525,
+        "10": 0.6502
+       },
+       "gamma": 1.0,
+       "pilot_C": 1.0
+      }
+     }
+    },
+    "officer_only": {
+     "scorecard": {
+      "auc": 0.6178,
+      "auc_ci95": [
+       0.5856,
+       0.6484
+      ],
+      "pr_auc": 0.2788,
+      "brier": 0.1553,
+      "n_features": 15,
+      "seconds": 1.8
+     },
+     "xgboost": {
+      "auc": 0.6166,
+      "auc_ci95": [
+       0.5868,
+       0.6459
+      ],
+      "pr_auc": 0.2861,
+      "brier": 0.1569,
+      "n_features": 15,
+      "seconds": 2.6
+     }
+    }
+   },
+   "test_officers_seen_in_training": 0
+  }
+ }
+}

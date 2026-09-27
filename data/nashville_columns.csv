@@ -97,3 +97,28 @@ light_period,feature,category,0.25,time of the stop
 is_dark,feature,boolean,0.25,time of the stop
 minutes_after_civil_dusk,analysis_helper,Int16,0.25,"maps, veil-of-darkness test, descriptive tables - not a feature by default"
 in_intertwilight,analysis_helper,boolean,0.0,"maps, veil-of-darkness test, descriptive tables - not a feature by default"
+off_stops_365d,feature,float32,0.0,"officer track record, strictly from past stops"
+off_searches_365d,feature,float32,0.0,"officer track record, strictly from past stops"
+off_hits_365d,feature,float32,0.0,"officer track record, strictly from past stops"
+off_consent_365d,feature,float32,0.0,"officer track record, strictly from past stops"
+off_consent_hits_365d,feature,float32,0.0,"officer track record, strictly from past stops"
+off_search_rate_365d,feature,float32,0.16,"officer track record, strictly from past stops"
+off_hit_rate_365d_shrunk,feature,float32,0.0,"officer track record, strictly from past stops"
+off_consent_hit_rate_365d_shrunk,feature,float32,0.0,"officer track record, strictly from past stops"
+off_stops_today_before,feature,float32,0.25,"officer track record, strictly from past stops"
+off_searches_today_before,feature,float32,0.25,"officer track record, strictly from past stops"
+off_hits_today_before,feature,float32,0.25,"officer track record, strictly from past stops"
+off_minutes_since_first_stop_today,feature,float32,0.25,"officer track record, strictly from past stops"
+off_minutes_since_last_search,feature,float32,1.3,"officer track record, strictly from past stops"
+off_last_search_hit,feature,float32,1.3,"officer track record, strictly from past stops"
+off_experience_days,feature,float32,0.0,"officer track record, strictly from past stops"
+off_experience_censored,quality_flag,boolean,0.0,officer history incomplete (active before 2010 / stop in 2010)
+off_history_warmup,quality_flag,boolean,0.0,officer history incomplete (active before 2010 / stop in 2010)
+off_consent_white_past,feature,float32,0.0,officer disparity over the officer's past stops (search skew / outcome gap by race)
+off_consent_black_past,feature,float32,0.0,officer disparity over the officer's past stops (search skew / outcome gap by race)
+off_consent_hisp_past,feature,float32,0.0,officer disparity over the officer's past stops (search skew / outcome gap by race)
+off_log_search_ratio_black_white,feature,float32,2.52,officer disparity over the officer's past stops (search skew / outcome gap by race)
+off_log_search_ratio_hisp_white,feature,float32,2.52,officer disparity over the officer's past stops (search skew / outcome gap by race)
+off_hit_gap_black_white,feature,float32,0.0,officer disparity over the officer's past stops (search skew / outcome gap by race)
+off_hit_gap_hisp_white,feature,float32,0.0,officer disparity over the officer's past stops (search skew / outcome gap by race)
+off_hit_rate_same_race_past,feature_race_derived,float32,0.0,officer's past hit rate on drivers of THIS driver's race - uses the driver race: never in a race-blind model

@@ -1,0 +1,4130 @@
+{
+ "temporal/full_time_officer": [
+  {
+   "term": "cat__zone_infrequent_sklearn",
+   "kind": "linear",
+   "coef": -1.96912,
+   "odds_ratio": 0.13958,
+   "avg_marginal_effect": -0.13324,
+   "support_share": 0.00022
+  },
+  {
+   "term": "off_stops_365d <= 1.71e+03 AND hour_sin > 0.921",
+   "kind": "rule (2 variables)",
+   "coef": 0.5535,
+   "odds_ratio": 1.73933,
+   "avg_marginal_effect": 0.0819,
+   "support_share": 0.02472
+  },
+  {
+   "term": "cat__zone_117",
+   "kind": "linear",
+   "coef": -0.63482,
+   "odds_ratio": 0.53003,
+   "avg_marginal_effect": -0.0661,
+   "support_share": 0.00149
+  },
+  {
+   "term": "cat__subject_race_hispanic",
+   "kind": "linear",
+   "coef": -0.58271,
+   "odds_ratio": 0.55838,
+   "avg_marginal_effect": -0.06301,
+   "support_share": 0.07951
+  },
+  {
+   "term": "off_hit_rate_same_race_past <= 0.179 AND off_hit_rate_365d_shrunk <= 0.129",
+   "kind": "rule (2 variables)",
+   "coef": -0.53408,
+   "odds_ratio": 0.58621,
+   "avg_marginal_effect": -0.05951,
+   "support_share": 0.15063
+  },
+  {
+   "term": "cat__plate_state_CA",
+   "kind": "linear",
+   "coef": -0.55454,
+   "odds_ratio": 0.57434,
+   "avg_marginal_effect": -0.05926,
+   "support_share": 0.0009
+  },
+  {
+   "term": "plate_state in {AK, AR, AZ, CA, CT, GA, ... (22 values)} AND month_cos > 0.25",
+   "kind": "rule (2 variables)",
+   "coef": 0.40217,
+   "odds_ratio": 1.49507,
+   "avg_marginal_effect": 0.05748,
+   "support_share": 0.0044
+  },
+  {
+   "term": "off_minutes_since_first_stop_today <= 5.5 AND off_searches_today_before > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.38482,
+   "odds_ratio": 1.46935,
+   "avg_marginal_effect": 0.05473,
+   "support_share": 0.00474
+  },
+  {
+   "term": "cat__zone_335",
+   "kind": "linear",
+   "coef": 0.34922,
+   "odds_ratio": 1.41797,
+   "avg_marginal_effect": 0.04916,
+   "support_share": 0.00701
+  },
+  {
+   "term": "cat__subject_race_unknown",
+   "kind": "linear",
+   "coef": -0.42449,
+   "odds_ratio": 0.6541,
+   "avg_marginal_effect": -0.04734,
+   "support_share": 0.00396
+  },
+  {
+   "term": "off_minutes_since_first_stop_today <= 5.5 AND plate_state in {CO, DE, FL, HI, IL, IN, ... (21 values)}",
+   "kind": "rule (2 variables)",
+   "coef": 0.32286,
+   "odds_ratio": 1.38108,
+   "avg_marginal_effect": 0.04514,
+   "support_share": 0.00482
+  },
+  {
+   "term": "cat__subject_race_asian/pacific islander",
+   "kind": "linear",
+   "coef": 0.30793,
+   "odds_ratio": 1.36061,
+   "avg_marginal_effect": 0.04287,
+   "support_share": 0.00458
+  },
+  {
+   "term": "cat__zone_315",
+   "kind": "linear",
+   "coef": 0.30467,
+   "odds_ratio": 1.35618,
+   "avg_marginal_effect": 0.04232,
+   "support_share": 0.01272
+  },
+  {
+   "term": "off_search_rate_365d > 0.255 AND hour_cos <= 0.413",
+   "kind": "rule (2 variables)",
+   "coef": 0.27804,
+   "odds_ratio": 1.32054,
+   "avg_marginal_effect": 0.0382,
+   "support_share": 0.04044
+  },
+  {
+   "term": "month_sin > -0.25 AND off_searches_today_before > 2.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.31632,
+   "odds_ratio": 0.72883,
+   "avg_marginal_effect": -0.03651,
+   "support_share": 0.00525
+  },
+  {
+   "term": "hour_cos <= -0.847 AND off_stops_365d <= 42.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.24909,
+   "odds_ratio": 1.28286,
+   "avg_marginal_effect": 0.0341,
+   "support_share": 0.00629
+  },
+  {
+   "term": "num__off_consent_hit_rate_365d_shrunk",
+   "kind": "linear",
+   "coef": 0.25519,
+   "odds_ratio": 1.2907,
+   "avg_marginal_effect": 0.03248,
+   "support_share": 1.0
+  },
+  {
+   "term": "cat__subject_race_white",
+   "kind": "linear",
+   "coef": 0.24917,
+   "odds_ratio": 1.28296,
+   "avg_marginal_effect": 0.03234,
+   "support_share": 0.35896
+  },
+  {
+   "term": "off_stops_365d <= 1.71e+03 AND hour > 21.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.23455,
+   "odds_ratio": 1.26434,
+   "avg_marginal_effect": 0.03139,
+   "support_share": 0.13736
+  },
+  {
+   "term": "off_search_rate_365d <= 0.255 AND subject_age <= 19.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.23037,
+   "odds_ratio": 1.25907,
+   "avg_marginal_effect": 0.03101,
+   "support_share": 0.08979
+  },
+  {
+   "term": "reason_for_stop in {__missing__, child restraint, moving traffic violation, parking violation, safety violation, seatbelt violation} AND off_hits_today_before > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.22008,
+   "odds_ratio": 1.24617,
+   "avg_marginal_effect": 0.02983,
+   "support_share": 0.01956
+  },
+  {
+   "term": "off_experience_days <= 569 AND off_hits_today_before > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.21947,
+   "odds_ratio": 1.24541,
+   "avg_marginal_effect": 0.02976,
+   "support_share": 0.01296
+  },
+  {
+   "term": "off_consent_365d > 9.5 AND off_stops_365d <= 66.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.2123,
+   "odds_ratio": 1.23652,
+   "avg_marginal_effect": 0.02875,
+   "support_share": 0.01224
+  },
+  {
+   "term": "off_last_search_hit <= 0.5 AND hour <= 6.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.21025,
+   "odds_ratio": 1.23398,
+   "avg_marginal_effect": 0.0278,
+   "support_share": 0.19897
+  },
+  {
+   "term": "off_log_search_ratio_black_white > 0.361 AND off_log_minutes_since_last_search <= 3.86",
+   "kind": "rule (2 variables)",
+   "coef": -0.23289,
+   "odds_ratio": 0.79224,
+   "avg_marginal_effect": -0.02764,
+   "support_share": 0.01883
+  },
+  {
+   "term": "time_heaped > 0.5 AND off_log_minutes_since_last_search <= 4.49",
+   "kind": "rule (2 variables)",
+   "coef": -0.19624,
+   "odds_ratio": 0.82181,
+   "avg_marginal_effect": -0.02352,
+   "support_share": 0.00452
+  },
+  {
+   "term": "off_log_minutes_since_last_search <= 4.7",
+   "kind": "rule (1 variable)",
+   "coef": -0.18548,
+   "odds_ratio": 0.83071,
+   "avg_marginal_effect": -0.02254,
+   "support_share": 0.10116
+  },
+  {
+   "term": "cat__zone_833",
+   "kind": "linear",
+   "coef": 0.16678,
+   "odds_ratio": 1.18149,
+   "avg_marginal_effect": 0.02231,
+   "support_share": 0.00191
+  },
+  {
+   "term": "off_consent_365d <= 9.5 AND hour > 12.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.1686,
+   "odds_ratio": 1.18365,
+   "avg_marginal_effect": 0.02227,
+   "support_share": 0.1335
+  },
+  {
+   "term": "off_minutes_since_first_stop_today <= 5.5 AND off_stops_365d > 1.74e+03",
+   "kind": "rule (2 variables)",
+   "coef": -0.18233,
+   "odds_ratio": 0.83333,
+   "avg_marginal_effect": -0.02194,
+   "support_share": 0.00406
+  },
+  {
+   "term": "subject_race in {asian/pacific islander, white} AND off_stops_365d <= 71.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.16292,
+   "odds_ratio": 1.17694,
+   "avg_marginal_effect": 0.02171,
+   "support_share": 0.03001
+  },
+  {
+   "term": "hour_cos > -0.847 AND subject_age <= 18.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.16305,
+   "odds_ratio": 1.1771,
+   "avg_marginal_effect": 0.02169,
+   "support_share": 0.04394
+  },
+  {
+   "term": "off_experience_days > 569 AND off_minutes_since_first_stop_today <= 5.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.16255,
+   "odds_ratio": 1.17651,
+   "avg_marginal_effect": 0.02128,
+   "support_share": 0.21269
+  },
+  {
+   "term": "off_minutes_since_first_stop_today <= 5.5 AND hour_cos <= -0.452",
+   "kind": "rule (2 variables)",
+   "coef": -0.174,
+   "odds_ratio": 0.8403,
+   "avg_marginal_effect": -0.02119,
+   "support_share": 0.08964
+  },
+  {
+   "term": "cat__zone_525",
+   "kind": "linear",
+   "coef": -0.1723,
+   "odds_ratio": 0.84172,
+   "avg_marginal_effect": -0.02082,
+   "support_share": 0.01128
+  },
+  {
+   "term": "cat__zone_311",
+   "kind": "linear",
+   "coef": 0.1495,
+   "odds_ratio": 1.16126,
+   "avg_marginal_effect": 0.01985,
+   "support_share": 0.02659
+  },
+  {
+   "term": "cat__zone_111",
+   "kind": "linear",
+   "coef": -0.16184,
+   "odds_ratio": 0.85057,
+   "avg_marginal_effect": -0.01967,
+   "support_share": 0.03383
+  },
+  {
+   "term": "cat__zone_125",
+   "kind": "linear",
+   "coef": 0.14434,
+   "odds_ratio": 1.15528,
+   "avg_marginal_effect": 0.01917,
+   "support_share": 0.01015
+  },
+  {
+   "term": "off_hit_gap_hisp_white > -0.0345 AND off_log_search_ratio_hisp_white > 0.475",
+   "kind": "rule (2 variables)",
+   "coef": -0.15481,
+   "odds_ratio": 0.85658,
+   "avg_marginal_effect": -0.01912,
+   "support_share": 0.21322
+  },
+  {
+   "term": "precinct in {1, 5, 7} AND hour_cos <= -0.847",
+   "kind": "rule (2 variables)",
+   "coef": -0.15616,
+   "odds_ratio": 0.85543,
+   "avg_marginal_effect": -0.01904,
+   "support_share": 0.05439
+  },
+  {
+   "term": "precinct in {2, 3, 4, 6, 8, U, ... (7 values)} AND hour_sin > -0.223",
+   "kind": "rule (2 variables)",
+   "coef": -0.15044,
+   "odds_ratio": 0.86033,
+   "avg_marginal_effect": -0.01873,
+   "support_share": 0.27167
+  },
+  {
+   "term": "off_search_rate_365d <= 0.255 AND off_consent_365d <= 9.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.14934,
+   "odds_ratio": 0.86128,
+   "avg_marginal_effect": -0.01852,
+   "support_share": 0.21629
+  },
+  {
+   "term": "zone in {113, 115, 121, 125, 215, 225, ... (31 values)} AND hour_sin > 0.878",
+   "kind": "rule (2 variables)",
+   "coef": 0.13746,
+   "odds_ratio": 1.14735,
+   "avg_marginal_effect": 0.01821,
+   "support_share": 0.01447
+  },
+  {
+   "term": "time_heaped > 0.5 AND off_stops_365d <= 172",
+   "kind": "rule (2 variables)",
+   "coef": 0.13713,
+   "odds_ratio": 1.14698,
+   "avg_marginal_effect": 0.01816,
+   "support_share": 0.0197
+  },
+  {
+   "term": "off_experience_days > 569 AND time_heaped > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.13733,
+   "odds_ratio": 1.14721,
+   "avg_marginal_effect": 0.01816,
+   "support_share": 0.04014
+  },
+  {
+   "term": "hour_sin > 0.921 AND month_cos > -0.683",
+   "kind": "rule (2 variables)",
+   "coef": -0.14108,
+   "odds_ratio": 0.86842,
+   "avg_marginal_effect": -0.01722,
+   "support_share": 0.01893
+  },
+  {
+   "term": "off_stops_365d <= 1.71e+03 AND off_searches_today_before > 1.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.13856,
+   "odds_ratio": 0.87061,
+   "avg_marginal_effect": -0.01695,
+   "support_share": 0.03427
+  },
+  {
+   "term": "subject_sex in {male} AND subject_age > 43.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.12357,
+   "odds_ratio": 1.13153,
+   "avg_marginal_effect": 0.01617,
+   "support_share": 0.12486
+  },
+  {
+   "term": "hour_cos <= -0.847 AND hour <= 10.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.12524,
+   "odds_ratio": 0.88229,
+   "avg_marginal_effect": -0.01537,
+   "support_share": 0.0314
+  },
+  {
+   "term": "off_last_search_hit > 0.5 AND off_minutes_since_first_stop_today <= 10.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.11497,
+   "odds_ratio": 1.12184,
+   "avg_marginal_effect": 0.01506,
+   "support_share": 0.0851
+  },
+  {
+   "term": "subject_sex in {__missing__, female} AND off_consent_365d > 10.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.112,
+   "odds_ratio": 1.11851,
+   "avg_marginal_effect": 0.01459,
+   "support_share": 0.14926
+  },
+  {
+   "term": "cat__zone_613",
+   "kind": "linear",
+   "coef": 0.10695,
+   "odds_ratio": 1.11287,
+   "avg_marginal_effect": 0.01403,
+   "support_share": 0.03266
+  },
+  {
+   "term": "subject_sex in {__missing__, female} AND month_cos <= -0.25",
+   "kind": "rule (2 variables)",
+   "coef": 0.10505,
+   "odds_ratio": 1.11076,
+   "avg_marginal_effect": 0.01373,
+   "support_share": 0.07387
+  },
+  {
+   "term": "time_heaped <= 0.5",
+   "kind": "rule (1 variable)",
+   "coef": -0.10469,
+   "odds_ratio": 0.90061,
+   "avg_marginal_effect": -0.0137,
+   "support_share": 0.93739
+  },
+  {
+   "term": "subject_sex in {__missing__, female} AND subject_age > 33.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.10185,
+   "odds_ratio": 1.10721,
+   "avg_marginal_effect": 0.01332,
+   "support_share": 0.05714
+  },
+  {
+   "term": "off_stops_365d > 1.71e+03 AND hour > 16.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.10796,
+   "odds_ratio": 0.89766,
+   "avg_marginal_effect": -0.0133,
+   "support_share": 0.0118
+  },
+  {
+   "term": "off_search_rate_365d <= 0.255 AND off_minutes_since_first_stop_today <= 10.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.10121,
+   "odds_ratio": 1.10651,
+   "avg_marginal_effect": 0.01304,
+   "support_share": 0.29961
+  },
+  {
+   "term": "plate_state in {AK, AR, AZ, CA, CT, GA, ... (22 values)}",
+   "kind": "rule (1 variable)",
+   "coef": 0.0984,
+   "odds_ratio": 1.10341,
+   "avg_marginal_effect": 0.01289,
+   "support_share": 0.01095
+  },
+  {
+   "term": "off_log_search_ratio_hisp_white <= 0.516 AND off_consent_365d <= 9.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.1007,
+   "odds_ratio": 0.9042,
+   "avg_marginal_effect": -0.01256,
+   "support_share": 0.16265
+  },
+  {
+   "term": "subject_sex in {male} AND off_consent_365d <= 9.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.09786,
+   "odds_ratio": 0.90677,
+   "avg_marginal_effect": -0.01223,
+   "support_share": 0.19055
+  },
+  {
+   "term": "hour_cos <= -0.847 AND off_log_minutes_since_last_search <= 5.42",
+   "kind": "rule (2 variables)",
+   "coef": -0.09725,
+   "odds_ratio": 0.90733,
+   "avg_marginal_effect": -0.01203,
+   "support_share": 0.01857
+  },
+  {
+   "term": "precinct in {2, 3, 4, 6, 8, U, ... (7 values)} AND off_log_minutes_since_last_search <= 4",
+   "kind": "rule (2 variables)",
+   "coef": -0.09313,
+   "odds_ratio": 0.91108,
+   "avg_marginal_effect": -0.01154,
+   "support_share": 0.03401
+  },
+  {
+   "term": "cat__reason_for_stop_registration",
+   "kind": "linear",
+   "coef": -0.09155,
+   "odds_ratio": 0.91252,
+   "avg_marginal_effect": -0.01136,
+   "support_share": 0.05166
+  },
+  {
+   "term": "off_last_search_hit > 0.5 AND subject_age > 40.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.0831,
+   "odds_ratio": 1.08665,
+   "avg_marginal_effect": 0.01082,
+   "support_share": 0.04303
+  },
+  {
+   "term": "off_last_search_hit <= 0.5 AND precinct in {2, 3, 4, __missing__}",
+   "kind": "rule (2 variables)",
+   "coef": -0.08514,
+   "odds_ratio": 0.91839,
+   "avg_marginal_effect": -0.01074,
+   "support_share": 0.3544
+  },
+  {
+   "term": "cat__plate_state_SC",
+   "kind": "linear",
+   "coef": 0.08153,
+   "odds_ratio": 1.08494,
+   "avg_marginal_effect": 0.01063,
+   "support_share": 0.00068
+  },
+  {
+   "term": "off_stops_365d <= 1.71e+03 AND month > 8.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.08201,
+   "odds_ratio": 1.08547,
+   "avg_marginal_effect": 0.01055,
+   "support_share": 0.28761
+  },
+  {
+   "term": "subject_age <= 19.5 AND month_sin <= -0.683",
+   "kind": "rule (2 variables)",
+   "coef": 0.07893,
+   "odds_ratio": 1.08213,
+   "avg_marginal_effect": 0.01028,
+   "support_share": 0.02104
+  },
+  {
+   "term": "cat__zone_535",
+   "kind": "linear",
+   "coef": -0.0821,
+   "odds_ratio": 0.92118,
+   "avg_marginal_effect": -0.0102,
+   "support_share": 0.01061
+  },
+  {
+   "term": "off_minutes_since_first_stop_today <= 5.5 AND hour <= 0.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.07402,
+   "odds_ratio": 0.92865,
+   "avg_marginal_effect": -0.00924,
+   "support_share": 0.06086
+  },
+  {
+   "term": "num__off_log_search_ratio_black_white",
+   "kind": "linear",
+   "coef": 0.07213,
+   "odds_ratio": 1.07479,
+   "avg_marginal_effect": 0.00918,
+   "support_share": 1.0
+  },
+  {
+   "term": "off_stops_365d <= 1.71e+03 AND is_holiday_window > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.07031,
+   "odds_ratio": 1.07284,
+   "avg_marginal_effect": 0.00912,
+   "support_share": 0.06279
+  },
+  {
+   "term": "hour_cos > -0.847 AND off_log_minutes_since_last_search <= 4.7",
+   "kind": "rule (2 variables)",
+   "coef": -0.07052,
+   "odds_ratio": 0.93191,
+   "avg_marginal_effect": -0.00882,
+   "support_share": 0.0896
+  },
+  {
+   "term": "subject_sex in {__missing__, female} AND hour_sin <= -0.963",
+   "kind": "rule (2 variables)",
+   "coef": 0.06736,
+   "odds_ratio": 1.06968,
+   "avg_marginal_effect": 0.00874,
+   "support_share": 0.02102
+  },
+  {
+   "term": "time_heaped > 0.5 AND hour > 18.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.06947,
+   "odds_ratio": 0.93289,
+   "avg_marginal_effect": -0.00866,
+   "support_share": 0.02219
+  },
+  {
+   "term": "reason_for_stop in {investigative stop, registration, vehicle equipment violation} AND is_holiday_window > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.06518,
+   "odds_ratio": 1.06735,
+   "avg_marginal_effect": 0.00845,
+   "support_share": 0.03329
+  },
+  {
+   "term": "precinct in {2, 3, 4, 6, 8, U, ... (7 values)} AND off_log_search_ratio_black_white <= 0.36",
+   "kind": "rule (2 variables)",
+   "coef": 0.06566,
+   "odds_ratio": 1.06786,
+   "avg_marginal_effect": 0.00843,
+   "support_share": 0.28883
+  },
+  {
+   "term": "precinct in {1, 5, 7} AND subject_age > 43.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.0619,
+   "odds_ratio": 1.06386,
+   "avg_marginal_effect": 0.00801,
+   "support_share": 0.04957
+  },
+  {
+   "term": "off_consent_365d <= 9.5 AND off_log_minutes_since_last_search > 12.6",
+   "kind": "rule (2 variables)",
+   "coef": 0.06144,
+   "odds_ratio": 1.06337,
+   "avg_marginal_effect": 0.00796,
+   "support_share": 0.01005
+  },
+  {
+   "term": "cat__zone_225",
+   "kind": "linear",
+   "coef": 0.06097,
+   "odds_ratio": 1.06287,
+   "avg_marginal_effect": 0.0079,
+   "support_share": 0.01202
+  },
+  {
+   "term": "is_holiday_window <= 0.5 AND month_cos > 0.683",
+   "kind": "rule (2 variables)",
+   "coef": 0.06141,
+   "odds_ratio": 1.06334,
+   "avg_marginal_effect": 0.00789,
+   "support_share": 0.23368
+  },
+  {
+   "term": "cat__zone_223",
+   "kind": "linear",
+   "coef": -0.06309,
+   "odds_ratio": 0.93886,
+   "avg_marginal_effect": -0.00789,
+   "support_share": 0.03009
+  },
+  {
+   "term": "off_log_minutes_since_last_search > 4.7 AND hour_sin > 0.921",
+   "kind": "rule (2 variables)",
+   "coef": 0.06015,
+   "odds_ratio": 1.062,
+   "avg_marginal_effect": 0.00779,
+   "support_share": 0.0237
+  },
+  {
+   "term": "num__off_log_search_ratio_hisp_white",
+   "kind": "linear",
+   "coef": -0.05649,
+   "odds_ratio": 0.94508,
+   "avg_marginal_effect": -0.00719,
+   "support_share": 1.0
+  },
+  {
+   "term": "cat__zone_617",
+   "kind": "linear",
+   "coef": -0.05669,
+   "odds_ratio": 0.94489,
+   "avg_marginal_effect": -0.00709,
+   "support_share": 0.01288
+  },
+  {
+   "term": "cat__reason_for_stop_safety violation",
+   "kind": "linear",
+   "coef": -0.05333,
+   "odds_ratio": 0.94807,
+   "avg_marginal_effect": -0.00669,
+   "support_share": 0.05294
+  },
+  {
+   "term": "off_hit_gap_black_white <= -0.032 AND subject_age > 43.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.04916,
+   "odds_ratio": 1.05039,
+   "avg_marginal_effect": 0.00634,
+   "support_share": 0.0491
+  },
+  {
+   "term": "num__off_stops_365d",
+   "kind": "linear",
+   "coef": 0.04975,
+   "odds_ratio": 1.05101,
+   "avg_marginal_effect": 0.00633,
+   "support_share": 1.0
+  },
+  {
+   "term": "off_experience_days <= 569 AND off_log_search_ratio_black_white > 0.348",
+   "kind": "rule (2 variables)",
+   "coef": -0.05009,
+   "odds_ratio": 0.95114,
+   "avg_marginal_effect": -0.00631,
+   "support_share": 0.18397
+  },
+  {
+   "term": "off_experience_days <= 569 AND off_minutes_since_first_stop_today <= 4.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.04859,
+   "odds_ratio": 1.04979,
+   "avg_marginal_effect": 0.00625,
+   "support_share": 0.13051
+  },
+  {
+   "term": "cat__plate_state_GA",
+   "kind": "linear",
+   "coef": -0.04881,
+   "odds_ratio": 0.95237,
+   "avg_marginal_effect": -0.00612,
+   "support_share": 0.00225
+  },
+  {
+   "term": "hour > 21.5 AND month_cos <= -0.25",
+   "kind": "rule (2 variables)",
+   "coef": -0.04757,
+   "odds_ratio": 0.95354,
+   "avg_marginal_effect": -0.00598,
+   "support_share": 0.05598
+  },
+  {
+   "term": "num__off_hit_rate_same_race_past",
+   "kind": "linear",
+   "coef": 0.04654,
+   "odds_ratio": 1.04764,
+   "avg_marginal_effect": 0.00592,
+   "support_share": 1.0
+  },
+  {
+   "term": "precinct in {2, 3, 4, 6, 8, U, ... (7 values)} AND off_consent_365d <= 18.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.04588,
+   "odds_ratio": 0.95516,
+   "avg_marginal_effect": -0.0058,
+   "support_share": 0.24948
+  },
+  {
+   "term": "off_consent_365d <= 9.5 AND reason_for_stop in {__missing__, child restraint, moving traffic violation, parking violation, safety violation, seatbelt violation}",
+   "kind": "rule (2 variables)",
+   "coef": 0.04434,
+   "odds_ratio": 1.04534,
+   "avg_marginal_effect": 0.0057,
+   "support_share": 0.10396
+  },
+  {
+   "term": "off_hit_rate_same_race_past <= 0.179",
+   "kind": "rule (1 variable)",
+   "coef": -0.04443,
+   "odds_ratio": 0.95655,
+   "avg_marginal_effect": -0.00568,
+   "support_share": 0.70813
+  },
+  {
+   "term": "cat__zone_215",
+   "kind": "linear",
+   "coef": 0.04238,
+   "odds_ratio": 1.04329,
+   "avg_marginal_effect": 0.00546,
+   "support_share": 0.01089
+  },
+  {
+   "term": "reason_for_stop in {__missing__, child restraint, moving traffic violation, parking violation, safety violation, seatbelt violation} AND hour > 13.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.04257,
+   "odds_ratio": 1.04349,
+   "avg_marginal_effect": 0.00545,
+   "support_share": 0.28998
+  },
+  {
+   "term": "month > 8.5 AND month_cos <= 0.25",
+   "kind": "rule (2 variables)",
+   "coef": -0.03886,
+   "odds_ratio": 0.96189,
+   "avg_marginal_effect": -0.00491,
+   "support_share": 0.15268
+  },
+  {
+   "term": "off_stops_365d <= 1.71e+03 AND month_sin <= -0.25",
+   "kind": "rule (2 variables)",
+   "coef": -0.0382,
+   "odds_ratio": 0.96252,
+   "avg_marginal_effect": -0.00485,
+   "support_share": 0.36869
+  },
+  {
+   "term": "off_stops_365d <= 1.71e+03 AND day_of_week > 3.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.03778,
+   "odds_ratio": 0.96292,
+   "avg_marginal_effect": -0.00479,
+   "support_share": 0.31741
+  },
+  {
+   "term": "off_last_search_hit > 0.5 AND day_of_week > 4.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.03363,
+   "odds_ratio": 0.96693,
+   "avg_marginal_effect": -0.00424,
+   "support_share": 0.03138
+  },
+  {
+   "term": "cat__zone_517",
+   "kind": "linear",
+   "coef": -0.03119,
+   "odds_ratio": 0.96929,
+   "avg_marginal_effect": -0.00393,
+   "support_share": 0.0168
+  },
+  {
+   "term": "subject_sex in {__missing__, female} AND off_log_search_ratio_black_white <= 0.329",
+   "kind": "rule (2 variables)",
+   "coef": 0.03004,
+   "odds_ratio": 1.0305,
+   "avg_marginal_effect": 0.00385,
+   "support_share": 0.08975
+  },
+  {
+   "term": "off_log_search_ratio_hisp_white <= 0.516 AND off_hit_gap_black_white <= -0.0245",
+   "kind": "rule (2 variables)",
+   "coef": 0.02921,
+   "odds_ratio": 1.02964,
+   "avg_marginal_effect": 0.00373,
+   "support_share": 0.28266
+  },
+  {
+   "term": "hour_sin > 0.921 AND plate_state in {CO, DE, FL, HI, IL, IN, ... (22 values)}",
+   "kind": "rule (2 variables)",
+   "coef": -0.02927,
+   "odds_ratio": 0.97115,
+   "avg_marginal_effect": -0.00369,
+   "support_share": 0.0195
+  },
+  {
+   "term": "subject_age <= 19.5 AND off_log_minutes_since_last_search <= 5.21",
+   "kind": "rule (2 variables)",
+   "coef": -0.02872,
+   "odds_ratio": 0.97169,
+   "avg_marginal_effect": -0.00362,
+   "support_share": 0.01568
+  },
+  {
+   "term": "off_experience_days <= 569 AND off_minutes_since_first_stop_today > 4.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.02842,
+   "odds_ratio": 0.97198,
+   "avg_marginal_effect": -0.0036,
+   "support_share": 0.25768
+  },
+  {
+   "term": "cat__reason_for_stop_vehicle equipment violation",
+   "kind": "linear",
+   "coef": -0.02812,
+   "odds_ratio": 0.97227,
+   "avg_marginal_effect": -0.00357,
+   "support_share": 0.38115
+  },
+  {
+   "term": "off_hits_today_before <= 0.5 AND month_cos > 0.933",
+   "kind": "rule (2 variables)",
+   "coef": -0.02502,
+   "odds_ratio": 0.97529,
+   "avg_marginal_effect": -0.00316,
+   "support_share": 0.09825
+  },
+  {
+   "term": "reason_for_stop in {investigative stop, registration, vehicle equipment violation} AND hour <= 6.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.02448,
+   "odds_ratio": 1.02478,
+   "avg_marginal_effect": 0.00313,
+   "support_share": 0.13861
+  },
+  {
+   "term": "off_consent_365d <= 9.5 AND month > 10.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.02386,
+   "odds_ratio": 1.02414,
+   "avg_marginal_effect": 0.00306,
+   "support_share": 0.02977
+  },
+  {
+   "term": "zone in {113, 115, 121, 125, 215, 225, ... (31 values)} AND subject_age <= 43.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.02339,
+   "odds_ratio": 0.97688,
+   "avg_marginal_effect": -0.00297,
+   "support_share": 0.36095
+  },
+  {
+   "term": "subject_race in {asian/pacific islander, white} AND precinct in {2, 3, 4, __missing__}",
+   "kind": "rule (2 variables)",
+   "coef": -0.02293,
+   "odds_ratio": 0.97734,
+   "avg_marginal_effect": -0.0029,
+   "support_share": 0.14474
+  },
+  {
+   "term": "off_last_search_hit <= 0.5 AND off_log_search_ratio_black_white <= 0.361",
+   "kind": "rule (2 variables)",
+   "coef": 0.02274,
+   "odds_ratio": 1.023,
+   "avg_marginal_effect": 0.0029,
+   "support_share": 0.37231
+  },
+  {
+   "term": "off_last_search_hit > 0.5 AND off_minutes_since_first_stop_today > 10.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.01772,
+   "odds_ratio": 0.98243,
+   "avg_marginal_effect": -0.00225,
+   "support_share": 0.13248
+  },
+  {
+   "term": "reason_for_stop in {investigative stop, registration, vehicle equipment violation} AND is_holiday_window <= 0.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.01761,
+   "odds_ratio": 0.98255,
+   "avg_marginal_effect": -0.00224,
+   "support_share": 0.4645
+  },
+  {
+   "term": "day_of_week <= 3.5 AND month_sin <= -0.25",
+   "kind": "rule (2 variables)",
+   "coef": 0.01743,
+   "odds_ratio": 1.01759,
+   "avg_marginal_effect": 0.00222,
+   "support_share": 0.25665
+  },
+  {
+   "term": "cat__precinct_3",
+   "kind": "linear",
+   "coef": 0.01692,
+   "odds_ratio": 1.01706,
+   "avg_marginal_effect": 0.00216,
+   "support_share": 0.11431
+  },
+  {
+   "term": "num__off_consent_365d",
+   "kind": "linear",
+   "coef": -0.01536,
+   "odds_ratio": 0.98475,
+   "avg_marginal_effect": -0.00196,
+   "support_share": 1.0
+  },
+  {
+   "term": "num__off_search_rate_365d",
+   "kind": "linear",
+   "coef": -0.01495,
+   "odds_ratio": 0.98516,
+   "avg_marginal_effect": -0.0019,
+   "support_share": 1.0
+  },
+  {
+   "term": "off_experience_days <= 569 AND subject_age > 44.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.01389,
+   "odds_ratio": 1.01399,
+   "avg_marginal_effect": 0.00177,
+   "support_share": 0.04794
+  },
+  {
+   "term": "off_log_search_ratio_hisp_white <= 0.516 AND off_search_rate_365d > 0.45",
+   "kind": "rule (2 variables)",
+   "coef": 0.01296,
+   "odds_ratio": 1.01305,
+   "avg_marginal_effect": 0.00166,
+   "support_share": 0.0243
+  },
+  {
+   "term": "off_experience_days <= 569 AND month > 9.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.01286,
+   "odds_ratio": 1.01294,
+   "avg_marginal_effect": 0.00164,
+   "support_share": 0.07075
+  },
+  {
+   "term": "subject_race in {asian/pacific islander, white} AND time_heaped > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.01228,
+   "odds_ratio": 1.01235,
+   "avg_marginal_effect": 0.00157,
+   "support_share": 0.02404
+  },
+  {
+   "term": "cat__plate_state_MI",
+   "kind": "linear",
+   "coef": -0.01236,
+   "odds_ratio": 0.98772,
+   "avg_marginal_effect": -0.00157,
+   "support_share": 0.00131
+  },
+  {
+   "term": "num__hour_cos",
+   "kind": "linear",
+   "coef": -0.01208,
+   "odds_ratio": 0.98799,
+   "avg_marginal_effect": -0.00154,
+   "support_share": 1.0
+  },
+  {
+   "term": "num__off_searches_today_before",
+   "kind": "linear",
+   "coef": 0.01063,
+   "odds_ratio": 1.01069,
+   "avg_marginal_effect": 0.00135,
+   "support_share": 1.0
+  },
+  {
+   "term": "cat__zone_813",
+   "kind": "linear",
+   "coef": 0.0106,
+   "odds_ratio": 1.01065,
+   "avg_marginal_effect": 0.00135,
+   "support_share": 0.00802
+  },
+  {
+   "term": "off_consent_365d <= 9.5 AND month_cos > 0.25",
+   "kind": "rule (2 variables)",
+   "coef": 0.00947,
+   "odds_ratio": 1.00951,
+   "avg_marginal_effect": 0.00121,
+   "support_share": 0.11336
+  },
+  {
+   "term": "day_of_week <= 3.5 AND month_cos <= -0.683",
+   "kind": "rule (2 variables)",
+   "coef": -0.00818,
+   "odds_ratio": 0.99185,
+   "avg_marginal_effect": -0.00104,
+   "support_share": 0.16315
+  },
+  {
+   "term": "subject_sex in {__missing__, female} AND off_consent_365d <= 10.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.00798,
+   "odds_ratio": 0.99205,
+   "avg_marginal_effect": -0.00101,
+   "support_share": 0.04169
+  },
+  {
+   "term": "day_of_week > 3.5 AND off_searches_today_before <= 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.00644,
+   "odds_ratio": 1.00646,
+   "avg_marginal_effect": 0.00082,
+   "support_share": 0.26536
+  },
+  {
+   "term": "cat__reason_for_stop_moving traffic violation",
+   "kind": "linear",
+   "coef": 0.00579,
+   "odds_ratio": 1.00581,
+   "avg_marginal_effect": 0.00074,
+   "support_share": 0.39303
+  },
+  {
+   "term": "off_experience_days <= 569 AND off_search_rate_365d > 0.105",
+   "kind": "rule (2 variables)",
+   "coef": 0.00572,
+   "odds_ratio": 1.00573,
+   "avg_marginal_effect": 0.00073,
+   "support_share": 0.15941
+  },
+  {
+   "term": "zone in {111, 117, 12, 123, 13, 211, ... (42 values)} AND off_log_search_ratio_black_white <= 0.361",
+   "kind": "rule (2 variables)",
+   "coef": 0.00528,
+   "odds_ratio": 1.0053,
+   "avg_marginal_effect": 0.00067,
+   "support_share": 0.25933
+  },
+  {
+   "term": "zone in {113, 115, 121, 125, 215, 225, ... (31 values)} AND reason_for_stop in {investigative stop, registration, safety violation, seatbelt violation, vehicle equipment violation}",
+   "kind": "rule (2 variables)",
+   "coef": -0.00495,
+   "odds_ratio": 0.99506,
+   "avg_marginal_effect": -0.00063,
+   "support_share": 0.26011
+  },
+  {
+   "term": "off_experience_days > 569 AND off_log_search_ratio_black_white <= 0.361",
+   "kind": "rule (2 variables)",
+   "coef": 0.00463,
+   "odds_ratio": 1.00464,
+   "avg_marginal_effect": 0.00059,
+   "support_share": 0.27977
+  },
+  {
+   "term": "hour_cos > -0.847 AND month_sin <= -0.683",
+   "kind": "rule (2 variables)",
+   "coef": 0.00273,
+   "odds_ratio": 1.00273,
+   "avg_marginal_effect": 0.00035,
+   "support_share": 0.19507
+  },
+  {
+   "term": "num__subject_age",
+   "kind": "linear",
+   "coef": -0.00268,
+   "odds_ratio": 0.99732,
+   "avg_marginal_effect": -0.00034,
+   "support_share": 1.0
+  },
+  {
+   "term": "subject_sex in {__missing__, female} AND hour_cos <= -0.925",
+   "kind": "rule (2 variables)",
+   "coef": -0.00267,
+   "odds_ratio": 0.99734,
+   "avg_marginal_effect": -0.00034,
+   "support_share": 0.02028
+  },
+  {
+   "term": "subject_sex in {__missing__, female} AND off_log_minutes_since_last_search <= 4.3",
+   "kind": "rule (2 variables)",
+   "coef": -0.00266,
+   "odds_ratio": 0.99734,
+   "avg_marginal_effect": -0.00034,
+   "support_share": 0.01407
+  },
+  {
+   "term": "hour_cos > -0.847 AND reason_for_stop in {__missing__, child restraint, moving traffic violation, parking violation, safety violation, seatbelt violation}",
+   "kind": "rule (2 variables)",
+   "coef": 0.00074,
+   "odds_ratio": 1.00074,
+   "avg_marginal_effect": 9e-05,
+   "support_share": 0.42189
+  },
+  {
+   "term": "precinct in {1, 5, 7} AND off_log_minutes_since_last_search <= 4.78",
+   "kind": "rule (2 variables)",
+   "coef": -0.00067,
+   "odds_ratio": 0.99933,
+   "avg_marginal_effect": -9e-05,
+   "support_share": 0.03873
+  },
+  {
+   "term": "cat__precinct_1",
+   "kind": "linear",
+   "coef": -0.00061,
+   "odds_ratio": 0.99939,
+   "avg_marginal_effect": -8e-05,
+   "support_share": 0.09632
+  },
+  {
+   "term": "day_of_week > 3.5 AND month > 5.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.00055,
+   "odds_ratio": 1.00055,
+   "avg_marginal_effect": 7e-05,
+   "support_share": 0.17095
+  }
+ ],
+ "temporal/full_time_officer_blind": [
+  {
+   "term": "cat__zone_infrequent_sklearn",
+   "kind": "linear",
+   "coef": -1.83257,
+   "odds_ratio": 0.16,
+   "avg_marginal_effect": -0.12958,
+   "support_share": 0.00022
+  },
+  {
+   "term": "off_stops_365d <= 1.71e+03 AND hour_sin > 0.921",
+   "kind": "rule (2 variables)",
+   "coef": 0.61024,
+   "odds_ratio": 1.84088,
+   "avg_marginal_effect": 0.0924,
+   "support_share": 0.02472
+  },
+  {
+   "term": "plate_state in {AK, AR, AZ, CA, CT, GA, ... (22 values)} AND month_cos > 0.25",
+   "kind": "rule (2 variables)",
+   "coef": 0.43278,
+   "odds_ratio": 1.54153,
+   "avg_marginal_effect": 0.0629,
+   "support_share": 0.0044
+  },
+  {
+   "term": "cat__plate_state_CA",
+   "kind": "linear",
+   "coef": -0.58566,
+   "odds_ratio": 0.55674,
+   "avg_marginal_effect": -0.06224,
+   "support_share": 0.0009
+  },
+  {
+   "term": "off_consent_hit_rate_365d_shrunk <= 0.179 AND off_hit_rate_365d_shrunk <= 0.13",
+   "kind": "rule (2 variables)",
+   "coef": -0.54934,
+   "odds_ratio": 0.57733,
+   "avg_marginal_effect": -0.06135,
+   "support_share": 0.15336
+  },
+  {
+   "term": "cat__zone_117",
+   "kind": "linear",
+   "coef": -0.56241,
+   "odds_ratio": 0.56984,
+   "avg_marginal_effect": -0.06023,
+   "support_share": 0.00149
+  },
+  {
+   "term": "off_minutes_since_first_stop_today <= 5.5 AND off_searches_today_before > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.37538,
+   "odds_ratio": 1.45554,
+   "avg_marginal_effect": 0.05369,
+   "support_share": 0.00474
+  },
+  {
+   "term": "off_minutes_since_first_stop_today <= 5.5 AND plate_state in {CO, DE, FL, HI, IL, IN, ... (21 values)}",
+   "kind": "rule (2 variables)",
+   "coef": 0.34303,
+   "odds_ratio": 1.40922,
+   "avg_marginal_effect": 0.04862,
+   "support_share": 0.00482
+  },
+  {
+   "term": "cat__zone_335",
+   "kind": "linear",
+   "coef": 0.31617,
+   "odds_ratio": 1.37187,
+   "avg_marginal_effect": 0.04445,
+   "support_share": 0.00701
+  },
+  {
+   "term": "hour_cos <= -0.847 AND off_stops_365d <= 42.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.31225,
+   "odds_ratio": 1.3665,
+   "avg_marginal_effect": 0.04386,
+   "support_share": 0.00629
+  },
+  {
+   "term": "cat__zone_315",
+   "kind": "linear",
+   "coef": 0.28803,
+   "odds_ratio": 1.3338,
+   "avg_marginal_effect": 0.04014,
+   "support_share": 0.01272
+  },
+  {
+   "term": "num__off_consent_hit_rate_365d_shrunk",
+   "kind": "linear",
+   "coef": 0.31286,
+   "odds_ratio": 1.36733,
+   "avg_marginal_effect": 0.04009,
+   "support_share": 1.0
+  },
+  {
+   "term": "off_search_rate_365d > 0.255 AND hour_cos <= 0.413",
+   "kind": "rule (2 variables)",
+   "coef": 0.28802,
+   "odds_ratio": 1.33379,
+   "avg_marginal_effect": 0.03998,
+   "support_share": 0.04044
+  },
+  {
+   "term": "month_sin > -0.25 AND off_searches_today_before > 2.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.32687,
+   "odds_ratio": 0.72118,
+   "avg_marginal_effect": -0.03781,
+   "support_share": 0.00525
+  },
+  {
+   "term": "off_consent_365d > 9.5 AND off_stops_365d <= 66.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.24444,
+   "odds_ratio": 1.2769,
+   "avg_marginal_effect": 0.03366,
+   "support_share": 0.01224
+  },
+  {
+   "term": "reason_for_stop in {__missing__, child restraint, moving traffic violation, parking violation, safety violation, seatbelt violation} AND off_hits_today_before > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.23567,
+   "odds_ratio": 1.26576,
+   "avg_marginal_effect": 0.03232,
+   "support_share": 0.01956
+  },
+  {
+   "term": "off_search_rate_365d <= 0.255 AND subject_age <= 19.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.21828,
+   "odds_ratio": 1.24393,
+   "avg_marginal_effect": 0.02951,
+   "support_share": 0.08979
+  },
+  {
+   "term": "cat__zone_125",
+   "kind": "linear",
+   "coef": 0.21289,
+   "odds_ratio": 1.23725,
+   "avg_marginal_effect": 0.02905,
+   "support_share": 0.01015
+  },
+  {
+   "term": "off_last_search_hit <= 0.5 AND hour <= 6.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.21757,
+   "odds_ratio": 1.24305,
+   "avg_marginal_effect": 0.02902,
+   "support_share": 0.19897
+  },
+  {
+   "term": "cat__zone_833",
+   "kind": "linear",
+   "coef": 0.21244,
+   "odds_ratio": 1.23669,
+   "avg_marginal_effect": 0.02901,
+   "support_share": 0.00191
+  },
+  {
+   "term": "off_experience_days <= 569 AND off_hits_today_before > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.21031,
+   "odds_ratio": 1.23406,
+   "avg_marginal_effect": 0.02866,
+   "support_share": 0.01296
+  },
+  {
+   "term": "off_log_search_ratio_black_white > 0.361 AND off_log_minutes_since_last_search <= 3.86",
+   "kind": "rule (2 variables)",
+   "coef": -0.23376,
+   "odds_ratio": 0.79155,
+   "avg_marginal_effect": -0.0279,
+   "support_share": 0.01883
+  },
+  {
+   "term": "off_stops_365d <= 1.71e+03 AND hour > 21.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.20604,
+   "odds_ratio": 1.22881,
+   "avg_marginal_effect": 0.02761,
+   "support_share": 0.13736
+  },
+  {
+   "term": "off_minutes_since_first_stop_today <= 5.5 AND off_stops_365d > 1.74e+03",
+   "kind": "rule (2 variables)",
+   "coef": -0.2162,
+   "odds_ratio": 0.80558,
+   "avg_marginal_effect": -0.0259,
+   "support_share": 0.00406
+  },
+  {
+   "term": "cat__zone_311",
+   "kind": "linear",
+   "coef": 0.17611,
+   "odds_ratio": 1.19257,
+   "avg_marginal_effect": 0.02374,
+   "support_share": 0.02659
+  },
+  {
+   "term": "hour_cos > -0.847 AND off_log_minutes_since_last_search <= 4.7",
+   "kind": "rule (2 variables)",
+   "coef": -0.19114,
+   "odds_ratio": 0.82602,
+   "avg_marginal_effect": -0.02331,
+   "support_share": 0.0896
+  },
+  {
+   "term": "hour_cos > -0.847 AND subject_age <= 18.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.17273,
+   "odds_ratio": 1.18854,
+   "avg_marginal_effect": 0.02321,
+   "support_share": 0.04394
+  },
+  {
+   "term": "time_heaped > 0.5 AND off_log_minutes_since_last_search <= 4.49",
+   "kind": "rule (2 variables)",
+   "coef": -0.18435,
+   "odds_ratio": 0.83165,
+   "avg_marginal_effect": -0.02231,
+   "support_share": 0.00452
+  },
+  {
+   "term": "hour_cos <= -0.847 AND off_log_minutes_since_last_search <= 5.42",
+   "kind": "rule (2 variables)",
+   "coef": -0.17797,
+   "odds_ratio": 0.83697,
+   "avg_marginal_effect": -0.02161,
+   "support_share": 0.01857
+  },
+  {
+   "term": "time_heaped > 0.5 AND off_stops_365d <= 172",
+   "kind": "rule (2 variables)",
+   "coef": 0.15962,
+   "odds_ratio": 1.17306,
+   "avg_marginal_effect": 0.02143,
+   "support_share": 0.0197
+  },
+  {
+   "term": "off_experience_days > 569 AND time_heaped > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.15893,
+   "odds_ratio": 1.17225,
+   "avg_marginal_effect": 0.02129,
+   "support_share": 0.04014
+  },
+  {
+   "term": "off_stops_365d > 1.71e+03 AND hour > 16.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.17422,
+   "odds_ratio": 0.84011,
+   "avg_marginal_effect": -0.02116,
+   "support_share": 0.0118
+  },
+  {
+   "term": "hour_sin > 0.921 AND month_cos > -0.683",
+   "kind": "rule (2 variables)",
+   "coef": -0.1711,
+   "odds_ratio": 0.84273,
+   "avg_marginal_effect": -0.02083,
+   "support_share": 0.01893
+  },
+  {
+   "term": "precinct in {1, 5, 7} AND subject_age > 43.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.1477,
+   "odds_ratio": 1.15917,
+   "avg_marginal_effect": 0.01971,
+   "support_share": 0.04957
+  },
+  {
+   "term": "off_search_rate_365d <= 0.255 AND off_consent_365d <= 9.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.15551,
+   "odds_ratio": 0.85598,
+   "avg_marginal_effect": -0.01939,
+   "support_share": 0.21629
+  },
+  {
+   "term": "off_minutes_since_first_stop_today <= 5.5 AND hour_cos <= -0.452",
+   "kind": "rule (2 variables)",
+   "coef": -0.15295,
+   "odds_ratio": 0.85817,
+   "avg_marginal_effect": -0.01885,
+   "support_share": 0.08964
+  },
+  {
+   "term": "off_hit_gap_hisp_white > -0.0345 AND off_log_search_ratio_hisp_white > 0.475",
+   "kind": "rule (2 variables)",
+   "coef": -0.15128,
+   "odds_ratio": 0.85961,
+   "avg_marginal_effect": -0.01882,
+   "support_share": 0.21322
+  },
+  {
+   "term": "precinct in {2, 3, 4, 6, 8, U, ... (7 values)} AND hour_sin > -0.223",
+   "kind": "rule (2 variables)",
+   "coef": -0.14904,
+   "odds_ratio": 0.86153,
+   "avg_marginal_effect": -0.01868,
+   "support_share": 0.27167
+  },
+  {
+   "term": "cat__zone_111",
+   "kind": "linear",
+   "coef": -0.15149,
+   "odds_ratio": 0.85943,
+   "avg_marginal_effect": -0.01858,
+   "support_share": 0.03383
+  },
+  {
+   "term": "hour_cos <= -0.847 AND hour <= 10.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.14885,
+   "odds_ratio": 0.8617,
+   "avg_marginal_effect": -0.01825,
+   "support_share": 0.0314
+  },
+  {
+   "term": "off_search_rate_365d <= 0.255 AND off_minutes_since_first_stop_today <= 10.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.13615,
+   "odds_ratio": 1.14585,
+   "avg_marginal_effect": 0.01773,
+   "support_share": 0.29961
+  },
+  {
+   "term": "off_hit_gap_black_white <= -0.032 AND subject_age > 43.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.129,
+   "odds_ratio": 1.13769,
+   "avg_marginal_effect": 0.01713,
+   "support_share": 0.0491
+  },
+  {
+   "term": "off_last_search_hit > 0.5 AND off_minutes_since_first_stop_today <= 10.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.12935,
+   "odds_ratio": 1.13808,
+   "avg_marginal_effect": 0.01712,
+   "support_share": 0.0851
+  },
+  {
+   "term": "off_stops_365d <= 1.71e+03 AND off_searches_today_before > 1.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.13343,
+   "odds_ratio": 0.87509,
+   "avg_marginal_effect": -0.01645,
+   "support_share": 0.03427
+  },
+  {
+   "term": "precinct in {1, 5, 7} AND hour_cos <= -0.847",
+   "kind": "rule (2 variables)",
+   "coef": -0.13146,
+   "odds_ratio": 0.87682,
+   "avg_marginal_effect": -0.01624,
+   "support_share": 0.05439
+  },
+  {
+   "term": "off_log_search_ratio_hisp_white <= 0.516 AND off_consent_365d <= 9.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.12355,
+   "odds_ratio": 0.88378,
+   "avg_marginal_effect": -0.01543,
+   "support_share": 0.16265
+  },
+  {
+   "term": "cat__zone_535",
+   "kind": "linear",
+   "coef": -0.12482,
+   "odds_ratio": 0.88265,
+   "avg_marginal_effect": -0.0154,
+   "support_share": 0.01061
+  },
+  {
+   "term": "off_last_search_hit > 0.5 AND subject_age > 40.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.11103,
+   "odds_ratio": 1.11743,
+   "avg_marginal_effect": 0.01467,
+   "support_share": 0.04303
+  },
+  {
+   "term": "off_consent_365d <= 9.5 AND hour > 12.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.10607,
+   "odds_ratio": 1.1119,
+   "avg_marginal_effect": 0.01392,
+   "support_share": 0.1335
+  },
+  {
+   "term": "precinct in {2, 3, 4, 6, 8, U, ... (7 values)} AND off_log_minutes_since_last_search <= 4",
+   "kind": "rule (2 variables)",
+   "coef": -0.10867,
+   "odds_ratio": 0.89703,
+   "avg_marginal_effect": -0.01349,
+   "support_share": 0.03401
+  },
+  {
+   "term": "off_experience_days > 569 AND off_minutes_since_first_stop_today <= 5.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.10184,
+   "odds_ratio": 1.1072,
+   "avg_marginal_effect": 0.01328,
+   "support_share": 0.21269
+  },
+  {
+   "term": "cat__zone_225",
+   "kind": "linear",
+   "coef": 0.09895,
+   "odds_ratio": 1.10401,
+   "avg_marginal_effect": 0.01306,
+   "support_share": 0.01202
+  },
+  {
+   "term": "off_last_search_hit <= 0.5 AND precinct in {2, 3, 4, __missing__}",
+   "kind": "rule (2 variables)",
+   "coef": -0.09845,
+   "odds_ratio": 0.90624,
+   "avg_marginal_effect": -0.01249,
+   "support_share": 0.3544
+  },
+  {
+   "term": "time_heaped <= 0.5",
+   "kind": "rule (1 variable)",
+   "coef": -0.09433,
+   "odds_ratio": 0.90998,
+   "avg_marginal_effect": -0.0124,
+   "support_share": 0.93739
+  },
+  {
+   "term": "zone in {113, 115, 121, 125, 215, 225, ... (31 values)} AND hour_sin > 0.878",
+   "kind": "rule (2 variables)",
+   "coef": 0.09334,
+   "odds_ratio": 1.09784,
+   "avg_marginal_effect": 0.0123,
+   "support_share": 0.01447
+  },
+  {
+   "term": "off_stops_365d <= 1.71e+03 AND is_holiday_window > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.09218,
+   "odds_ratio": 1.09656,
+   "avg_marginal_effect": 0.01211,
+   "support_share": 0.06279
+  },
+  {
+   "term": "off_experience_days <= 569 AND subject_age > 44.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.08902,
+   "odds_ratio": 1.0931,
+   "avg_marginal_effect": 0.01169,
+   "support_share": 0.04794
+  },
+  {
+   "term": "num__off_log_search_ratio_hisp_white",
+   "kind": "linear",
+   "coef": -0.08826,
+   "odds_ratio": 0.91552,
+   "avg_marginal_effect": -0.01131,
+   "support_share": 1.0
+  },
+  {
+   "term": "plate_state in {AK, AR, AZ, CA, CT, GA, ... (22 values)}",
+   "kind": "rule (1 variable)",
+   "coef": 0.08497,
+   "odds_ratio": 1.08869,
+   "avg_marginal_effect": 0.01117,
+   "support_share": 0.01095
+  },
+  {
+   "term": "off_minutes_since_first_stop_today <= 5.5 AND hour_sin <= -0.979",
+   "kind": "rule (2 variables)",
+   "coef": 0.08345,
+   "odds_ratio": 1.08703,
+   "avg_marginal_effect": 0.01095,
+   "support_share": 0.02607
+  },
+  {
+   "term": "cat__plate_state_GA",
+   "kind": "linear",
+   "coef": -0.08542,
+   "odds_ratio": 0.91813,
+   "avg_marginal_effect": -0.01066,
+   "support_share": 0.00225
+  },
+  {
+   "term": "off_minutes_since_first_stop_today <= 5.5 AND hour <= 0.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.08195,
+   "odds_ratio": 0.92132,
+   "avg_marginal_effect": -0.01027,
+   "support_share": 0.06086
+  },
+  {
+   "term": "cat__zone_813",
+   "kind": "linear",
+   "coef": 0.0781,
+   "odds_ratio": 1.08124,
+   "avg_marginal_effect": 0.01025,
+   "support_share": 0.00802
+  },
+  {
+   "term": "time_heaped > 0.5 AND hour > 18.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.08043,
+   "odds_ratio": 0.92272,
+   "avg_marginal_effect": -0.01006,
+   "support_share": 0.02219
+  },
+  {
+   "term": "cat__zone_617",
+   "kind": "linear",
+   "coef": -0.07918,
+   "odds_ratio": 0.92388,
+   "avg_marginal_effect": -0.00991,
+   "support_share": 0.01288
+  },
+  {
+   "term": "cat__plate_state_SC",
+   "kind": "linear",
+   "coef": 0.07205,
+   "odds_ratio": 1.07471,
+   "avg_marginal_effect": 0.00944,
+   "support_share": 0.00068
+  },
+  {
+   "term": "hour > 21.5 AND month > 9.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.07152,
+   "odds_ratio": 1.07414,
+   "avg_marginal_effect": 0.00935,
+   "support_share": 0.03142
+  },
+  {
+   "term": "num__off_log_search_ratio_black_white",
+   "kind": "linear",
+   "coef": 0.07254,
+   "odds_ratio": 1.07524,
+   "avg_marginal_effect": 0.0093,
+   "support_share": 1.0
+  },
+  {
+   "term": "off_consent_365d <= 9.5 AND hour <= 12.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.07285,
+   "odds_ratio": 0.92974,
+   "avg_marginal_effect": -0.00917,
+   "support_share": 0.09584
+  },
+  {
+   "term": "cat__reason_for_stop_registration",
+   "kind": "linear",
+   "coef": -0.07153,
+   "odds_ratio": 0.93097,
+   "avg_marginal_effect": -0.00899,
+   "support_share": 0.05166
+  },
+  {
+   "term": "off_experience_days <= 569 AND off_log_search_ratio_black_white > 0.348",
+   "kind": "rule (2 variables)",
+   "coef": -0.06987,
+   "odds_ratio": 0.93252,
+   "avg_marginal_effect": -0.00883,
+   "support_share": 0.18397
+  },
+  {
+   "term": "off_stops_365d <= 1.71e+03 AND day_of_week > 3.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.06769,
+   "odds_ratio": 0.93455,
+   "avg_marginal_effect": -0.00861,
+   "support_share": 0.31741
+  },
+  {
+   "term": "off_consent_365d <= 9.5 AND off_log_minutes_since_last_search > 12.6",
+   "kind": "rule (2 variables)",
+   "coef": 0.06064,
+   "odds_ratio": 1.06252,
+   "avg_marginal_effect": 0.00791,
+   "support_share": 0.01005
+  },
+  {
+   "term": "is_holiday_window <= 0.5 AND month_cos > 0.683",
+   "kind": "rule (2 variables)",
+   "coef": 0.06043,
+   "odds_ratio": 1.0623,
+   "avg_marginal_effect": 0.00782,
+   "support_share": 0.23368
+  },
+  {
+   "term": "off_stops_365d <= 1.71e+03 AND month > 8.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.06055,
+   "odds_ratio": 1.06242,
+   "avg_marginal_effect": 0.00782,
+   "support_share": 0.28761
+  },
+  {
+   "term": "off_log_minutes_since_last_search <= 4.7",
+   "kind": "rule (1 variable)",
+   "coef": -0.06194,
+   "odds_ratio": 0.93994,
+   "avg_marginal_effect": -0.00781,
+   "support_share": 0.10116
+  },
+  {
+   "term": "cat__zone_613",
+   "kind": "linear",
+   "coef": 0.0573,
+   "odds_ratio": 1.05898,
+   "avg_marginal_effect": 0.00746,
+   "support_share": 0.03266
+  },
+  {
+   "term": "off_log_search_ratio_hisp_white <= 0.516 AND off_search_rate_365d > 0.45",
+   "kind": "rule (2 variables)",
+   "coef": 0.055,
+   "odds_ratio": 1.05654,
+   "avg_marginal_effect": 0.00716,
+   "support_share": 0.0243
+  },
+  {
+   "term": "reason_for_stop in {investigative stop, registration, vehicle equipment violation} AND is_holiday_window > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.05003,
+   "odds_ratio": 1.0513,
+   "avg_marginal_effect": 0.0065,
+   "support_share": 0.03329
+  },
+  {
+   "term": "cat__plate_state_MI",
+   "kind": "linear",
+   "coef": -0.05078,
+   "odds_ratio": 0.95049,
+   "avg_marginal_effect": -0.00641,
+   "support_share": 0.00131
+  },
+  {
+   "term": "off_last_search_hit > 0.5 AND day_of_week > 4.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.05069,
+   "odds_ratio": 0.95057,
+   "avg_marginal_effect": -0.0064,
+   "support_share": 0.03138
+  },
+  {
+   "term": "cat__zone_215",
+   "kind": "linear",
+   "coef": 0.04664,
+   "odds_ratio": 1.04775,
+   "avg_marginal_effect": 0.00606,
+   "support_share": 0.01089
+  },
+  {
+   "term": "precinct in {2, 3, 4, 6, 8, U, ... (7 values)} AND off_consent_365d <= 18.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.04472,
+   "odds_ratio": 0.95626,
+   "avg_marginal_effect": -0.00569,
+   "support_share": 0.24948
+  },
+  {
+   "term": "off_consent_365d <= 9.5 AND reason_for_stop in {__missing__, child restraint, moving traffic violation, parking violation, safety violation, seatbelt violation}",
+   "kind": "rule (2 variables)",
+   "coef": 0.04326,
+   "odds_ratio": 1.04421,
+   "avg_marginal_effect": 0.0056,
+   "support_share": 0.10396
+  },
+  {
+   "term": "cat__zone_525",
+   "kind": "linear",
+   "coef": -0.04337,
+   "odds_ratio": 0.95756,
+   "avg_marginal_effect": -0.00548,
+   "support_share": 0.01128
+  },
+  {
+   "term": "num__off_stops_365d",
+   "kind": "linear",
+   "coef": 0.04253,
+   "odds_ratio": 1.04344,
+   "avg_marginal_effect": 0.00545,
+   "support_share": 1.0
+  },
+  {
+   "term": "cat__zone_321",
+   "kind": "linear",
+   "coef": -0.04245,
+   "odds_ratio": 0.95844,
+   "avg_marginal_effect": -0.00537,
+   "support_share": 0.02533
+  },
+  {
+   "term": "cat__reason_for_stop_seatbelt violation",
+   "kind": "linear",
+   "coef": 0.0403,
+   "odds_ratio": 1.04112,
+   "avg_marginal_effect": 0.00522,
+   "support_share": 0.05286
+  },
+  {
+   "term": "cat__zone_223",
+   "kind": "linear",
+   "coef": -0.0411,
+   "odds_ratio": 0.95973,
+   "avg_marginal_effect": -0.0052,
+   "support_share": 0.03009
+  },
+  {
+   "term": "off_consent_365d <= 9.5 AND hour_cos <= -0.909",
+   "kind": "rule (2 variables)",
+   "coef": -0.041,
+   "odds_ratio": 0.95983,
+   "avg_marginal_effect": -0.00519,
+   "support_share": 0.02422
+  },
+  {
+   "term": "off_experience_days > 569 AND off_log_search_ratio_black_white <= 0.361",
+   "kind": "rule (2 variables)",
+   "coef": 0.03596,
+   "odds_ratio": 1.03661,
+   "avg_marginal_effect": 0.00463,
+   "support_share": 0.27977
+  },
+  {
+   "term": "reason_for_stop in {investigative stop, registration, vehicle equipment violation} AND hour <= 6.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.03411,
+   "odds_ratio": 1.0347,
+   "avg_marginal_effect": 0.0044,
+   "support_share": 0.13861
+  },
+  {
+   "term": "off_last_search_hit > 0.5 AND off_minutes_since_first_stop_today > 10.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.03254,
+   "odds_ratio": 0.96798,
+   "avg_marginal_effect": -0.00414,
+   "support_share": 0.13248
+  },
+  {
+   "term": "off_last_search_hit <= 0.5 AND off_log_search_ratio_black_white <= 0.361",
+   "kind": "rule (2 variables)",
+   "coef": 0.0319,
+   "odds_ratio": 1.03241,
+   "avg_marginal_effect": 0.0041,
+   "support_share": 0.37231
+  },
+  {
+   "term": "off_hits_today_before <= 0.5 AND month_cos > 0.933",
+   "kind": "rule (2 variables)",
+   "coef": -0.03124,
+   "odds_ratio": 0.96925,
+   "avg_marginal_effect": -0.00397,
+   "support_share": 0.09825
+  },
+  {
+   "term": "off_searches_today_before > 1.5 AND month_cos <= -0.25",
+   "kind": "rule (2 variables)",
+   "coef": -0.02681,
+   "odds_ratio": 0.97355,
+   "avg_marginal_effect": -0.00341,
+   "support_share": 0.01397
+  },
+  {
+   "term": "subject_age <= 19.5 AND month_sin <= -0.683",
+   "kind": "rule (2 variables)",
+   "coef": 0.02611,
+   "odds_ratio": 1.02646,
+   "avg_marginal_effect": 0.00337,
+   "support_share": 0.02104
+  },
+  {
+   "term": "day_of_week > 3.5 AND off_searches_today_before <= 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.02621,
+   "odds_ratio": 1.02655,
+   "avg_marginal_effect": 0.00337,
+   "support_share": 0.26536
+  },
+  {
+   "term": "precinct in {2, 3, 4, 6, 8, U, ... (7 values)} AND off_log_search_ratio_black_white <= 0.36",
+   "kind": "rule (2 variables)",
+   "coef": 0.02481,
+   "odds_ratio": 1.02512,
+   "avg_marginal_effect": 0.00319,
+   "support_share": 0.28883
+  },
+  {
+   "term": "cat__reason_for_stop_vehicle equipment violation",
+   "kind": "linear",
+   "coef": -0.02464,
+   "odds_ratio": 0.97567,
+   "avg_marginal_effect": -0.00315,
+   "support_share": 0.38115
+  },
+  {
+   "term": "cat__reason_for_stop_moving traffic violation",
+   "kind": "linear",
+   "coef": 0.02223,
+   "odds_ratio": 1.02248,
+   "avg_marginal_effect": 0.00285,
+   "support_share": 0.39303
+  },
+  {
+   "term": "off_log_search_ratio_hisp_white <= 0.516 AND off_hit_gap_black_white <= -0.0245",
+   "kind": "rule (2 variables)",
+   "coef": 0.02181,
+   "odds_ratio": 1.02205,
+   "avg_marginal_effect": 0.0028,
+   "support_share": 0.28266
+  },
+  {
+   "term": "precinct in {1, 5, 7} AND off_log_minutes_since_last_search <= 4.78",
+   "kind": "rule (2 variables)",
+   "coef": -0.02004,
+   "odds_ratio": 0.98016,
+   "avg_marginal_effect": -0.00255,
+   "support_share": 0.03873
+  },
+  {
+   "term": "zone in {111, 117, 12, 123, 13, 211, ... (42 values)} AND off_log_search_ratio_black_white <= 0.361",
+   "kind": "rule (2 variables)",
+   "coef": 0.01844,
+   "odds_ratio": 1.01862,
+   "avg_marginal_effect": 0.00237,
+   "support_share": 0.25933
+  },
+  {
+   "term": "num__hour_cos",
+   "kind": "linear",
+   "coef": -0.01843,
+   "odds_ratio": 0.98173,
+   "avg_marginal_effect": -0.00236,
+   "support_share": 1.0
+  },
+  {
+   "term": "month > 8.5 AND month_cos <= 0.25",
+   "kind": "rule (2 variables)",
+   "coef": -0.01612,
+   "odds_ratio": 0.98401,
+   "avg_marginal_effect": -0.00206,
+   "support_share": 0.15268
+  },
+  {
+   "term": "day_of_week <= 3.5 AND month_sin <= -0.25",
+   "kind": "rule (2 variables)",
+   "coef": 0.01585,
+   "odds_ratio": 1.01598,
+   "avg_marginal_effect": 0.00204,
+   "support_share": 0.25665
+  },
+  {
+   "term": "num__off_consent_365d",
+   "kind": "linear",
+   "coef": -0.015,
+   "odds_ratio": 0.98511,
+   "avg_marginal_effect": -0.00192,
+   "support_share": 1.0
+  },
+  {
+   "term": "hour_cos > -0.847 AND reason_for_stop in {__missing__, child restraint, moving traffic violation, parking violation, safety violation, seatbelt violation}",
+   "kind": "rule (2 variables)",
+   "coef": 0.01413,
+   "odds_ratio": 1.01423,
+   "avg_marginal_effect": 0.00181,
+   "support_share": 0.42189
+  },
+  {
+   "term": "off_experience_days <= 569 AND off_search_rate_365d > 0.105",
+   "kind": "rule (2 variables)",
+   "coef": 0.01395,
+   "odds_ratio": 1.01404,
+   "avg_marginal_effect": 0.00179,
+   "support_share": 0.15941
+  },
+  {
+   "term": "reason_for_stop in {__missing__, child restraint, moving traffic violation, parking violation, safety violation, seatbelt violation} AND hour > 13.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.01372,
+   "odds_ratio": 1.01382,
+   "avg_marginal_effect": 0.00176,
+   "support_share": 0.28998
+  },
+  {
+   "term": "hour_sin > 0.921 AND plate_state in {CO, DE, FL, HI, IL, IN, ... (22 values)}",
+   "kind": "rule (2 variables)",
+   "coef": -0.0126,
+   "odds_ratio": 0.98748,
+   "avg_marginal_effect": -0.00161,
+   "support_share": 0.0195
+  },
+  {
+   "term": "off_experience_days <= 569 AND off_minutes_since_first_stop_today <= 4.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.01178,
+   "odds_ratio": 1.01185,
+   "avg_marginal_effect": 0.00151,
+   "support_share": 0.13051
+  },
+  {
+   "term": "off_log_search_ratio_black_white <= 0.361 AND subject_age <= 43.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.01093,
+   "odds_ratio": 0.98913,
+   "avg_marginal_effect": -0.0014,
+   "support_share": 0.41261
+  },
+  {
+   "term": "zone in {113, 115, 121, 125, 215, 225, ... (31 values)} AND subject_age <= 43.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.01092,
+   "odds_ratio": 0.98914,
+   "avg_marginal_effect": -0.0014,
+   "support_share": 0.36095
+  },
+  {
+   "term": "off_last_search_hit <= 0.5 AND off_minutes_since_first_stop_today <= 2.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.01078,
+   "odds_ratio": 1.01083,
+   "avg_marginal_effect": 0.00138,
+   "support_share": 0.25326
+  },
+  {
+   "term": "num__off_searches_today_before",
+   "kind": "linear",
+   "coef": 0.01046,
+   "odds_ratio": 1.01052,
+   "avg_marginal_effect": 0.00134,
+   "support_share": 1.0
+  },
+  {
+   "term": "subject_age <= 19.5 AND off_log_minutes_since_last_search <= 5.21",
+   "kind": "rule (2 variables)",
+   "coef": -0.00956,
+   "odds_ratio": 0.99048,
+   "avg_marginal_effect": -0.00122,
+   "support_share": 0.01568
+  },
+  {
+   "term": "off_stops_365d <= 1.71e+03 AND month_sin <= -0.25",
+   "kind": "rule (2 variables)",
+   "coef": -0.00902,
+   "odds_ratio": 0.99103,
+   "avg_marginal_effect": -0.00115,
+   "support_share": 0.36869
+  },
+  {
+   "term": "num__off_search_rate_365d",
+   "kind": "linear",
+   "coef": -0.00842,
+   "odds_ratio": 0.99161,
+   "avg_marginal_effect": -0.00108,
+   "support_share": 1.0
+  },
+  {
+   "term": "off_experience_days <= 569 AND month > 9.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.00784,
+   "odds_ratio": 1.00788,
+   "avg_marginal_effect": 0.00101,
+   "support_share": 0.07075
+  },
+  {
+   "term": "num__month",
+   "kind": "linear",
+   "coef": -0.00554,
+   "odds_ratio": 0.99447,
+   "avg_marginal_effect": -0.00071,
+   "support_share": 1.0
+  },
+  {
+   "term": "off_hit_gap_hisp_white <= -0.0345 AND off_experience_days > 881",
+   "kind": "rule (2 variables)",
+   "coef": 0.00393,
+   "odds_ratio": 1.00394,
+   "avg_marginal_effect": 0.0005,
+   "support_share": 0.1619
+  },
+  {
+   "term": "off_consent_365d <= 9.5 AND month_cos > 0.25",
+   "kind": "rule (2 variables)",
+   "coef": 0.00273,
+   "odds_ratio": 1.00273,
+   "avg_marginal_effect": 0.00035,
+   "support_share": 0.11336
+  },
+  {
+   "term": "zone in {113, 115, 121, 125, 215, 225, ... (31 values)} AND reason_for_stop in {investigative stop, registration, safety violation, seatbelt violation, vehicle equipment violation}",
+   "kind": "rule (2 variables)",
+   "coef": -0.00226,
+   "odds_ratio": 0.99774,
+   "avg_marginal_effect": -0.00029,
+   "support_share": 0.26011
+  },
+  {
+   "term": "off_last_search_hit <= 0.5 AND zone in {117, 211, 213, 217, 223, 227, ... (20 values)}",
+   "kind": "rule (2 variables)",
+   "coef": -0.00125,
+   "odds_ratio": 0.99876,
+   "avg_marginal_effect": -0.00016,
+   "support_share": 0.28821
+  },
+  {
+   "term": "cat__precinct_5",
+   "kind": "linear",
+   "coef": -0.00022,
+   "odds_ratio": 0.99978,
+   "avg_marginal_effect": -3e-05,
+   "support_share": 0.30182
+  }
+ ],
+ "officer_holdout/full_time_officer": [
+  {
+   "term": "cat__zone_infrequent_sklearn",
+   "kind": "linear",
+   "coef": -1.80283,
+   "odds_ratio": 0.16483,
+   "avg_marginal_effect": -0.12535,
+   "support_share": 0.00025
+  },
+  {
+   "term": "cat__zone_117",
+   "kind": "linear",
+   "coef": -0.67246,
+   "odds_ratio": 0.51045,
+   "avg_marginal_effect": -0.06761,
+   "support_share": 0.00152
+  },
+  {
+   "term": "subject_race in {hispanic, unknown} AND subject_age <= 19.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.43753,
+   "odds_ratio": 1.54887,
+   "avg_marginal_effect": 0.06187,
+   "support_share": 0.01043
+  },
+  {
+   "term": "off_stops_365d <= 1.68e+03 AND hour_sin > 0.9",
+   "kind": "rule (2 variables)",
+   "coef": 0.41811,
+   "odds_ratio": 1.51909,
+   "avg_marginal_effect": 0.05855,
+   "support_share": 0.03144
+  },
+  {
+   "term": "cat__plate_state_CA",
+   "kind": "linear",
+   "coef": -0.55577,
+   "odds_ratio": 0.57363,
+   "avg_marginal_effect": -0.05805,
+   "support_share": 0.00095
+  },
+  {
+   "term": "off_consent_hit_rate_365d_shrunk <= 0.188 AND off_hit_rate_365d_shrunk <= 0.13",
+   "kind": "rule (2 variables)",
+   "coef": -0.48797,
+   "odds_ratio": 0.61387,
+   "avg_marginal_effect": -0.0539,
+   "support_share": 0.16021
+  },
+  {
+   "term": "off_consent_365d > 17.5 AND off_stops_365d <= 67.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.36248,
+   "odds_ratio": 1.43689,
+   "avg_marginal_effect": 0.0503,
+   "support_share": 0.00575
+  },
+  {
+   "term": "off_log_search_ratio_hisp_white <= 0.674 AND off_search_rate_365d > 0.427",
+   "kind": "rule (2 variables)",
+   "coef": 0.33426,
+   "odds_ratio": 1.39691,
+   "avg_marginal_effect": 0.04586,
+   "support_share": 0.02462
+  },
+  {
+   "term": "zone in {111, 113, 115, 121, 125, 215, ... (36 values)} AND hour_sin > 0.904",
+   "kind": "rule (2 variables)",
+   "coef": 0.33169,
+   "odds_ratio": 1.39331,
+   "avg_marginal_effect": 0.04551,
+   "support_share": 0.01578
+  },
+  {
+   "term": "off_stops_365d <= 1.68e+03 AND time_heaped > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.33162,
+   "odds_ratio": 1.39322,
+   "avg_marginal_effect": 0.04511,
+   "support_share": 0.0626
+  },
+  {
+   "term": "subject_age <= 18.5 AND off_log_minutes_since_last_search <= 5.22",
+   "kind": "rule (2 variables)",
+   "coef": -0.40968,
+   "odds_ratio": 0.66386,
+   "avg_marginal_effect": -0.04497,
+   "support_share": 0.00821
+  },
+  {
+   "term": "cat__plate_state_GA",
+   "kind": "linear",
+   "coef": -0.38933,
+   "odds_ratio": 0.67751,
+   "avg_marginal_effect": -0.04294,
+   "support_share": 0.00222
+  },
+  {
+   "term": "subject_race in {hispanic, unknown} AND subject_age > 19.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.36169,
+   "odds_ratio": 0.6965,
+   "avg_marginal_effect": -0.04066,
+   "support_share": 0.07913
+  },
+  {
+   "term": "cat__zone_335",
+   "kind": "linear",
+   "coef": 0.28302,
+   "odds_ratio": 1.32714,
+   "avg_marginal_effect": 0.03836,
+   "support_share": 0.0067
+  },
+  {
+   "term": "off_minutes_since_first_stop_today <= 10.5 AND off_searches_today_before > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.26295,
+   "odds_ratio": 1.30076,
+   "avg_marginal_effect": 0.03544,
+   "support_share": 0.00657
+  },
+  {
+   "term": "hour_sin > 0.9 AND month > 9.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.30456,
+   "odds_ratio": 0.73745,
+   "avg_marginal_effect": -0.03455,
+   "support_share": 0.00687
+  },
+  {
+   "term": "off_search_rate_365d <= 0.427 AND off_minutes_since_first_stop_today <= 10.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.26881,
+   "odds_ratio": 1.30841,
+   "avg_marginal_effect": 0.0344,
+   "support_share": 0.33577
+  },
+  {
+   "term": "off_log_search_ratio_hisp_white > 0.674 AND subject_race in {hispanic}",
+   "kind": "rule (2 variables)",
+   "coef": -0.2979,
+   "odds_ratio": 0.74238,
+   "avg_marginal_effect": -0.03394,
+   "support_share": 0.04311
+  },
+  {
+   "term": "time_heaped <= 0.5 AND subject_age <= 18.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.25117,
+   "odds_ratio": 1.28553,
+   "avg_marginal_effect": 0.03353,
+   "support_share": 0.04575
+  },
+  {
+   "term": "num__off_consent_hit_rate_365d_shrunk",
+   "kind": "linear",
+   "coef": 0.26492,
+   "odds_ratio": 1.30333,
+   "avg_marginal_effect": 0.03303,
+   "support_share": 1.0
+  },
+  {
+   "term": "subject_race in {hispanic, unknown} AND off_search_rate_365d > 0.0715",
+   "kind": "rule (2 variables)",
+   "coef": -0.28778,
+   "odds_ratio": 0.74992,
+   "avg_marginal_effect": -0.03297,
+   "support_share": 0.05683
+  },
+  {
+   "term": "off_log_search_ratio_black_white > 0.362 AND off_consent_365d > 134",
+   "kind": "rule (2 variables)",
+   "coef": -0.27854,
+   "odds_ratio": 0.75689,
+   "avg_marginal_effect": -0.0319,
+   "support_share": 0.01929
+  },
+  {
+   "term": "plate_state in {AK, CA, CT, DC, DE, GA, ... (23 values)}",
+   "kind": "rule (1 variable)",
+   "coef": 0.23096,
+   "odds_ratio": 1.25981,
+   "avg_marginal_effect": 0.03082,
+   "support_share": 0.01167
+  },
+  {
+   "term": "cat__subject_race_white",
+   "kind": "linear",
+   "coef": 0.24103,
+   "odds_ratio": 1.27255,
+   "avg_marginal_effect": 0.03066,
+   "support_share": 0.35238
+  },
+  {
+   "term": "time_heaped > 0.5 AND subject_age > 39.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.25573,
+   "odds_ratio": 0.77435,
+   "avg_marginal_effect": -0.02949,
+   "support_share": 0.01414
+  },
+  {
+   "term": "cat__zone_421",
+   "kind": "linear",
+   "coef": -0.24626,
+   "odds_ratio": 0.78172,
+   "avg_marginal_effect": -0.02844,
+   "support_share": 0.00358
+  },
+  {
+   "term": "precinct in {1, 5, 7} AND hour_cos <= -0.847",
+   "kind": "rule (2 variables)",
+   "coef": -0.226,
+   "odds_ratio": 0.79772,
+   "avg_marginal_effect": -0.02645,
+   "support_share": 0.05237
+  },
+  {
+   "term": "subject_sex in {male} AND off_stops_365d > 1.68e+03",
+   "kind": "rule (2 variables)",
+   "coef": -0.22259,
+   "odds_ratio": 0.80044,
+   "avg_marginal_effect": -0.02594,
+   "support_share": 0.0228
+  },
+  {
+   "term": "subject_age > 18.5 AND off_log_minutes_since_last_search <= 3.96",
+   "kind": "rule (2 variables)",
+   "coef": -0.20923,
+   "odds_ratio": 0.81121,
+   "avg_marginal_effect": -0.02458,
+   "support_share": 0.04954
+  },
+  {
+   "term": "off_consent_365d <= 17.5 AND hour > 21.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.18303,
+   "odds_ratio": 1.20084,
+   "avg_marginal_effect": 0.024,
+   "support_share": 0.04299
+  },
+  {
+   "term": "off_last_search_hit > 0.5 AND subject_age > 40.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.18239,
+   "odds_ratio": 1.20008,
+   "avg_marginal_effect": 0.02392,
+   "support_share": 0.04239
+  },
+  {
+   "term": "off_last_search_hit <= 0.5 AND hour <= 6.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.17464,
+   "odds_ratio": 1.19081,
+   "avg_marginal_effect": 0.02249,
+   "support_share": 0.19565
+  },
+  {
+   "term": "off_hits_today_before > 0.5 AND plate_state in {AK, CA, CT, DC, DE, GA, ... (23 values)}",
+   "kind": "rule (2 variables)",
+   "coef": 0.17018,
+   "odds_ratio": 1.18552,
+   "avg_marginal_effect": 0.0223,
+   "support_share": 0.01538
+  },
+  {
+   "term": "month <= 8.5 AND plate_state in {AK, CA, CT, DC, DE, GA, ... (23 values)}",
+   "kind": "rule (2 variables)",
+   "coef": 0.16313,
+   "odds_ratio": 1.1772,
+   "avg_marginal_effect": 0.02135,
+   "support_share": 0.00757
+  },
+  {
+   "term": "off_stops_365d > 1.68e+03 AND subject_age <= 21.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.15982,
+   "odds_ratio": 1.1733,
+   "avg_marginal_effect": 0.02091,
+   "support_share": 0.00508
+  },
+  {
+   "term": "off_hit_rate_365d_shrunk > 0.253 AND off_search_rate_365d > 0.352",
+   "kind": "rule (2 variables)",
+   "coef": 0.15275,
+   "odds_ratio": 1.16503,
+   "avg_marginal_effect": 0.01992,
+   "support_share": 0.0226
+  },
+  {
+   "term": "cat__zone_125",
+   "kind": "linear",
+   "coef": 0.15226,
+   "odds_ratio": 1.16446,
+   "avg_marginal_effect": 0.01986,
+   "support_share": 0.0108
+  },
+  {
+   "term": "cat__zone_311",
+   "kind": "linear",
+   "coef": 0.14905,
+   "odds_ratio": 1.16074,
+   "avg_marginal_effect": 0.0194,
+   "support_share": 0.02681
+  },
+  {
+   "term": "off_log_search_ratio_hisp_white <= 0.674 AND off_consent_365d <= 9.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.15641,
+   "odds_ratio": 0.85521,
+   "avg_marginal_effect": -0.0189,
+   "support_share": 0.16904
+  },
+  {
+   "term": "cat__subject_race_asian/pacific islander",
+   "kind": "linear",
+   "coef": 0.13909,
+   "odds_ratio": 1.14922,
+   "avg_marginal_effect": 0.01808,
+   "support_share": 0.00448
+  },
+  {
+   "term": "precinct in {2, 3, 4, 6, 8, U, ... (7 values)} AND hour_sin > -0.223",
+   "kind": "rule (2 variables)",
+   "coef": -0.1412,
+   "odds_ratio": 0.86832,
+   "avg_marginal_effect": -0.01725,
+   "support_share": 0.27944
+  },
+  {
+   "term": "cat__zone_723",
+   "kind": "linear",
+   "coef": 0.12917,
+   "odds_ratio": 1.13788,
+   "avg_marginal_effect": 0.01673,
+   "support_share": 0.01083
+  },
+  {
+   "term": "off_last_search_hit > 0.5 AND off_log_minutes_since_last_search <= 4.77",
+   "kind": "rule (2 variables)",
+   "coef": -0.13716,
+   "odds_ratio": 0.87183,
+   "avg_marginal_effect": -0.01641,
+   "support_share": 0.01665
+  },
+  {
+   "term": "hour_cos > -0.803 AND subject_age <= 18.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.1259,
+   "odds_ratio": 1.13417,
+   "avg_marginal_effect": 0.01625,
+   "support_share": 0.04249
+  },
+  {
+   "term": "off_log_minutes_since_last_search <= 4.7",
+   "kind": "rule (1 variable)",
+   "coef": -0.13426,
+   "odds_ratio": 0.87436,
+   "avg_marginal_effect": -0.01619,
+   "support_share": 0.10395
+  },
+  {
+   "term": "off_last_search_hit <= 0.5 AND reason_for_stop in {__missing__, child restraint, parking violation}",
+   "kind": "rule (2 variables)",
+   "coef": 0.12272,
+   "odds_ratio": 1.13057,
+   "avg_marginal_effect": 0.01587,
+   "support_share": 0.006
+  },
+  {
+   "term": "off_search_rate_365d > 0.427 AND off_minutes_since_first_stop_today > 3.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.1297,
+   "odds_ratio": 0.87836,
+   "avg_marginal_effect": -0.01554,
+   "support_share": 0.00869
+  },
+  {
+   "term": "day_of_week <= 3.5 AND off_hits_today_before > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.11763,
+   "odds_ratio": 1.12483,
+   "avg_marginal_effect": 0.01517,
+   "support_share": 0.02751
+  },
+  {
+   "term": "zone in {117, 12, 123, 13, 211, 213, ... (37 values)} AND hour_cos <= -0.409",
+   "kind": "rule (2 variables)",
+   "coef": -0.12398,
+   "odds_ratio": 0.8834,
+   "avg_marginal_effect": -0.015,
+   "support_share": 0.12264
+  },
+  {
+   "term": "subject_sex in {male} AND plate_state in {AL, AR, AZ, CO, FL, HI, ... (23 values)}",
+   "kind": "rule (2 variables)",
+   "coef": 0.11482,
+   "odds_ratio": 1.12167,
+   "avg_marginal_effect": 0.01481,
+   "support_share": 0.0118
+  },
+  {
+   "term": "time_heaped > 0.5 AND hour > 18.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.12295,
+   "odds_ratio": 0.88431,
+   "avg_marginal_effect": -0.01478,
+   "support_share": 0.0222
+  },
+  {
+   "term": "off_search_rate_365d > 0.427 AND hour > 18.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.12294,
+   "odds_ratio": 0.88432,
+   "avg_marginal_effect": -0.01476,
+   "support_share": 0.00891
+  },
+  {
+   "term": "off_experience_days > 569 AND subject_sex in {__missing__, female}",
+   "kind": "rule (2 variables)",
+   "coef": 0.11448,
+   "odds_ratio": 1.12129,
+   "avg_marginal_effect": 0.01465,
+   "support_share": 0.12083
+  },
+  {
+   "term": "subject_sex in {__missing__, female} AND hour_sin > 0.9",
+   "kind": "rule (2 variables)",
+   "coef": 0.10954,
+   "odds_ratio": 1.11577,
+   "avg_marginal_effect": 0.01412,
+   "support_share": 0.00533
+  },
+  {
+   "term": "subject_race in {hispanic, unknown} AND month <= 2.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.11491,
+   "odds_ratio": 0.89144,
+   "avg_marginal_effect": -0.01383,
+   "support_share": 0.0169
+  },
+  {
+   "term": "month > 8.5 AND is_federal_holiday > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.11315,
+   "odds_ratio": 0.89301,
+   "avg_marginal_effect": -0.01363,
+   "support_share": 0.00869
+  },
+  {
+   "term": "subject_age <= 18.5 AND off_searches_today_before > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.10205,
+   "odds_ratio": 1.10744,
+   "avg_marginal_effect": 0.01312,
+   "support_share": 0.01003
+  },
+  {
+   "term": "subject_race in {hispanic, unknown} AND off_stops_365d > 1.12e+03",
+   "kind": "rule (2 variables)",
+   "coef": -0.1084,
+   "odds_ratio": 0.89727,
+   "avg_marginal_effect": -0.01308,
+   "support_share": 0.01937
+  },
+  {
+   "term": "precinct in {1, 5, 7} AND subject_age > 43.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.09588,
+   "odds_ratio": 1.10062,
+   "avg_marginal_effect": 0.01227,
+   "support_share": 0.04695
+  },
+  {
+   "term": "off_minutes_since_first_stop_today <= 10.5 AND hour_cos <= -0.385",
+   "kind": "rule (2 variables)",
+   "coef": -0.10029,
+   "odds_ratio": 0.90457,
+   "avg_marginal_effect": -0.0122,
+   "support_share": 0.10355
+  },
+  {
+   "term": "cat__zone_613",
+   "kind": "linear",
+   "coef": 0.093,
+   "odds_ratio": 1.09746,
+   "avg_marginal_effect": 0.0119,
+   "support_share": 0.03306
+  },
+  {
+   "term": "off_search_rate_365d > 0.427 AND off_stops_365d > 128",
+   "kind": "rule (2 variables)",
+   "coef": -0.09419,
+   "odds_ratio": 0.91011,
+   "avg_marginal_effect": -0.01141,
+   "support_share": 0.0051
+  },
+  {
+   "term": "off_log_search_ratio_black_white <= 0.362 AND time_heaped > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.08917,
+   "odds_ratio": 1.09327,
+   "avg_marginal_effect": 0.0114,
+   "support_share": 0.03629
+  },
+  {
+   "term": "subject_sex in {__missing__, female} AND subject_age > 33.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.08863,
+   "odds_ratio": 1.09268,
+   "avg_marginal_effect": 0.01132,
+   "support_share": 0.05765
+  },
+  {
+   "term": "off_stops_365d <= 1.68e+03 AND hour > 21.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.08837,
+   "odds_ratio": 1.09239,
+   "avg_marginal_effect": 0.01123,
+   "support_share": 0.13412
+  },
+  {
+   "term": "num__off_log_search_ratio_hisp_white",
+   "kind": "linear",
+   "coef": -0.08933,
+   "odds_ratio": 0.91454,
+   "avg_marginal_effect": -0.01114,
+   "support_share": 1.0
+  },
+  {
+   "term": "precinct in {2, 3, 4, 6, 8, U, ... (7 values)} AND off_consent_365d <= 18.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.08965,
+   "odds_ratio": 0.91425,
+   "avg_marginal_effect": -0.01102,
+   "support_share": 0.24658
+  },
+  {
+   "term": "subject_race in {hispanic, unknown} AND off_hit_gap_hisp_white > 0.0215",
+   "kind": "rule (2 variables)",
+   "coef": 0.07967,
+   "odds_ratio": 1.08293,
+   "avg_marginal_effect": 0.01018,
+   "support_share": 0.00498
+  },
+  {
+   "term": "month <= 8.5 AND off_searches_today_before > 1.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.08282,
+   "odds_ratio": 0.92052,
+   "avg_marginal_effect": -0.01008,
+   "support_share": 0.02843
+  },
+  {
+   "term": "off_hit_gap_hisp_white <= -0.0441 AND off_search_rate_365d > 0.351",
+   "kind": "rule (2 variables)",
+   "coef": -0.082,
+   "odds_ratio": 0.92127,
+   "avg_marginal_effect": -0.00998,
+   "support_share": 0.02233
+  },
+  {
+   "term": "time_heaped <= 0.5 AND is_holiday_window > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.07813,
+   "odds_ratio": 1.08126,
+   "avg_marginal_effect": 0.00995,
+   "support_share": 0.05997
+  },
+  {
+   "term": "off_last_search_hit > 0.5 AND off_minutes_since_first_stop_today <= 6.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.07808,
+   "odds_ratio": 1.0812,
+   "avg_marginal_effect": 0.00993,
+   "support_share": 0.08364
+  },
+  {
+   "term": "off_minutes_since_first_stop_today <= 10.5 AND plate_state in {AK, CA, CT, DC, DE, GA, ... (23 values)}",
+   "kind": "rule (2 variables)",
+   "coef": -0.07573,
+   "odds_ratio": 0.92706,
+   "avg_marginal_effect": -0.00929,
+   "support_share": 0.14082
+  },
+  {
+   "term": "time_heaped > 0.5 AND month_sin > 0.933",
+   "kind": "rule (2 variables)",
+   "coef": -0.07596,
+   "odds_ratio": 0.92685,
+   "avg_marginal_effect": -0.00925,
+   "support_share": 0.00508
+  },
+  {
+   "term": "off_stops_365d <= 1.68e+03 AND off_log_minutes_since_last_search <= 3.96",
+   "kind": "rule (2 variables)",
+   "coef": -0.07348,
+   "odds_ratio": 0.92916,
+   "avg_marginal_effect": -0.00897,
+   "support_share": 0.05066
+  },
+  {
+   "term": "precinct in {2, 3, 4, 6, 8, U, ... (7 values)} AND off_log_search_ratio_black_white <= 0.362",
+   "kind": "rule (2 variables)",
+   "coef": 0.06982,
+   "odds_ratio": 1.07231,
+   "avg_marginal_effect": 0.00878,
+   "support_share": 0.30008
+  },
+  {
+   "term": "off_hit_gap_hisp_white > -0.0441 AND off_experience_days <= 523",
+   "kind": "rule (2 variables)",
+   "coef": -0.06539,
+   "odds_ratio": 0.9367,
+   "avg_marginal_effect": -0.00808,
+   "support_share": 0.29201
+  },
+  {
+   "term": "zone in {111, 113, 115, 121, 125, 215, ... (36 values)} AND subject_age > 43.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.06346,
+   "odds_ratio": 1.06551,
+   "avg_marginal_effect": 0.00804,
+   "support_share": 0.08682
+  },
+  {
+   "term": "cat__zone_615",
+   "kind": "linear",
+   "coef": 0.06289,
+   "odds_ratio": 1.06491,
+   "avg_marginal_effect": 0.00799,
+   "support_share": 0.02056
+  },
+  {
+   "term": "hour_cos > -0.803 AND day_of_week > 3.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.06428,
+   "odds_ratio": 0.93774,
+   "avg_marginal_effect": -0.00795,
+   "support_share": 0.28838
+  },
+  {
+   "term": "off_stops_365d <= 1.68e+03 AND reason_for_stop in {__missing__, child restraint, moving traffic violation, parking violation, safety violation}",
+   "kind": "rule (2 variables)",
+   "coef": 0.06319,
+   "odds_ratio": 1.06523,
+   "avg_marginal_effect": 0.0079,
+   "support_share": 0.44042
+  },
+  {
+   "term": "subject_sex in {__missing__, female} AND hour_cos <= -0.925",
+   "kind": "rule (2 variables)",
+   "coef": -0.06417,
+   "odds_ratio": 0.93785,
+   "avg_marginal_effect": -0.00785,
+   "support_share": 0.02011
+  },
+  {
+   "term": "off_stops_365d <= 1.68e+03 AND off_searches_today_before > 1.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.06353,
+   "odds_ratio": 0.93844,
+   "avg_marginal_effect": -0.00778,
+   "support_share": 0.03612
+  },
+  {
+   "term": "hour > 21.5 AND plate_state in {AL, AR, AZ, CO, FL, HI, ... (24 values)}",
+   "kind": "rule (2 variables)",
+   "coef": -0.0621,
+   "odds_ratio": 0.93979,
+   "avg_marginal_effect": -0.0076,
+   "support_share": 0.0286
+  },
+  {
+   "term": "month > 8.5 AND plate_state in {AK, CA, CT, DC, DE, GA, ... (23 values)}",
+   "kind": "rule (2 variables)",
+   "coef": 0.06008,
+   "odds_ratio": 1.06192,
+   "avg_marginal_effect": 0.0076,
+   "support_share": 0.12033
+  },
+  {
+   "term": "zone in {117, 12, 123, 13, 211, 213, ... (37 values)} AND subject_sex in {__missing__, female}",
+   "kind": "rule (2 variables)",
+   "coef": 0.05979,
+   "odds_ratio": 1.06162,
+   "avg_marginal_effect": 0.00757,
+   "support_share": 0.07896
+  },
+  {
+   "term": "cat__zone_517",
+   "kind": "linear",
+   "coef": -0.05808,
+   "odds_ratio": 0.94357,
+   "avg_marginal_effect": -0.00712,
+   "support_share": 0.01638
+  },
+  {
+   "term": "off_experience_days > 569 AND off_hit_gap_black_white <= -0.032",
+   "kind": "rule (2 variables)",
+   "coef": 0.05583,
+   "odds_ratio": 1.05741,
+   "avg_marginal_effect": 0.00703,
+   "support_share": 0.21977
+  },
+  {
+   "term": "num__off_hit_rate_same_race_past",
+   "kind": "linear",
+   "coef": 0.05419,
+   "odds_ratio": 1.05569,
+   "avg_marginal_effect": 0.00676,
+   "support_share": 1.0
+  },
+  {
+   "term": "off_minutes_since_first_stop_today <= 10.5 AND off_stops_365d > 1.51e+03",
+   "kind": "rule (2 variables)",
+   "coef": -0.05151,
+   "odds_ratio": 0.9498,
+   "avg_marginal_effect": -0.00632,
+   "support_share": 0.00652
+  },
+  {
+   "term": "off_hit_gap_hisp_white <= -0.0441 AND off_experience_days > 974",
+   "kind": "rule (2 variables)",
+   "coef": 0.04919,
+   "odds_ratio": 1.05042,
+   "avg_marginal_effect": 0.0062,
+   "support_share": 0.11294
+  },
+  {
+   "term": "off_log_search_ratio_black_white > 0.362 AND off_stops_365d > 2.1e+03",
+   "kind": "rule (2 variables)",
+   "coef": -0.04829,
+   "odds_ratio": 0.95286,
+   "avg_marginal_effect": -0.00593,
+   "support_share": 0.00605
+  },
+  {
+   "term": "subject_race in {hispanic, unknown} AND day_of_week <= 3.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.04651,
+   "odds_ratio": 0.95456,
+   "avg_marginal_effect": -0.00572,
+   "support_share": 0.0568
+  },
+  {
+   "term": "subject_sex in {__missing__, female} AND month_cos <= -0.25",
+   "kind": "rule (2 variables)",
+   "coef": 0.04039,
+   "odds_ratio": 1.04122,
+   "avg_marginal_effect": 0.00509,
+   "support_share": 0.07393
+  },
+  {
+   "term": "off_experience_days <= 569 AND off_hits_today_before > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.03916,
+   "odds_ratio": 1.03994,
+   "avg_marginal_effect": 0.00494,
+   "support_share": 0.01332
+  },
+  {
+   "term": "reason_for_stop in {investigative stop, registration, seatbelt violation, vehicle equipment violation} AND plate_state in {AK, CA, CT, DC, DE, GA, ... (23 values)}",
+   "kind": "rule (2 variables)",
+   "coef": 0.03631,
+   "odds_ratio": 1.03698,
+   "avg_marginal_effect": 0.00458,
+   "support_share": 0.00563
+  },
+  {
+   "term": "off_stops_365d <= 1.68e+03 AND month_sin <= -0.683",
+   "kind": "rule (2 variables)",
+   "coef": 0.03615,
+   "odds_ratio": 1.03682,
+   "avg_marginal_effect": 0.00454,
+   "support_share": 0.22047
+  },
+  {
+   "term": "num__off_log_search_ratio_black_white",
+   "kind": "linear",
+   "coef": 0.03603,
+   "odds_ratio": 1.03669,
+   "avg_marginal_effect": 0.00449,
+   "support_share": 1.0
+  },
+  {
+   "term": "cat__zone_315",
+   "kind": "linear",
+   "coef": 0.03412,
+   "odds_ratio": 1.03471,
+   "avg_marginal_effect": 0.0043,
+   "support_share": 0.01319
+  },
+  {
+   "term": "hour_sin > 0.9 AND month_cos > -0.683",
+   "kind": "rule (2 variables)",
+   "coef": -0.03468,
+   "odds_ratio": 0.96592,
+   "avg_marginal_effect": -0.00428,
+   "support_share": 0.02402
+  },
+  {
+   "term": "num__off_stops_365d",
+   "kind": "linear",
+   "coef": 0.03421,
+   "odds_ratio": 1.0348,
+   "avg_marginal_effect": 0.00427,
+   "support_share": 1.0
+  },
+  {
+   "term": "num__hour",
+   "kind": "linear",
+   "coef": 0.03415,
+   "odds_ratio": 1.03474,
+   "avg_marginal_effect": 0.00426,
+   "support_share": 1.0
+  },
+  {
+   "term": "subject_race in {hispanic, unknown} AND off_log_minutes_since_last_search <= 7.3",
+   "kind": "rule (2 variables)",
+   "coef": -0.03393,
+   "odds_ratio": 0.96663,
+   "avg_marginal_effect": -0.00419,
+   "support_share": 0.03
+  },
+  {
+   "term": "off_hits_today_before <= 0.5 AND month_cos > 0.933",
+   "kind": "rule (2 variables)",
+   "coef": -0.03037,
+   "odds_ratio": 0.97008,
+   "avg_marginal_effect": -0.00376,
+   "support_share": 0.0984
+  },
+  {
+   "term": "off_search_rate_365d > 0.427 AND subject_age <= 30.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.03029,
+   "odds_ratio": 0.97017,
+   "avg_marginal_effect": -0.00374,
+   "support_share": 0.01339
+  },
+  {
+   "term": "cat__zone_211",
+   "kind": "linear",
+   "coef": -0.02959,
+   "odds_ratio": 0.97085,
+   "avg_marginal_effect": -0.00366,
+   "support_share": 0.03505
+  },
+  {
+   "term": "off_experience_days <= 569 AND off_consent_365d > 134",
+   "kind": "rule (2 variables)",
+   "coef": -0.02827,
+   "odds_ratio": 0.97212,
+   "avg_marginal_effect": -0.0035,
+   "support_share": 0.01807
+  },
+  {
+   "term": "precinct in {1, 5, 7} AND off_log_search_ratio_black_white > 1.1",
+   "kind": "rule (2 variables)",
+   "coef": -0.02767,
+   "odds_ratio": 0.97271,
+   "avg_marginal_effect": -0.00342,
+   "support_share": 0.02542
+  },
+  {
+   "term": "month <= 8.5 AND month_sin > 0.683",
+   "kind": "rule (2 variables)",
+   "coef": -0.02727,
+   "odds_ratio": 0.9731,
+   "avg_marginal_effect": -0.00339,
+   "support_share": 0.27474
+  },
+  {
+   "term": "off_log_minutes_since_last_search > 4.7 AND hour_sin > 0.92",
+   "kind": "rule (2 variables)",
+   "coef": 0.0257,
+   "odds_ratio": 1.02604,
+   "avg_marginal_effect": 0.00323,
+   "support_share": 0.02385
+  },
+  {
+   "term": "off_consent_365d <= 17.5 AND month > 10.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.02411,
+   "odds_ratio": 1.02441,
+   "avg_marginal_effect": 0.00303,
+   "support_share": 0.04214
+  },
+  {
+   "term": "subject_race in {hispanic, unknown} AND off_last_search_hit > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.02139,
+   "odds_ratio": 0.97884,
+   "avg_marginal_effect": -0.00265,
+   "support_share": 0.01349
+  },
+  {
+   "term": "num__month_cos",
+   "kind": "linear",
+   "coef": 0.01912,
+   "odds_ratio": 1.0193,
+   "avg_marginal_effect": 0.00238,
+   "support_share": 1.0
+  },
+  {
+   "term": "off_search_rate_365d <= 0.427 AND off_consent_365d <= 21.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.01812,
+   "odds_ratio": 0.98204,
+   "avg_marginal_effect": -0.00226,
+   "support_share": 0.38165
+  },
+  {
+   "term": "day_of_week > 3.5 AND month_cos <= -0.683",
+   "kind": "rule (2 variables)",
+   "coef": 0.01685,
+   "odds_ratio": 1.017,
+   "avg_marginal_effect": 0.00211,
+   "support_share": 0.07789
+  },
+  {
+   "term": "num__hour_cos",
+   "kind": "linear",
+   "coef": -0.01571,
+   "odds_ratio": 0.98441,
+   "avg_marginal_effect": -0.00196,
+   "support_share": 1.0
+  },
+  {
+   "term": "off_minutes_since_first_stop_today <= 10.5 AND off_log_minutes_since_last_search > 7.71",
+   "kind": "rule (2 variables)",
+   "coef": -0.01552,
+   "odds_ratio": 0.9846,
+   "avg_marginal_effect": -0.00193,
+   "support_share": 0.26378
+  },
+  {
+   "term": "subject_sex in {__missing__, female} AND off_log_search_ratio_black_white <= 0.361",
+   "kind": "rule (2 variables)",
+   "coef": 0.01529,
+   "odds_ratio": 1.01541,
+   "avg_marginal_effect": 0.00191,
+   "support_share": 0.09439
+  },
+  {
+   "term": "subject_sex in {__missing__, female} AND reason_for_stop in {__missing__, child restraint, moving traffic violation, parking violation}",
+   "kind": "rule (2 variables)",
+   "coef": 0.01344,
+   "odds_ratio": 1.01353,
+   "avg_marginal_effect": 0.00168,
+   "support_share": 0.07259
+  },
+  {
+   "term": "cat__reason_for_stop_safety violation",
+   "kind": "linear",
+   "coef": -0.01116,
+   "odds_ratio": 0.9889,
+   "avg_marginal_effect": -0.00139,
+   "support_share": 0.05113
+  },
+  {
+   "term": "subject_sex in {male} AND hour_cos <= -0.456",
+   "kind": "rule (2 variables)",
+   "coef": -0.01075,
+   "odds_ratio": 0.98931,
+   "avg_marginal_effect": -0.00134,
+   "support_share": 0.21176
+  },
+  {
+   "term": "precinct in {1, 5, 7} AND off_log_minutes_since_last_search <= 4.69",
+   "kind": "rule (2 variables)",
+   "coef": -0.00986,
+   "odds_ratio": 0.99019,
+   "avg_marginal_effect": -0.00123,
+   "support_share": 0.03492
+  },
+  {
+   "term": "reason_for_stop in {__missing__, child restraint, moving traffic violation, parking violation, safety violation} AND hour > 13.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.00974,
+   "odds_ratio": 1.00979,
+   "avg_marginal_effect": 0.00122,
+   "support_share": 0.25811
+  },
+  {
+   "term": "hour > 21.5 AND month_cos <= -0.25",
+   "kind": "rule (2 variables)",
+   "coef": -0.00845,
+   "odds_ratio": 0.99159,
+   "avg_marginal_effect": -0.00105,
+   "support_share": 0.05506
+  },
+  {
+   "term": "reason_for_stop in {investigative stop, registration, seatbelt violation, vehicle equipment violation} AND hour <= 6.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.00771,
+   "odds_ratio": 1.00774,
+   "avg_marginal_effect": 0.00096,
+   "support_share": 0.13982
+  },
+  {
+   "term": "subject_sex in {male} AND off_log_search_ratio_black_white <= 0.362",
+   "kind": "rule (2 variables)",
+   "coef": -0.0077,
+   "odds_ratio": 0.99233,
+   "avg_marginal_effect": -0.00096,
+   "support_share": 0.39325
+  },
+  {
+   "term": "num__month_sin",
+   "kind": "linear",
+   "coef": 0.00626,
+   "odds_ratio": 1.00628,
+   "avg_marginal_effect": 0.00078,
+   "support_share": 1.0
+  },
+  {
+   "term": "precinct in {1, 5, 7} AND month <= 1.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.00552,
+   "odds_ratio": 0.9945,
+   "avg_marginal_effect": -0.00069,
+   "support_share": 0.0347
+  },
+  {
+   "term": "subject_race in {hispanic, unknown} AND subject_sex in {__missing__, female}",
+   "kind": "rule (2 variables)",
+   "coef": 0.00537,
+   "odds_ratio": 1.00538,
+   "avg_marginal_effect": 0.00067,
+   "support_share": 0.00839
+  },
+  {
+   "term": "subject_race in {__missing__, asian/pacific islander, black, other, white} AND off_experience_days > 809",
+   "kind": "rule (2 variables)",
+   "coef": 0.00488,
+   "odds_ratio": 1.0049,
+   "avg_marginal_effect": 0.00061,
+   "support_share": 0.38113
+  },
+  {
+   "term": "off_log_search_ratio_hisp_white <= 0.674",
+   "kind": "rule (1 variable)",
+   "coef": 0.00325,
+   "odds_ratio": 1.00326,
+   "avg_marginal_effect": 0.00041,
+   "support_share": 0.76472
+  },
+  {
+   "term": "off_stops_365d <= 1.68e+03 AND day_of_week > 3.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.00322,
+   "odds_ratio": 0.99678,
+   "avg_marginal_effect": -0.0004,
+   "support_share": 0.32151
+  },
+  {
+   "term": "off_last_search_hit > 0.5 AND off_log_search_ratio_black_white > 1.24",
+   "kind": "rule (2 variables)",
+   "coef": -0.00205,
+   "odds_ratio": 0.99795,
+   "avg_marginal_effect": -0.00026,
+   "support_share": 0.01668
+  },
+  {
+   "term": "time_heaped <= 0.5 AND hour > 21.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.00089,
+   "odds_ratio": 1.00089,
+   "avg_marginal_effect": 0.00011,
+   "support_share": 0.12994
+  },
+  {
+   "term": "off_hit_rate_same_race_past <= 0.155",
+   "kind": "rule (1 variable)",
+   "coef": -0.00083,
+   "odds_ratio": 0.99917,
+   "avg_marginal_effect": -0.0001,
+   "support_share": 0.63279
+  },
+  {
+   "term": "subject_sex in {male} AND month > 8.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.00053,
+   "odds_ratio": 1.00053,
+   "avg_marginal_effect": 7e-05,
+   "support_share": 0.2373
+  },
+  {
+   "term": "time_heaped > 0.5 AND off_log_minutes_since_last_search <= 4.61",
+   "kind": "rule (2 variables)",
+   "coef": -0.00018,
+   "odds_ratio": 0.99982,
+   "avg_marginal_effect": -2e-05,
+   "support_share": 0.00545
+  }
+ ],
+ "officer_holdout/full_time_officer_blind": [
+  {
+   "term": "cat__zone_infrequent_sklearn",
+   "kind": "linear",
+   "coef": -1.65679,
+   "odds_ratio": 0.19075,
+   "avg_marginal_effect": -0.12084,
+   "support_share": 0.00025
+  },
+  {
+   "term": "off_stops_365d <= 1.68e+03 AND hour_sin > 0.9",
+   "kind": "rule (2 variables)",
+   "coef": 0.45495,
+   "odds_ratio": 1.57609,
+   "avg_marginal_effect": 0.06479,
+   "support_share": 0.03144
+  },
+  {
+   "term": "cat__zone_117",
+   "kind": "linear",
+   "coef": -0.6231,
+   "odds_ratio": 0.53628,
+   "avg_marginal_effect": -0.06391,
+   "support_share": 0.00152
+  },
+  {
+   "term": "off_consent_hit_rate_365d_shrunk <= 0.188 AND off_hit_rate_365d_shrunk <= 0.13",
+   "kind": "rule (2 variables)",
+   "coef": -0.54543,
+   "odds_ratio": 0.57959,
+   "avg_marginal_effect": -0.05966,
+   "support_share": 0.16021
+  },
+  {
+   "term": "off_log_search_ratio_hisp_white <= 0.674 AND off_search_rate_365d > 0.427",
+   "kind": "rule (2 variables)",
+   "coef": 0.41414,
+   "odds_ratio": 1.51307,
+   "avg_marginal_effect": 0.0585,
+   "support_share": 0.02462
+  },
+  {
+   "term": "month <= 8.5 AND plate_state in {AK, CA, CT, DC, DE, GA, ... (23 values)}",
+   "kind": "rule (2 variables)",
+   "coef": 0.39271,
+   "odds_ratio": 1.48099,
+   "avg_marginal_effect": 0.05528,
+   "support_share": 0.00757
+  },
+  {
+   "term": "cat__plate_state_CA",
+   "kind": "linear",
+   "coef": -0.48654,
+   "odds_ratio": 0.61475,
+   "avg_marginal_effect": -0.0522,
+   "support_share": 0.00095
+  },
+  {
+   "term": "off_stops_365d <= 1.68e+03 AND time_heaped > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.3364,
+   "odds_ratio": 1.3999,
+   "avg_marginal_effect": 0.04613,
+   "support_share": 0.0626
+  },
+  {
+   "term": "off_consent_365d > 17.5 AND off_stops_365d <= 67.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.33069,
+   "odds_ratio": 1.39192,
+   "avg_marginal_effect": 0.04579,
+   "support_share": 0.00575
+  },
+  {
+   "term": "zone in {111, 113, 115, 121, 125, 215, ... (36 values)} AND hour_sin > 0.904",
+   "kind": "rule (2 variables)",
+   "coef": 0.31978,
+   "odds_ratio": 1.37683,
+   "avg_marginal_effect": 0.04404,
+   "support_share": 0.01578
+  },
+  {
+   "term": "subject_age <= 18.5 AND off_log_minutes_since_last_search <= 5.22",
+   "kind": "rule (2 variables)",
+   "coef": -0.39237,
+   "odds_ratio": 0.67546,
+   "avg_marginal_effect": -0.0435,
+   "support_share": 0.00821
+  },
+  {
+   "term": "cat__plate_state_SC",
+   "kind": "linear",
+   "coef": 0.30354,
+   "odds_ratio": 1.35465,
+   "avg_marginal_effect": 0.04171,
+   "support_share": 0.00075
+  },
+  {
+   "term": "num__off_consent_hit_rate_365d_shrunk",
+   "kind": "linear",
+   "coef": 0.3151,
+   "odds_ratio": 1.3704,
+   "avg_marginal_effect": 0.03951,
+   "support_share": 1.0
+  },
+  {
+   "term": "off_log_search_ratio_black_white > 0.362 AND off_consent_365d > 134",
+   "kind": "rule (2 variables)",
+   "coef": -0.32804,
+   "odds_ratio": 0.72033,
+   "avg_marginal_effect": -0.03717,
+   "support_share": 0.01929
+  },
+  {
+   "term": "off_minutes_since_first_stop_today <= 10.5 AND off_searches_today_before > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.25911,
+   "odds_ratio": 1.29577,
+   "avg_marginal_effect": 0.03512,
+   "support_share": 0.00657
+  },
+  {
+   "term": "cat__plate_state_GA",
+   "kind": "linear",
+   "coef": -0.30813,
+   "odds_ratio": 0.73482,
+   "avg_marginal_effect": -0.03505,
+   "support_share": 0.00222
+  },
+  {
+   "term": "off_search_rate_365d <= 0.427 AND off_minutes_since_first_stop_today <= 10.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.26299,
+   "odds_ratio": 1.30082,
+   "avg_marginal_effect": 0.03384,
+   "support_share": 0.33577
+  },
+  {
+   "term": "cat__zone_335",
+   "kind": "linear",
+   "coef": 0.24301,
+   "odds_ratio": 1.27508,
+   "avg_marginal_effect": 0.03278,
+   "support_share": 0.0067
+  },
+  {
+   "term": "hour_sin > 0.9 AND month > 9.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.2644,
+   "odds_ratio": 0.76767,
+   "avg_marginal_effect": -0.03053,
+   "support_share": 0.00687
+  },
+  {
+   "term": "hour_cos > -0.803 AND subject_age <= 18.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.21954,
+   "odds_ratio": 1.2455,
+   "avg_marginal_effect": 0.02927,
+   "support_share": 0.04249
+  },
+  {
+   "term": "time_heaped <= 0.5 AND subject_age <= 18.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.20082,
+   "odds_ratio": 1.2224,
+   "avg_marginal_effect": 0.02662,
+   "support_share": 0.04575
+  },
+  {
+   "term": "time_heaped > 0.5 AND subject_age > 39.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.22716,
+   "odds_ratio": 0.79679,
+   "avg_marginal_effect": -0.02656,
+   "support_share": 0.01414
+  },
+  {
+   "term": "off_last_search_hit > 0.5 AND subject_age > 40.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.19369,
+   "odds_ratio": 1.21372,
+   "avg_marginal_effect": 0.02564,
+   "support_share": 0.04239
+  },
+  {
+   "term": "cat__zone_125",
+   "kind": "linear",
+   "coef": 0.19048,
+   "odds_ratio": 1.20983,
+   "avg_marginal_effect": 0.02529,
+   "support_share": 0.0108
+  },
+  {
+   "term": "precinct in {1, 5, 7} AND hour_cos <= -0.847",
+   "kind": "rule (2 variables)",
+   "coef": -0.20563,
+   "odds_ratio": 0.81414,
+   "avg_marginal_effect": -0.02433,
+   "support_share": 0.05237
+  },
+  {
+   "term": "off_log_search_ratio_hisp_white <= 0.674 AND off_consent_365d <= 9.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.19783,
+   "odds_ratio": 0.82051,
+   "avg_marginal_effect": -0.02383,
+   "support_share": 0.16904
+  },
+  {
+   "term": "off_search_rate_365d > 0.427 AND hour > 18.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.1893,
+   "odds_ratio": 0.82754,
+   "avg_marginal_effect": -0.02238,
+   "support_share": 0.00891
+  },
+  {
+   "term": "off_last_search_hit <= 0.5 AND hour <= 6.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.16545,
+   "odds_ratio": 1.17992,
+   "avg_marginal_effect": 0.0214,
+   "support_share": 0.19565
+  },
+  {
+   "term": "off_consent_365d <= 17.5 AND hour > 21.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.15982,
+   "odds_ratio": 1.1733,
+   "avg_marginal_effect": 0.02096,
+   "support_share": 0.04299
+  },
+  {
+   "term": "precinct in {1, 5, 7} AND subject_age > 43.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.15613,
+   "odds_ratio": 1.16897,
+   "avg_marginal_effect": 0.02045,
+   "support_share": 0.04695
+  },
+  {
+   "term": "cat__zone_311",
+   "kind": "linear",
+   "coef": 0.14921,
+   "odds_ratio": 1.16091,
+   "avg_marginal_effect": 0.01954,
+   "support_share": 0.02681
+  },
+  {
+   "term": "cat__zone_421",
+   "kind": "linear",
+   "coef": -0.15931,
+   "odds_ratio": 0.85273,
+   "avg_marginal_effect": -0.01901,
+   "support_share": 0.00358
+  },
+  {
+   "term": "off_stops_365d <= 1.68e+03 AND hour > 21.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.14647,
+   "odds_ratio": 1.15774,
+   "avg_marginal_effect": 0.01897,
+   "support_share": 0.13412
+  },
+  {
+   "term": "precinct in {2, 3, 4, 6, 8, U, ... (7 values)} AND hour_sin > -0.223",
+   "kind": "rule (2 variables)",
+   "coef": -0.14519,
+   "odds_ratio": 0.86486,
+   "avg_marginal_effect": -0.01783,
+   "support_share": 0.27944
+  },
+  {
+   "term": "off_log_minutes_since_last_search <= 4.7",
+   "kind": "rule (1 variable)",
+   "coef": -0.14598,
+   "odds_ratio": 0.86417,
+   "avg_marginal_effect": -0.01764,
+   "support_share": 0.10395
+  },
+  {
+   "term": "off_minutes_since_first_stop_today <= 10.5 AND off_stops_365d > 1.51e+03",
+   "kind": "rule (2 variables)",
+   "coef": -0.14597,
+   "odds_ratio": 0.86418,
+   "avg_marginal_effect": -0.01749,
+   "support_share": 0.00652
+  },
+  {
+   "term": "subject_age > 18.5 AND off_log_minutes_since_last_search <= 3.96",
+   "kind": "rule (2 variables)",
+   "coef": -0.14534,
+   "odds_ratio": 0.86473,
+   "avg_marginal_effect": -0.01748,
+   "support_share": 0.04954
+  },
+  {
+   "term": "day_of_week <= 3.5 AND off_hits_today_before > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.13308,
+   "odds_ratio": 1.14234,
+   "avg_marginal_effect": 0.01734,
+   "support_share": 0.02751
+  },
+  {
+   "term": "off_search_rate_365d > 0.427 AND off_stops_365d > 128",
+   "kind": "rule (2 variables)",
+   "coef": -0.14419,
+   "odds_ratio": 0.86572,
+   "avg_marginal_effect": -0.01729,
+   "support_share": 0.0051
+  },
+  {
+   "term": "off_last_search_hit <= 0.5 AND reason_for_stop in {__missing__, child restraint, parking violation}",
+   "kind": "rule (2 variables)",
+   "coef": 0.13045,
+   "odds_ratio": 1.13934,
+   "avg_marginal_effect": 0.01702,
+   "support_share": 0.006
+  },
+  {
+   "term": "time_heaped > 0.5 AND hour > 18.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.13695,
+   "odds_ratio": 0.87202,
+   "avg_marginal_effect": -0.01648,
+   "support_share": 0.0222
+  },
+  {
+   "term": "time_heaped > 0.5 AND month_sin > 0.933",
+   "kind": "rule (2 variables)",
+   "coef": -0.13514,
+   "odds_ratio": 0.8736,
+   "avg_marginal_effect": -0.01625,
+   "support_share": 0.00508
+  },
+  {
+   "term": "zone in {117, 12, 123, 13, 211, 213, ... (37 values)} AND hour_cos <= -0.409",
+   "kind": "rule (2 variables)",
+   "coef": -0.13145,
+   "odds_ratio": 0.87682,
+   "avg_marginal_effect": -0.01596,
+   "support_share": 0.12264
+  },
+  {
+   "term": "subject_age <= 18.5 AND off_searches_today_before > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.11966,
+   "odds_ratio": 1.12711,
+   "avg_marginal_effect": 0.01556,
+   "support_share": 0.01003
+  },
+  {
+   "term": "num__off_log_search_ratio_hisp_white",
+   "kind": "linear",
+   "coef": -0.11923,
+   "odds_ratio": 0.88761,
+   "avg_marginal_effect": -0.01495,
+   "support_share": 1.0
+  },
+  {
+   "term": "cat__zone_723",
+   "kind": "linear",
+   "coef": 0.11457,
+   "odds_ratio": 1.12139,
+   "avg_marginal_effect": 0.01487,
+   "support_share": 0.01083
+  },
+  {
+   "term": "off_hit_rate_365d_shrunk > 0.253 AND off_search_rate_365d > 0.352",
+   "kind": "rule (2 variables)",
+   "coef": 0.11394,
+   "odds_ratio": 1.12068,
+   "avg_marginal_effect": 0.01478,
+   "support_share": 0.0226
+  },
+  {
+   "term": "off_last_search_hit > 0.5 AND off_log_minutes_since_last_search <= 4.77",
+   "kind": "rule (2 variables)",
+   "coef": -0.11783,
+   "odds_ratio": 0.88885,
+   "avg_marginal_effect": -0.01426,
+   "support_share": 0.01665
+  },
+  {
+   "term": "month > 8.5 AND is_federal_holiday > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.11494,
+   "odds_ratio": 0.89142,
+   "avg_marginal_effect": -0.01391,
+   "support_share": 0.00869
+  },
+  {
+   "term": "month > 8.5 AND plate_state in {AK, CA, CT, DC, DE, GA, ... (23 values)}",
+   "kind": "rule (2 variables)",
+   "coef": 0.1075,
+   "odds_ratio": 1.11349,
+   "avg_marginal_effect": 0.01382,
+   "support_share": 0.12033
+  },
+  {
+   "term": "off_search_rate_365d > 0.427 AND off_minutes_since_first_stop_today > 3.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.10554,
+   "odds_ratio": 0.89984,
+   "avg_marginal_effect": -0.01281,
+   "support_share": 0.00869
+  },
+  {
+   "term": "off_stops_365d <= 1.68e+03 AND off_log_minutes_since_last_search <= 3.96",
+   "kind": "rule (2 variables)",
+   "coef": -0.09706,
+   "odds_ratio": 0.9075,
+   "avg_marginal_effect": -0.01184,
+   "support_share": 0.05066
+  },
+  {
+   "term": "off_minutes_since_first_stop_today <= 10.5 AND plate_state in {AK, CA, CT, DC, DE, GA, ... (23 values)}",
+   "kind": "rule (2 variables)",
+   "coef": -0.09082,
+   "odds_ratio": 0.91318,
+   "avg_marginal_effect": -0.01116,
+   "support_share": 0.14082
+  },
+  {
+   "term": "off_log_search_ratio_black_white > 0.362 AND off_stops_365d > 2.1e+03",
+   "kind": "rule (2 variables)",
+   "coef": -0.08942,
+   "odds_ratio": 0.91447,
+   "avg_marginal_effect": -0.0109,
+   "support_share": 0.00605
+  },
+  {
+   "term": "off_stops_365d > 1.68e+03 AND month_cos > 0.25",
+   "kind": "rule (2 variables)",
+   "coef": -0.08816,
+   "odds_ratio": 0.91561,
+   "avg_marginal_effect": -0.01076,
+   "support_share": 0.01098
+  },
+  {
+   "term": "off_minutes_since_first_stop_today <= 10.5 AND hour_cos <= -0.385",
+   "kind": "rule (2 variables)",
+   "coef": -0.08715,
+   "odds_ratio": 0.91654,
+   "avg_marginal_effect": -0.01069,
+   "support_share": 0.10355
+  },
+  {
+   "term": "off_log_search_ratio_black_white <= 0.362 AND time_heaped > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.08234,
+   "odds_ratio": 1.08583,
+   "avg_marginal_effect": 0.01057,
+   "support_share": 0.03629
+  },
+  {
+   "term": "month <= 8.5 AND off_searches_today_before > 1.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.08342,
+   "odds_ratio": 0.91997,
+   "avg_marginal_effect": -0.0102,
+   "support_share": 0.02843
+  },
+  {
+   "term": "hour_sin > 0.9 AND month_cos > -0.683",
+   "kind": "rule (2 variables)",
+   "coef": -0.08279,
+   "odds_ratio": 0.92054,
+   "avg_marginal_effect": -0.01013,
+   "support_share": 0.02402
+  },
+  {
+   "term": "off_experience_days > 569 AND off_hit_gap_black_white <= -0.032",
+   "kind": "rule (2 variables)",
+   "coef": 0.07753,
+   "odds_ratio": 1.08062,
+   "avg_marginal_effect": 0.00985,
+   "support_share": 0.21977
+  },
+  {
+   "term": "time_heaped <= 0.5 AND is_holiday_window > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.07659,
+   "odds_ratio": 1.0796,
+   "avg_marginal_effect": 0.00981,
+   "support_share": 0.05997
+  },
+  {
+   "term": "hour_cos > -0.803 AND day_of_week > 3.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.07877,
+   "odds_ratio": 0.92425,
+   "avg_marginal_effect": -0.00978,
+   "support_share": 0.28838
+  },
+  {
+   "term": "off_hit_gap_hisp_white > -0.0441 AND off_experience_days <= 523",
+   "kind": "rule (2 variables)",
+   "coef": -0.07638,
+   "odds_ratio": 0.92647,
+   "avg_marginal_effect": -0.00948,
+   "support_share": 0.29201
+  },
+  {
+   "term": "precinct in {2, 3, 4, 6, 8, U, ... (7 values)} AND off_consent_365d <= 18.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.07472,
+   "odds_ratio": 0.928,
+   "avg_marginal_effect": -0.00926,
+   "support_share": 0.24658
+  },
+  {
+   "term": "off_last_search_hit > 0.5 AND off_minutes_since_first_stop_today <= 6.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.07002,
+   "odds_ratio": 1.07253,
+   "avg_marginal_effect": 0.00894,
+   "support_share": 0.08364
+  },
+  {
+   "term": "cat__plate_state_FL",
+   "kind": "linear",
+   "coef": 0.06924,
+   "odds_ratio": 1.07169,
+   "avg_marginal_effect": 0.00887,
+   "support_share": 0.00202
+  },
+  {
+   "term": "off_log_search_ratio_hisp_white <= 0.674",
+   "kind": "rule (1 variable)",
+   "coef": 0.06904,
+   "odds_ratio": 1.07148,
+   "avg_marginal_effect": 0.00855,
+   "support_share": 0.76472
+  },
+  {
+   "term": "off_search_rate_365d > 0.427 AND subject_age <= 30.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.06893,
+   "odds_ratio": 0.93339,
+   "avg_marginal_effect": -0.00846,
+   "support_share": 0.01339
+  },
+  {
+   "term": "off_stops_365d <= 1.68e+03 AND reason_for_stop in {__missing__, child restraint, moving traffic violation, parking violation, safety violation}",
+   "kind": "rule (2 variables)",
+   "coef": 0.06325,
+   "odds_ratio": 1.06529,
+   "avg_marginal_effect": 0.00795,
+   "support_share": 0.44042
+  },
+  {
+   "term": "hour > 21.5 AND plate_state in {AL, AR, AZ, CO, FL, HI, ... (24 values)}",
+   "kind": "rule (2 variables)",
+   "coef": -0.06173,
+   "odds_ratio": 0.94014,
+   "avg_marginal_effect": -0.0076,
+   "support_share": 0.0286
+  },
+  {
+   "term": "off_hit_gap_hisp_white <= -0.0441 AND off_search_rate_365d > 0.351",
+   "kind": "rule (2 variables)",
+   "coef": -0.05693,
+   "odds_ratio": 0.94466,
+   "avg_marginal_effect": -0.00702,
+   "support_share": 0.02233
+  },
+  {
+   "term": "off_stops_365d <= 1.68e+03 AND off_searches_today_before > 1.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.05349,
+   "odds_ratio": 0.94792,
+   "avg_marginal_effect": -0.0066,
+   "support_share": 0.03612
+  },
+  {
+   "term": "off_hits_today_before > 0.5 AND plate_state in {AK, CA, CT, DC, DE, GA, ... (23 values)}",
+   "kind": "rule (2 variables)",
+   "coef": 0.05057,
+   "odds_ratio": 1.05187,
+   "avg_marginal_effect": 0.00644,
+   "support_share": 0.01538
+  },
+  {
+   "term": "reason_for_stop in {investigative stop, registration, seatbelt violation, vehicle equipment violation} AND plate_state in {AK, CA, CT, DC, DE, GA, ... (23 values)}",
+   "kind": "rule (2 variables)",
+   "coef": 0.05025,
+   "odds_ratio": 1.05153,
+   "avg_marginal_effect": 0.0064,
+   "support_share": 0.00563
+  },
+  {
+   "term": "off_hit_gap_hisp_white <= -0.0441 AND off_experience_days > 974",
+   "kind": "rule (2 variables)",
+   "coef": 0.04943,
+   "odds_ratio": 1.05067,
+   "avg_marginal_effect": 0.00627,
+   "support_share": 0.11294
+  },
+  {
+   "term": "off_stops_365d <= 1.68e+03 AND month_sin <= -0.683",
+   "kind": "rule (2 variables)",
+   "coef": 0.04956,
+   "odds_ratio": 1.0508,
+   "avg_marginal_effect": 0.00627,
+   "support_share": 0.22047
+  },
+  {
+   "term": "cat__zone_211",
+   "kind": "linear",
+   "coef": -0.0502,
+   "odds_ratio": 0.95104,
+   "avg_marginal_effect": -0.0062,
+   "support_share": 0.03505
+  },
+  {
+   "term": "month <= 8.5 AND month_sin > 0.683",
+   "kind": "rule (2 variables)",
+   "coef": -0.04425,
+   "odds_ratio": 0.95672,
+   "avg_marginal_effect": -0.00551,
+   "support_share": 0.27474
+  },
+  {
+   "term": "num__off_log_search_ratio_black_white",
+   "kind": "linear",
+   "coef": 0.04324,
+   "odds_ratio": 1.04419,
+   "avg_marginal_effect": 0.00542,
+   "support_share": 1.0
+  },
+  {
+   "term": "hour_sin <= 0.9 AND hour <= 13.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.04281,
+   "odds_ratio": 0.95809,
+   "avg_marginal_effect": -0.00535,
+   "support_share": 0.3933
+  },
+  {
+   "term": "zone in {111, 113, 115, 121, 125, 215, ... (36 values)} AND subject_age > 43.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.04111,
+   "odds_ratio": 1.04196,
+   "avg_marginal_effect": 0.00521,
+   "support_share": 0.08682
+  },
+  {
+   "term": "off_minutes_since_first_stop_today <= 10.5 AND subject_age <= 19.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.03975,
+   "odds_ratio": 1.04055,
+   "avg_marginal_effect": 0.00504,
+   "support_share": 0.03348
+  },
+  {
+   "term": "precinct in {2, 3, 4, 6, 8, U, ... (7 values)} AND off_log_search_ratio_black_white <= 0.362",
+   "kind": "rule (2 variables)",
+   "coef": 0.0378,
+   "odds_ratio": 1.03853,
+   "avg_marginal_effect": 0.00476,
+   "support_share": 0.30008
+  },
+  {
+   "term": "off_consent_365d <= 17.5 AND month > 10.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.0348,
+   "odds_ratio": 1.03541,
+   "avg_marginal_effect": 0.00441,
+   "support_share": 0.04214
+  },
+  {
+   "term": "off_experience_days <= 569 AND off_hits_today_before > 0.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.03397,
+   "odds_ratio": 1.03455,
+   "avg_marginal_effect": 0.0043,
+   "support_share": 0.01332
+  },
+  {
+   "term": "off_last_search_hit <= 0.5 AND off_log_minutes_since_last_search <= 3.92",
+   "kind": "rule (2 variables)",
+   "coef": -0.03461,
+   "odds_ratio": 0.96598,
+   "avg_marginal_effect": -0.0043,
+   "support_share": 0.04262
+  },
+  {
+   "term": "hour > 21.5 AND month_cos <= -0.25",
+   "kind": "rule (2 variables)",
+   "coef": -0.03414,
+   "odds_ratio": 0.96644,
+   "avg_marginal_effect": -0.00424,
+   "support_share": 0.05506
+  },
+  {
+   "term": "cat__zone_613",
+   "kind": "linear",
+   "coef": 0.02711,
+   "odds_ratio": 1.02748,
+   "avg_marginal_effect": 0.00343,
+   "support_share": 0.03306
+  },
+  {
+   "term": "num__off_stops_365d",
+   "kind": "linear",
+   "coef": 0.02561,
+   "odds_ratio": 1.02594,
+   "avg_marginal_effect": 0.00321,
+   "support_share": 1.0
+  },
+  {
+   "term": "num__hour_cos",
+   "kind": "linear",
+   "coef": -0.02,
+   "odds_ratio": 0.9802,
+   "avg_marginal_effect": -0.00251,
+   "support_share": 1.0
+  },
+  {
+   "term": "num__month_sin",
+   "kind": "linear",
+   "coef": 0.0199,
+   "odds_ratio": 1.0201,
+   "avg_marginal_effect": 0.0025,
+   "support_share": 1.0
+  },
+  {
+   "term": "cat__zone_321",
+   "kind": "linear",
+   "coef": -0.01827,
+   "odds_ratio": 0.9819,
+   "avg_marginal_effect": -0.00228,
+   "support_share": 0.02865
+  },
+  {
+   "term": "off_search_rate_365d > 0.427 AND off_log_search_ratio_black_white <= -0.0167",
+   "kind": "rule (2 variables)",
+   "coef": 0.01409,
+   "odds_ratio": 1.01419,
+   "avg_marginal_effect": 0.00178,
+   "support_share": 0.00637
+  },
+  {
+   "term": "cat__zone_615",
+   "kind": "linear",
+   "coef": 0.01231,
+   "odds_ratio": 1.01239,
+   "avg_marginal_effect": 0.00155,
+   "support_share": 0.02056
+  },
+  {
+   "term": "reason_for_stop in {investigative stop, registration, seatbelt violation, vehicle equipment violation} AND hour <= 6.5",
+   "kind": "rule (2 variables)",
+   "coef": 0.00699,
+   "odds_ratio": 1.00701,
+   "avg_marginal_effect": 0.00088,
+   "support_share": 0.13982
+  },
+  {
+   "term": "off_minutes_since_first_stop_today <= 10.5 AND off_log_minutes_since_last_search > 7.71",
+   "kind": "rule (2 variables)",
+   "coef": -0.0064,
+   "odds_ratio": 0.99362,
+   "avg_marginal_effect": -0.0008,
+   "support_share": 0.26378
+  },
+  {
+   "term": "off_last_search_hit <= 0.5 AND off_log_search_ratio_black_white <= 0.361",
+   "kind": "rule (2 variables)",
+   "coef": 0.00584,
+   "odds_ratio": 1.00586,
+   "avg_marginal_effect": 0.00073,
+   "support_share": 0.37331
+  },
+  {
+   "term": "off_experience_days <= 569 AND off_stops_365d > 1.28e+03",
+   "kind": "rule (2 variables)",
+   "coef": -0.00568,
+   "odds_ratio": 0.99433,
+   "avg_marginal_effect": -0.00071,
+   "support_share": 0.01414
+  },
+  {
+   "term": "off_hits_today_before <= 0.5 AND month_cos > 0.933",
+   "kind": "rule (2 variables)",
+   "coef": -0.00545,
+   "odds_ratio": 0.99456,
+   "avg_marginal_effect": -0.00068,
+   "support_share": 0.0984
+  },
+  {
+   "term": "cat__reason_for_stop_safety violation",
+   "kind": "linear",
+   "coef": -0.00535,
+   "odds_ratio": 0.99466,
+   "avg_marginal_effect": -0.00067,
+   "support_share": 0.05113
+  },
+  {
+   "term": "off_search_rate_365d <= 0.427 AND off_consent_365d <= 21.5",
+   "kind": "rule (2 variables)",
+   "coef": -0.00347,
+   "odds_ratio": 0.99653,
+   "avg_marginal_effect": -0.00044,
+   "support_share": 0.38165
+  },
+  {
+   "term": "hour_cos > -0.803 AND reason_for_stop in {__missing__, child restraint, moving traffic violation, parking violation, safety violation}",
+   "kind": "rule (2 variables)",
+   "coef": 0.00302,
+   "odds_ratio": 1.00303,
+   "avg_marginal_effect": 0.00038,
+   "support_share": 0.38952
+  },
+  {
+   "term": "day_of_week > 3.5 AND month_cos <= -0.683",
+   "kind": "rule (2 variables)",
+   "coef": 0.00301,
+   "odds_ratio": 1.00301,
+   "avg_marginal_effect": 0.00038,
+   "support_share": 0.07789
+  },
+  {
+   "term": "num__hour",
+   "kind": "linear",
+   "coef": 0.00228,
+   "odds_ratio": 1.00228,
+   "avg_marginal_effect": 0.00029,
+   "support_share": 1.0
+  },
+  {
+   "term": "day_of_week <= 3.5 AND month_sin <= -0.25",
+   "kind": "rule (2 variables)",
+   "coef": 2e-05,
+   "odds_ratio": 1.00002,
+   "avg_marginal_effect": 0.0,
+   "support_share": 0.2539
+  }
+ ]
+}
