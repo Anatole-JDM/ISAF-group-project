@@ -1,0 +1,34 @@
+[
+  {
+    "features": "without officer",
+    "arm": "tabpfn",
+    "n_cols": 117,
+    "auc": 0.5730148285844205,
+    "brier": 0.16832254498959323,
+    "seconds": 25.4
+  },
+  {
+    "features": "without officer",
+    "arm": "gbm",
+    "n_cols": 117,
+    "auc": 0.5663169996204197,
+    "brier": 0.1694995015859604,
+    "seconds": 1.2
+  },
+  {
+    "features": "WITH officer",
+    "arm": "tabpfn",
+    "n_cols": 539,
+    "auc": 0.6017863577941092,
+    "brier": 0.16703213113945892,
+    "seconds": 67.4
+  },
+  {
+    "features": "WITH officer",
+    "arm": "gbm",
+    "n_cols": 539,
+    "auc": 0.6004724534669937,
+    "brier": 0.16755039989948273,
+    "seconds": 2.8
+  }
+]

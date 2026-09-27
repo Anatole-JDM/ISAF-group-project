@@ -1,0 +1,257 @@
+{
+  "fpdp": [
+    {
+      "feature": "precinct",
+      "chi2": 52.391109908824305,
+      "p": 4.547780340711947e-13,
+      "repairs": false,
+      "chi2_drop": 13.09994947198345
+    },
+    {
+      "feature": "zone",
+      "chi2": 35.815518673276515,
+      "p": 2.1691320918389006e-09,
+      "repairs": false,
+      "chi2_drop": 29.67554070753124
+    },
+    {
+      "feature": "subject_age",
+      "chi2": 45.92896964072946,
+      "p": 1.2261920899374122e-11,
+      "repairs": false,
+      "chi2_drop": 19.562089740078292
+    },
+    {
+      "feature": "violation",
+      "chi2": 60.588037016083085,
+      "p": 7.0360305843595e-15,
+      "repairs": false,
+      "chi2_drop": 4.90302236472467
+    },
+    {
+      "feature": "vehicle_registration_state",
+      "chi2": 55.79368947546491,
+      "p": 8.048949504669328e-14,
+      "repairs": false,
+      "chi2_drop": 9.697369905342846
+    },
+    {
+      "feature": "month",
+      "chi2": 50.750281085162186,
+      "p": 1.0489754464727272e-12,
+      "repairs": false,
+      "chi2_drop": 14.740778295645569
+    },
+    {
+      "feature": "dow",
+      "chi2": 48.36629529731597,
+      "p": 3.5359367733956114e-12,
+      "repairs": false,
+      "chi2_drop": 17.124764083491783
+    },
+    {
+      "feature": "hour",
+      "chi2": 44.89000772152417,
+      "p": 2.0841871789939584e-11,
+      "repairs": false,
+      "chi2_drop": 20.601051659283584
+    },
+    {
+      "feature": "hour_sin",
+      "chi2": 33.621025026614895,
+      "p": 6.696497923838282e-09,
+      "repairs": false,
+      "chi2_drop": 31.87003435419286
+    },
+    {
+      "feature": "hour_cos",
+      "chi2": 45.19634496937497,
+      "p": 1.782374262078173e-11,
+      "repairs": false,
+      "chi2_drop": 20.294714411432786
+    },
+    {
+      "feature": "month_sin",
+      "chi2": 54.6471440330578,
+      "p": 1.4423377339819192e-13,
+      "repairs": false,
+      "chi2_drop": 10.843915347749956
+    },
+    {
+      "feature": "month_cos",
+      "chi2": 52.28398657491345,
+      "p": 4.80274924238437e-13,
+      "repairs": false,
+      "chi2_drop": 13.207072805894306
+    },
+    {
+      "feature": "time_heaped",
+      "chi2": 55.79368947546491,
+      "p": 8.048949504669328e-14,
+      "repairs": false,
+      "chi2_drop": 9.697369905342846
+    },
+    {
+      "feature": "is_federal_holiday",
+      "chi2": 66.7478900716246,
+      "p": 3.0854749016802295e-16,
+      "repairs": false,
+      "chi2_drop": -1.256830690816841
+    },
+    {
+      "feature": "is_holiday_window",
+      "chi2": 63.27286257024981,
+      "p": 1.799666774612414e-15,
+      "repairs": false,
+      "chi2_drop": 2.2181968105579415
+    },
+    {
+      "feature": "off_stops_365d",
+      "chi2": 40.856984259010034,
+      "p": 1.637868580679007e-10,
+      "repairs": false,
+      "chi2_drop": 24.63407512179772
+    },
+    {
+      "feature": "off_searches_365d",
+      "chi2": 49.86751577224685,
+      "p": 1.6448542943595112e-12,
+      "repairs": false,
+      "chi2_drop": 15.623543608560908
+    },
+    {
+      "feature": "off_hits_365d",
+      "chi2": 51.72120736982647,
+      "p": 6.396805437353094e-13,
+      "repairs": false,
+      "chi2_drop": 13.769852010981282
+    },
+    {
+      "feature": "off_consent_365d",
+      "chi2": 49.00436629048882,
+      "p": 2.5539335948977746e-12,
+      "repairs": false,
+      "chi2_drop": 16.486693090318937
+    },
+    {
+      "feature": "off_consent_hits_365d",
+      "chi2": 42.346709330373486,
+      "p": 7.644484779442158e-11,
+      "repairs": false,
+      "chi2_drop": 23.14435005043427
+    },
+    {
+      "feature": "off_search_rate_365d",
+      "chi2": 55.119746214141905,
+      "p": 1.1340585703215039e-13,
+      "repairs": false,
+      "chi2_drop": 10.37131316666585
+    },
+    {
+      "feature": "off_hit_rate_365d_shrunk",
+      "chi2": 42.74856077903814,
+      "p": 6.224766569702696e-11,
+      "repairs": false,
+      "chi2_drop": 22.74249860176962
+    },
+    {
+      "feature": "off_consent_hit_rate_365d_shrunk",
+      "chi2": 23.426377996919484,
+      "p": 1.297866296846804e-06,
+      "repairs": false,
+      "chi2_drop": 42.06468138388827
+    },
+    {
+      "feature": "off_stops_today_before",
+      "chi2": 40.2653622135246,
+      "p": 2.217051095974546e-10,
+      "repairs": false,
+      "chi2_drop": 25.22569716728316
+    },
+    {
+      "feature": "off_searches_today_before",
+      "chi2": 59.530154062676885,
+      "p": 1.20434555813249e-14,
+      "repairs": false,
+      "chi2_drop": 5.9609053181308695
+    },
+    {
+      "feature": "off_hits_today_before",
+      "chi2": 63.75892596204781,
+      "p": 1.4061499806889996e-15,
+      "repairs": false,
+      "chi2_drop": 1.7321334187599433
+    },
+    {
+      "feature": "off_minutes_since_first_stop_today",
+      "chi2": 41.54956292730156,
+      "p": 1.1492017190162557e-10,
+      "repairs": false,
+      "chi2_drop": 23.941496453506197
+    },
+    {
+      "feature": "off_minutes_since_last_search",
+      "chi2": 43.252877337024884,
+      "p": 4.8102982135210946e-11,
+      "repairs": false,
+      "chi2_drop": 22.23818204378287
+    },
+    {
+      "feature": "off_last_search_hit",
+      "chi2": 61.09205137989612,
+      "p": 5.4467603370620226e-15,
+      "repairs": false,
+      "chi2_drop": 4.3990080009116355
+    },
+    {
+      "feature": "off_experience_days",
+      "chi2": 31.448521452107386,
+      "p": 2.0479850218202795e-08,
+      "repairs": false,
+      "chi2_drop": 34.04253792870037
+    },
+    {
+      "feature": "off_experience_censored",
+      "chi2": 60.97992553596923,
+      "p": 5.765976659848765e-15,
+      "repairs": false,
+      "chi2_drop": 4.511133844838525
+    },
+    {
+      "feature": "off_history_warmup",
+      "chi2": 65.49105938080776,
+      "p": 5.837820663640741e-16,
+      "repairs": false,
+      "chi2_drop": 0.0
+    }
+  ],
+  "pdp_spread": {
+    "subject_age": 0.06768165528774261,
+    "month": 0.012626126408576965,
+    "dow": 0.01628577709197998,
+    "hour": 0.03063485026359558,
+    "hour_sin": 0.040432900190353394,
+    "hour_cos": 0.022732317447662354,
+    "month_sin": 0.009137436747550964,
+    "month_cos": 0.00901561975479126,
+    "time_heaped": 0.032252222299575806,
+    "off_stops_365d": 0.035206153988838196,
+    "off_searches_365d": 0.015688374638557434,
+    "off_hits_365d": 0.031286388635635376,
+    "off_consent_365d": 0.016073063015937805,
+    "off_consent_hits_365d": 0.02813774347305298,
+    "off_search_rate_365d": 0.017498791217803955,
+    "off_hit_rate_365d_shrunk": 0.05228789150714874,
+    "off_consent_hit_rate_365d_shrunk": 0.14998531341552734,
+    "off_stops_today_before": 0.05080914497375488,
+    "off_searches_today_before": 0.010190844535827637,
+    "off_hits_today_before": 0.006538182497024536,
+    "off_minutes_since_first_stop_today": 0.09281298518180847,
+    "off_minutes_since_last_search": 0.04692837595939636,
+    "off_last_search_hit": 0.0008932799100875854,
+    "off_experience_days": 0.03359505534172058,
+    "off_experience_censored": 0.0022297948598861694,
+    "off_history_warmup": 0.0
+  },
+  "base_chi2": 65.49105938080776
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "mode": "full_time",
+    "arm": "gbm",
+    "n_cols": 17,
+    "auc": 0.5733265447678931,
+    "brier": 0.16867215931415558,
+    "seconds": 1.5
+  },
+  {
+    "mode": "full_time",
+    "arm": "tabpfn",
+    "n_cols": 17,
+    "auc": 0.5798426856792387,
+    "brier": 0.16727514206421448,
+    "seconds": 29.7
+  },
+  {
+    "mode": "full_time_officer",
+    "arm": "gbm",
+    "n_cols": 42,
+    "auc": 0.645896510083687,
+    "brier": 0.16078445315361023,
+    "seconds": 1.9
+  },
+  {
+    "mode": "full_time_officer",
+    "arm": "tabpfn",
+    "n_cols": 42,
+    "auc": 0.6529368145739344,
+    "brier": 0.15905695307772372,
+    "seconds": 30.7
+  },
+  {
+    "mode": "full_time_officer_blind",
+    "arm": "gbm",
+    "n_cols": 40,
+    "auc": 0.6428179946027033,
+    "brier": 0.1609967201948166,
+    "seconds": 1.9
+  },
+  {
+    "mode": "full_time_officer_blind",
+    "arm": "tabpfn",
+    "n_cols": 40,
+    "auc": 0.6497810063854674,
+    "brier": 0.15937768187344376,
+    "seconds": 27.3
+  }
+]

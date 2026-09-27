@@ -1,0 +1,39 @@
+{
+  "depths": {
+    "2": {
+      "auc": 0.5538609356490172,
+      "n_leaves": 4
+    },
+    "3": {
+      "auc": 0.5588458133809882,
+      "n_leaves": 8
+    },
+    "4": {
+      "auc": 0.5605409829882908,
+      "n_leaves": 16
+    },
+    "5": {
+      "auc": 0.5592242106571872,
+      "n_leaves": 32
+    },
+    "6": {
+      "auc": 0.5574688129661314,
+      "n_leaves": 58
+    }
+  },
+  "best_depth": 4,
+  "best_auc": 0.5605409829882908,
+  "mdi": {
+    "subject_race": 0.6395408630987502,
+    "subject_age": 0.1606881972454665,
+    "hour": 0.06908919695755718,
+    "violation": 0.06661124836306452,
+    "subject_sex": 0.05508519721495712,
+    "zone": 0.008985297120204279,
+    "month": 0.0,
+    "dow": 0.0,
+    "precinct": 0.0,
+    "vehicle_registration_state": 0.0
+  },
+  "rules": "|--- cat__subject_race_white <= 0.50\n|   |--- cat__subject_race_hispanic <= 0.50\n|   |   |--- num__subject_age <= 50.50\n|   |   |   |--- cat__subject_sex_male <= 0.50\n|   |   |   |   |--- class: 0\n|   |   |   |--- cat__subject_sex_male >  0.50\n|   |   |   |   |--- class: 0\n|   |   |--- num__subject_age >  50.50\n|   |   |   |--- num__hour <= 6.50\n|   |   |   |   |--- class: 0\n|   |   |   |--- num__hour >  6.50\n|   |   |   |   |--- class: 0\n|   |--- cat__subject_race_hispanic >  0.50\n|   |   |--- num__subject_age <= 19.50\n|   |   |   |--- cat__zone_511 <= 0.50\n|   |   |   |   |--- class: 0\n|   |   |   |--- cat__zone_511 >  0.50\n|   |   |   |   |--- class: 0\n|   |   |--- num__subject_age >  19.50\n|   |   |   |--- num__subject_age <= 23.50\n|   |   |   |   |--- class: 0\n|   |   |   |--- num__subject_age >  23.50\n|   |   |   |   |--- class: 0\n|--- cat__subject_race_white >  0.50\n|   |--- cat__violation_moving traffic violation <= 0.50\n|   |   |--- num__subject_age <= 18.50\n|   |   |   |--- cat__violation_parking violation <= 0.50\n|   |   |   |   |--- class: 0\n|   |   |   |--- cat__violation_parking violation >  0.50\n|   |   |   |   |--- class: 1\n|   |   |--- num__subject_age >  18.50\n|   |   |   |--- cat__subject_sex_male <= 0.50\n|   |   |   |   |--- class: 0\n|   |   |   |--- cat__subject_sex_male >  0.50\n|   |   |   |   |--- class: 0\n|   |--- cat__violation_moving traffic violation >  0.50\n|   |   |--- num__hour <= 12.50\n|   |   |   |--- num__hour <= 6.50\n|   |   |   |   |--- class: 0\n|   |   |   |--- num__hour >  6.50\n|   |   |   |   |--- class: 0\n|   |   |--- num__hour >  12.50\n|   |   |   |--- num__subject_age <= 33.50\n|   |   |   |   |--- class: 0\n|   |   |   |--- num__subject_age >  33.50\n|   |   |   |   |--- class: 0\n"
+}
