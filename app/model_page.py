@@ -72,7 +72,10 @@ def _local_explanation(arm: str, scores: pd.DataFrame) -> None:
                       "`coef_j x (x_j - E[x_j])`. No sampling, no approximation."),
         "gbm": ("EXACT — TreeSHAP", "success",
                 "xgboost computes exact Shapley values for trees natively via "
-                "`predict(pred_contribs=True)`."),
+                "`predict(pred_contribs=True)`.") if M.gbm_backend() == "xgboost" else
+               ("APPROXIMATE — occlusion (xgboost not installed)", "warning",
+                "Without xgboost this arm falls back to scikit-learn's HistGradientBoosting, "
+                "which has no native Shapley. The attribution below is occlusion, not TreeSHAP."),
         "tabpfn": ("APPROXIMATE — occlusion, NOT Shapley", "warning",
                    "TabPFN exposes no attribution of its own. We replace each feature "
                    "with its background value and measure the change. This ignores "
@@ -88,12 +91,20 @@ def _local_explanation(arm: str, scores: pd.DataFrame) -> None:
     c2.metric("Contraband found", "yes" if row_meta["y"] == 1 else "no")
     c3.metric(f"{arm} score", f"{row_meta.get('score_' + arm, float('nan')):.4f}")
 
+    # The cached scores come from outputs/; attributing a row refits the arm here, so
+    # this is the one place the app needs the modelling package rather than a parquet.
+    if arm == "tabpfn" and not M.tabpfn_available():
+        st.info("Per-stop attribution for TabPFN needs the `tabpfn` package and a token, "
+                "which the deployed app does not carry. The scores and calibration above are "
+                "the real cached results; run the app locally to attribute an individual stop.")
+        return
     if not st.button("Explain this stop", key=f"btn_{arm}"):
         st.caption("Fitting the arm and attributing one prediction takes a few seconds.")
         return
     with st.spinner("Fitting and attributing…"):
+        stratum = st.session_state.get("run_stratum", "consent")
         df = D.load_searches()
-        X, y, meta = D.build_xy(df, search_type="consent")
+        X, y, meta = D.build_xy(df, search_type=None if stratum == "pooled" else stratum)
         X = X.reset_index(drop=True); y = np.asarray(y); meta = meta.reset_index(drop=True)
         tr = (meta["year"] < 2016).to_numpy()
         idx = np.random.default_rng(42).choice(int(tr.sum()), 2000, replace=False)

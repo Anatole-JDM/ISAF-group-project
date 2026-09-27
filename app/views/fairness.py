@@ -23,7 +23,7 @@ are shown under both codings.
     """
 )
 k = st.slider("Search capacity K (top-K by score), the same for every model", 100,
-              len(scores), min(2000, len(scores)), step=100)
+              len(scores), min(2000, len(scores)), step=100, key="fair_k")
 st.error(
     "**FPR gap is the harm metric.** It is the share of *innocent* drivers "
     "the model would search, by race. Read it before AUC."
@@ -77,8 +77,9 @@ if "tabpfn" not in arms:
 st.divider()
 st.subheader("Is the disparity statistically significant? χ² and equivalence testing")
 
-_arm = st.session_state.get("fair_arm") or common.arm_name(common.score_cols(scores)[0])
-_K = int(st.session_state.get("fair_k", 2000))
+_arms = [common.arm_name(c) for c in common.score_cols(scores)]
+_arm = st.selectbox("Arm to test", _arms, key="fair_arm")
+_K = int(k)   # the slider above; this section used to read a key that was never set
 _s = scores[f"score_{_arm}"].to_numpy()
 _yhat = np.zeros(len(_s), int)
 _yhat[np.argsort(-_s)[: min(_K, len(_s))]] = 1
