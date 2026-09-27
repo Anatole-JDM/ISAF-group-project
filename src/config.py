@@ -20,6 +20,58 @@ STOPS_ZIP = DATA_RAW / "tn_nashville.csv.zip"
 STOPS_CSV_INNER = "tn_nashville_2020_04_01.csv"
 LABELLED_PARQUET = DATA_PROC / "searches.parquet"
 
+# The team's canonical consent-search file, built by scripts_claude/. Carries 41
+# ACS-derived neighbourhood features at 800m and 1200m radii. Verified clean:
+# build_nbh_features.py never reads contraband_found (it loads only stop_id,
+# date, lat, lng, geo_outside_davidson_box, location plus census data), so these
+# cannot leak the outcome. Joins to our frame on raw_row_number with all 58,865
+# consent rows matching; their extra 74 are the 2019 tail we drop.
+NBH_PARQUET = ROOT / "data" / "nashville_consent_searches.parquet"
+NBH_JOIN_KEY = "raw_row_number"
+NBH_PREFIX = "nbh"
+
+# The (location, release) table from build_nbh_features.py: one row per location
+# per ACS vintage, 568,044 rows = ~63,000 locations x 9 releases. This is what
+# makes the neighbourhood features usable -- pin ONE release and join it to every
+# stop regardless of year, so the value becomes f(place) instead of f(place, year).
+#
+# Measured effect on the split tripwire (predict post-2016 from the nbh block):
+#     as shipped (vintage follows stop year)   AUC 0.9983
+#     frozen at a single release               AUC 0.59-0.62
+#     src's own baseline features, for scale   AUC 0.7121
+# Frozen features are LESS year-informative than the features already in the
+# model. The residual is genuine covariate shift -- where people were stopped
+# changed between eras -- not vintage contamination.
+NBH_VINTAGE_PARQUET = ROOT / "opp_data" / "features" / "nbh_location_vintage.parquet"
+NBH_PIN_VINTAGE = 2013      # mid-range release; 2016 gives the same tripwire
+
+# Seven cyclical/calendar columns from scripts_claude/build_time_features.py that
+# are safe AND genuinely new. Everything else in that parquet is either a
+# re-encoding of something src already has, or vintage-contaminated (see below).
+TIME_EXTRA = [
+    "hour_sin", "hour_cos",        # cyclical clock: makes 23:00 and 00:00 adjacent,
+    "month_sin", "month_cos",      # which an integer `hour` cannot express
+    "time_heaped",                 # minute is :00 or :30 -- officer rounding, 6.2% of stops
+    "is_federal_holiday", "is_holiday_window",
+]
+
+# NEVER JOIN. Each verified on this machine, 2026-09-25:
+#   nbh*            the 41 ACS columns predict WHICH SIDE OF THE 2016 SPLIT a row
+#                   is on at AUC 0.9981. ACS is re-stamped per release, so every
+#                   column describes the PLACE-YEAR, not the place. With a temporal
+#                   split, every test row carries vintages never seen in training.
+#                   This is why full_nbh AUC FELL (0.5663 -> 0.5498). Keep the runs
+#                   as a negative result; do not add nbh to any new mode.
+#   acs_vintage     exactly year - 1 (cross-tab perfectly diagonal)
+#   acs_window_overlaps_stop  True only in 2010 (7,909 rows); a pure year dummy
+#                   with zero test support
+#   plate_missing   0.13% pre-2017 vs 8-9% in 2017-18 -- a recording change
+#   hour/month/day_of_week/minute_of_day  duplicate encodings src already builds;
+#                   coexisting clock encodings split the scorecard coefficient
+#                   under L2, the same harm DROP_EXTRA cites for reason_for_stop
+NEVER_JOIN = ["acs_vintage", "acs_window_overlaps_stop", "plate_missing",
+              "hour", "month", "day_of_week", "minute_of_day", "year"]
+
 # --------------------------------------------------------------------------- target
 TARGET = "contraband_found"
 

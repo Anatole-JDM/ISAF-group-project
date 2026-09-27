@@ -1,0 +1,723 @@
+{
+ "rows_after_cleaning": 3088286,
+ "consent_exclusive_n": 58939,
+ "top_coords": [
+  {
+   "coord": [
+    36.1221,
+    -86.7024
+   ],
+   "stops": 32024,
+   "share_pct": 1.04,
+   "share_of_searches_pct": 0.35,
+   "n_distinct_location_strings": 58,
+   "top_location_strings": {
+    "BRILEY PKWY N & MURFREESBORO PIKE, NASHVILLE, TN, 37217": 21732,
+    "BRILEY PKWY & MURFREESBORO PIKE, NASHVILLE, TN, 37211": 3717,
+    "BRILEY PKWY N & TWO RIVERS PKWY, NASHVILLE, TN, 37214": 2674
+   },
+   "precinct_mode": "3",
+   "years": {
+    "2010": 3800,
+    "2011": 4107,
+    "2012": 5043,
+    "2013": 3937,
+    "2014": 3906,
+    "2015": 3150,
+    "2016": 2845,
+    "2017": 3097,
+    "2018": 1930,
+    "2019": 209
+   }
+  },
+  {
+   "coord": [
+    36.0796,
+    -86.7264
+   ],
+   "stops": 14975,
+   "share_pct": 0.48,
+   "share_of_searches_pct": 0.25,
+   "n_distinct_location_strings": 6,
+   "top_location_strings": {
+    "HARDING PL & NOLENSVILLE PIKE, NASHVILLE, TN, 37211": 14970,
+    "NOLENSVILLE & HARDING PL, , TN,": 1,
+    "HARDING PL & NOLENSVILLE, , TN,": 1
+   },
+   "precinct_mode": "3",
+   "years": {
+    "2010": 1605,
+    "2011": 2589,
+    "2012": 2045,
+    "2013": 1889,
+    "2014": 2009,
+    "2015": 1599,
+    "2016": 1269,
+    "2017": 1205,
+    "2018": 739,
+    "2019": 26
+   }
+  },
+  {
+   "coord": [
+    36.1538,
+    -86.6855
+   ],
+   "stops": 11798,
+   "share_pct": 0.38,
+   "share_of_searches_pct": 0.24,
+   "n_distinct_location_strings": 68,
+   "top_location_strings": {
+    "BRILEY PKWY N & ELM HILL PIKE, NASHVILLE, TN, 37214": 5842,
+    "BRILEY PKWY S & ELM HILL PIKE, NASHVILLE, TN, 37210": 1932,
+    "BRILEY PKWY & MCGAVOCK PIKE, NASHVILLE, TN, 37214": 1510
+   },
+   "precinct_mode": "5",
+   "years": {
+    "2010": 2373,
+    "2011": 841,
+    "2012": 595,
+    "2013": 1072,
+    "2014": 1002,
+    "2015": 2139,
+    "2016": 1575,
+    "2017": 1145,
+    "2018": 935,
+    "2019": 121
+   }
+  },
+  {
+   "coord": [
+    36.235,
+    -86.7284
+   ],
+   "stops": 11216,
+   "share_pct": 0.36,
+   "share_of_searches_pct": 0.28,
+   "n_distinct_location_strings": 7,
+   "top_location_strings": {
+    "BRILEY PKWY E & GALLATIN PIKE, NASHVILLE, TN, 37216": 10375,
+    "BRILEY PKWY & GALLATIN PIKE, NASHVILLE, TN, 37216": 660,
+    "BRILEY PKWY W & GALLATIN PIKE S, NASHVILLE, TN, 37216": 177
+   },
+   "precinct_mode": "2",
+   "years": {
+    "2010": 632,
+    "2011": 668,
+    "2012": 2413,
+    "2013": 2267,
+    "2014": 2284,
+    "2015": 1058,
+    "2016": 841,
+    "2017": 490,
+    "2018": 525,
+    "2019": 38
+   }
+  },
+  {
+   "coord": [
+    36.079,
+    -86.9551
+   ],
+   "stops": 10424,
+   "share_pct": 0.34,
+   "share_of_searches_pct": 0.42,
+   "n_distinct_location_strings": 181,
+   "top_location_strings": {
+    "MM 196 I40 E, NASHVILLE, , 37221": 1730,
+    "I 40 W & JEFFERSON ST, NASHVILLE, TN, 37208": 1415,
+    "I 40 W & BROADWAY, NASHVILLE, TN, 37203": 1158
+   },
+   "precinct_mode": "5",
+   "years": {
+    "2010": 2737,
+    "2011": 2086,
+    "2012": 1353,
+    "2013": 1278,
+    "2014": 1137,
+    "2015": 771,
+    "2016": 656,
+    "2017": 158,
+    "2018": 241,
+    "2019": 7
+   }
+  },
+  {
+   "coord": [
+    36.2173,
+    -86.6933
+   ],
+   "stops": 9964,
+   "share_pct": 0.32,
+   "share_of_searches_pct": 0.24,
+   "n_distinct_location_strings": 4,
+   "top_location_strings": {
+    "BRILEY PKWY N & MCGAVOCK PIKE, NASHVILLE, TN, 37214": 9961,
+    "BRILEY & MCGAV, , ,": 1,
+    "BRILEY PKWY N & MCGAVOCK, , TN, 37210": 1
+   },
+   "precinct_mode": "5",
+   "years": {
+    "2010": 6,
+    "2011": 1253,
+    "2012": 1805,
+    "2013": 1444,
+    "2014": 1338,
+    "2015": 1175,
+    "2016": 1256,
+    "2017": 854,
+    "2018": 780,
+    "2019": 53
+   }
+  },
+  {
+   "coord": [
+    36.0771,
+    -86.7256
+   ],
+   "stops": 9776,
+   "share_pct": 0.32,
+   "share_of_searches_pct": 0.24,
+   "n_distinct_location_strings": 9,
+   "top_location_strings": {
+    "EDMONDSON PIKE & NOLENSVILLE PIKE, NASHVILLE, TN, 37211": 6390,
+    "NOLENSVILLE PIKE & WALLACE RD, NASHVILLE, TN, 37211": 3377,
+    "4900 EDMONDSON PIKE, , TN, 37211": 3
+   },
+   "precinct_mode": "8",
+   "years": {
+    "2010": 1070,
+    "2011": 1310,
+    "2012": 1584,
+    "2013": 1346,
+    "2014": 1456,
+    "2015": 1269,
+    "2016": 731,
+    "2017": 558,
+    "2018": 432,
+    "2019": 20
+   }
+  },
+  {
+   "coord": [
+    36.137,
+    -86.725
+   ],
+   "stops": 9644,
+   "share_pct": 0.31,
+   "share_of_searches_pct": 0.34,
+   "n_distinct_location_strings": 70,
+   "top_location_strings": {
+    "MURFREESBORO PIKE & SPENCE LN, NASHVILLE, TN, 37217": 3753,
+    "I 40 W & SPENCE LN, NASHVILLE, TN, 37210": 2423,
+    "I 40 E & FESSLERS LN, NASHVILLE, TN, 37210": 820
+   },
+   "precinct_mode": "5",
+   "years": {
+    "2010": 1035,
+    "2011": 1005,
+    "2012": 1731,
+    "2013": 1687,
+    "2014": 1415,
+    "2015": 1005,
+    "2016": 787,
+    "2017": 484,
+    "2018": 436,
+    "2019": 59
+   }
+  },
+  {
+   "coord": [
+    36.207,
+    -86.7916
+   ],
+   "stops": 9558,
+   "share_pct": 0.31,
+   "share_of_searches_pct": 0.31,
+   "n_distinct_location_strings": 64,
+   "top_location_strings": {
+    "W TRINITY LN & WHITES CREEK PIKE, NASHVILLE, TN, 37207": 2579,
+    "I 65 S & W TRINITY LN, NASHVILLE, TN, 37207": 1924,
+    "I 65 N & W TRINITY LN, NASHVILLE, TN, 37207": 1684
+   },
+   "precinct_mode": "2",
+   "years": {
+    "2010": 1220,
+    "2011": 1711,
+    "2012": 1564,
+    "2013": 1248,
+    "2014": 932,
+    "2015": 545,
+    "2016": 879,
+    "2017": 810,
+    "2018": 616,
+    "2019": 33
+   }
+  },
+  {
+   "coord": [
+    36.1267,
+    -86.711
+   ],
+   "stops": 9499,
+   "share_pct": 0.31,
+   "share_of_searches_pct": 0.46,
+   "n_distinct_location_strings": 13,
+   "top_location_strings": {
+    "MURFREESBORO PIKE & THOMPSON PL, NASHVILLE, TN, 37217": 8115,
+    "EAST THOMPSON LN & MURFREESBORO PIKE, NASHVILLE, TN, 37217": 607,
+    "E THOMPSON LN & MURFREESBORO PIKE, NASHVILLE, TN, 37217": 452
+   },
+   "precinct_mode": "5",
+   "years": {
+    "2010": 988,
+    "2011": 1268,
+    "2012": 1400,
+    "2013": 1686,
+    "2014": 970,
+    "2015": 1042,
+    "2016": 917,
+    "2017": 690,
+    "2018": 520,
+    "2019": 18
+   }
+  },
+  {
+   "coord": [
+    36.0454,
+    -86.7133
+   ],
+   "stops": 8788,
+   "share_pct": 0.28,
+   "share_of_searches_pct": 0.17,
+   "n_distinct_location_strings": 8,
+   "top_location_strings": {
+    "NOLENSVILLE PIKE & OLD HICKORY BLVD, NASHVILLE, TN, 37211": 8781,
+    "OLDHICKORY & NOLENSVILLE, , TN,": 1,
+    "NOLENSVILLE AND OLD HICKORY BL, NASHVILLE, TN,": 1
+   },
+   "precinct_mode": "8",
+   "years": {
+    "2010": 809,
+    "2011": 1225,
+    "2012": 1407,
+    "2013": 1240,
+    "2014": 1340,
+    "2015": 1081,
+    "2016": 831,
+    "2017": 469,
+    "2018": 366,
+    "2019": 20
+   }
+  },
+  {
+   "coord": [
+    36.04,
+    -86.7435
+   ],
+   "stops": 8630,
+   "share_pct": 0.28,
+   "share_of_searches_pct": 0.05,
+   "n_distinct_location_strings": 11,
+   "top_location_strings": {
+    "EDMONDSON PIKE & OLD HICKORY BLVD, NASHVILLE, TN, 37220": 3049,
+    "EDMONDSON PIKE & OLD HICKORY BLVD, SOUTH, TN, 37211": 2710,
+    "EDMONDSON PIKE & OLD HICKORY BLVD, NASHVILLE, TN, 37211": 2258
+   },
+   "precinct_mode": "8",
+   "years": {
+    "2010": 162,
+    "2011": 1996,
+    "2012": 1410,
+    "2013": 1146,
+    "2014": 1079,
+    "2015": 995,
+    "2016": 860,
+    "2017": 553,
+    "2018": 414,
+    "2019": 15
+   }
+  },
+  {
+   "coord": [
+    36.1165,
+    -86.6976
+   ],
+   "stops": 8167,
+   "share_pct": 0.26,
+   "share_of_searches_pct": 0.16,
+   "n_distinct_location_strings": 6,
+   "top_location_strings": {
+    "MCGAVOCK PIKE & MURFREESBORO PIKE, NASHVILLE, TN, 37217": 8162,
+    "MURFREESBORO & MVGAVOCK, , TN,": 1,
+    "MURFREESBORO RD & MC GAVOCK PIKE, NASHVILLE, TN,": 1
+   },
+   "precinct_mode": "3",
+   "years": {
+    "2010": 717,
+    "2011": 871,
+    "2012": 982,
+    "2013": 988,
+    "2014": 1107,
+    "2015": 868,
+    "2016": 742,
+    "2017": 1438,
+    "2018": 440,
+    "2019": 14
+   }
+  },
+  {
+   "coord": [
+    36.1077,
+    -86.6769
+   ],
+   "stops": 7656,
+   "share_pct": 0.25,
+   "share_of_searches_pct": 0.08,
+   "n_distinct_location_strings": 1,
+   "top_location_strings": {
+    "DELL PKWY & MURFREESBORO PIKE, NASHVILLE, TN, 37217": 7656
+   },
+   "precinct_mode": "3",
+   "years": {
+    "2010": 227,
+    "2011": 341,
+    "2012": 465,
+    "2013": 669,
+    "2014": 876,
+    "2015": 765,
+    "2016": 1231,
+    "2017": 1391,
+    "2018": 1515,
+    "2019": 176
+   }
+  },
+  {
+   "coord": [
+    36.1686,
+    -86.6902
+   ],
+   "stops": 7626,
+   "share_pct": 0.25,
+   "share_of_searches_pct": 0.15,
+   "n_distinct_location_strings": 3,
+   "top_location_strings": {
+    "BRILEY PKWY N & LEBANON PIKE, NASHVILLE, TN, 37214": 6452,
+    "BRILEY PKWY S & LEBANON PIKE, NASHVILLE, TN, 37214": 1173,
+    "BRILEY PKWY & 24 E, , TN,": 1
+   },
+   "precinct_mode": "5",
+   "years": {
+    "2010": 7,
+    "2011": 1204,
+    "2012": 1380,
+    "2013": 926,
+    "2014": 1006,
+    "2015": 891,
+    "2016": 872,
+    "2017": 667,
+    "2018": 622,
+    "2019": 51
+   }
+  }
+ ],
+ "decimals_by_year": {
+  "2010": {
+   "7": 162480,
+   "15": 59576,
+   "14": 42228,
+   "6": 32836,
+   "5": 3318,
+   "4": 144,
+   "3": 10,
+   "2": 2
+  },
+  "2011": {
+   "7": 207436,
+   "15": 78927,
+   "14": 56118,
+   "6": 37137,
+   "5": 2293,
+   "4": 114,
+   "3": 16
+  },
+  "2012": {
+   "7": 227372,
+   "15": 89942,
+   "14": 67447,
+   "6": 46004,
+   "5": 2257,
+   "4": 94,
+   "3": 10
+  },
+  "2013": {
+   "7": 212053,
+   "15": 82815,
+   "14": 60586,
+   "6": 41622,
+   "5": 2087,
+   "4": 140,
+   "3": 11
+  },
+  "2014": {
+   "7": 206567,
+   "15": 77121,
+   "14": 55431,
+   "6": 37396,
+   "5": 1942,
+   "4": 208,
+   "3": 14
+  },
+  "2015": {
+   "7": 175942,
+   "15": 65259,
+   "14": 45681,
+   "6": 30483,
+   "5": 1674,
+   "4": 99,
+   "3": 17
+  },
+  "2016": {
+   "7": 144821,
+   "15": 55050,
+   "14": 39196,
+   "6": 28105,
+   "5": 1688,
+   "4": 101,
+   "3": 16
+  },
+  "2017": {
+   "7": 124115,
+   "15": 45741,
+   "14": 33646,
+   "6": 22195,
+   "5": 964,
+   "4": 90,
+   "3": 18
+  },
+  "2018": {
+   "7": 101458,
+   "15": 36984,
+   "14": 27876,
+   "6": 17375,
+   "5": 848,
+   "4": 65,
+   "3": 8
+  },
+  "2019": {
+   "7": 4835,
+   "15": 1533,
+   "14": 1404,
+   "6": 913,
+   "5": 24
+  }
+ },
+ "latlng_missing_by_year": {
+  "2010": 3.2,
+  "2011": 2.8,
+  "2012": 2.5,
+  "2013": 3.2,
+  "2014": 8.3,
+  "2015": 10.7,
+  "2016": 9.5,
+  "2017": 7.7,
+  "2018": 9.6,
+  "2019": 14.7
+ },
+ "outside_box": {
+  "n": 20377,
+  "lat_range": [
+   31.8793011,
+   40.3146645
+  ],
+  "lng_range": [
+   -115.07534,
+   -74.826921
+  ],
+  "sample": [
+   [
+    36.4278976,
+    -84.9327272
+   ],
+   [
+    35.1998843,
+    -87.02943559999999
+   ],
+   [
+    35.7275536,
+    -86.9604933
+   ],
+   [
+    35.7275536,
+    -86.9604933
+   ],
+   [
+    35.7275536,
+    -86.9604933
+   ],
+   [
+    35.7275536,
+    -86.9604933
+   ],
+   [
+    35.7275536,
+    -86.9604933
+   ],
+   [
+    35.7275536,
+    -86.9604933
+   ]
+  ]
+ },
+ "location_n_distinct": 100122,
+ "location_samples": [
+  "BRILEY PKWY N & MCGAVOCK PIKE, NASHVILLE, TN, 37214",
+  "I 440 W & I 65 ENTRY, NASHVILLE, TN, 37204",
+  "15TH AVE S & ACKLEN AVE, NASHVILLE, TN, 37212",
+  "MAIN ST & S 10TH ST, NASHVILLE, TN, 37206",
+  "GALLATIN AVE & MAIN ST, NASHVILLE, TN, 37206",
+  "1410 BRICK CHURCH PIKE, NASHVILLE, TN, 37207",
+  "1726 21ST AVE N, , TN, 37208",
+  "I 40 W & 28TH AVE N, NASHVILLE, TN, 37208",
+  "WHITE BRIDGE PIKE & WHITE BRIDGE PL, NASHVILLE, TN, 37209",
+  "LEBANON PIKE & TYLER DR, HERMITAGE, TN, 37076",
+  "BROOKSIDE WOODS BLVD & TULIP GROVE RD, HERMITAGE, TN, 37076",
+  "I40 E EXIT & BRILEY PKWY, NASHVILLE, TN, 37217",
+  "NOLENSVILLE PIKE & NORTHCREST DR, NASHVILLE, TN, 37211",
+  "I 40 W & DEMONBREUN ST, NASHVILLE, TN, 37203",
+  "400 MYATT DR, MADISON, TN, 37115",
+  ", , ,",
+  "I 40 E & DR DB TODD JR BLVD, NASHVILLE, TN, 37208",
+  "25TH AVE S & WEST END AVE, NASHVILLE, TN, 37203",
+  "W TRINITY LN & OLD BUENA VISTA RD, NASHVILLE, TN, 37218",
+  "BELL RD & HICKORY HOLLOW TER, ANTIOCH, TN, 37013"
+ ],
+ "location_patterns": {
+  "I-24": {
+   "stops_pct": 1.92,
+   "searches_pct": 1.49,
+   "consent_hit_pct": 13.7,
+   "consent_n": 591
+  },
+  "I-40": {
+   "stops_pct": 3.31,
+   "searches_pct": 2.45,
+   "consent_hit_pct": 13.2,
+   "consent_n": 1681
+  },
+  "I-65": {
+   "stops_pct": 2.2,
+   "searches_pct": 1.07,
+   "consent_hit_pct": 17.4,
+   "consent_n": 430
+  },
+  "I-440": {
+   "stops_pct": 1.06,
+   "searches_pct": 0.59,
+   "consent_hit_pct": 18.3,
+   "consent_n": 131
+  },
+  "any_interstate": {
+   "stops_pct": 8.07,
+   "searches_pct": 5.66,
+   "consent_hit_pct": 14.4,
+   "consent_n": 2886
+  },
+  "Briley_Pkwy": {
+   "stops_pct": 4.54,
+   "searches_pct": 2.97,
+   "consent_hit_pct": 22.7,
+   "consent_n": 1222
+  },
+  "Ellington_Pkwy": {
+   "stops_pct": 0.82,
+   "searches_pct": 0.75,
+   "consent_hit_pct": 16.9,
+   "consent_n": 425
+  },
+  "intersection_marker": {
+   "stops_pct": 77.11,
+   "searches_pct": 77.32,
+   "consent_hit_pct": 17.1,
+   "consent_n": 45563
+  },
+  "house_number_start": {
+   "stops_pct": 16.51,
+   "searches_pct": 17.38,
+   "consent_hit_pct": 18.3,
+   "consent_n": 10062
+  }
+ },
+ "regstate_n_distinct": 52,
+ "regstate_top30": {
+  "TN": 2879812,
+  "NA": 31449,
+  "KY": 18810,
+  "GA": 15585,
+  "AL": 14789,
+  "FL": 13298,
+  "TX": 11710,
+  "IL": 11006,
+  "OH": 8144,
+  "IN": 7695,
+  "MI": 6995,
+  "MS": 6616,
+  "CA": 6558,
+  "NC": 6313,
+  "VA": 4012,
+  "MO": 3992,
+  "SC": 3618,
+  "PA": 3462,
+  "NY": 3400,
+  "AR": 3095,
+  "LA": 3082,
+  "WI": 2311,
+  "NJ": 1881,
+  "MD": 1822,
+  "MA": 1753,
+  "CO": 1751,
+  "OK": 1658,
+  "MN": 1397,
+  "AZ": 1373,
+  "WA": 1258
+ },
+ "regstate_rare_codes": {},
+ "regstate_TN_share_by_year": {
+  "2010": 96.4,
+  "2011": 97.1,
+  "2012": 96.7,
+  "2013": 94.3,
+  "2014": 93.9,
+  "2015": 92.8,
+  "2016": 91.1,
+  "2017": 85.1,
+  "2018": 84.3,
+  "2019": 83.9
+ },
+ "regstate_group": {
+  "TN": {
+   "stops": 2879812,
+   "search_rate_pct": 4.18,
+   "consent_n": 56453,
+   "consent_hit_pct": 16.8
+  },
+  "border_state": {
+   "stops": 73212,
+   "search_rate_pct": 3.15,
+   "consent_n": 831,
+   "consent_hit_pct": 18.2
+  },
+  "other_state": {
+   "stops": 103813,
+   "search_rate_pct": 3.1,
+   "consent_n": 1174,
+   "consent_hit_pct": 17.9
+  },
+  "missing": {
+   "stops": 31449,
+   "search_rate_pct": 5.02,
+   "consent_n": 481,
+   "consent_hit_pct": 21.6
+  }
+ }
+}

@@ -52,7 +52,67 @@ def runs_for_arm(arm: str) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def render(arm: str, title: str, description: str, missing_hint: str, explain_todo: str) -> None:
+def _local_explanation(arm: str, scores: pd.DataFrame) -> None:
+    """Why did the model score THIS stop the way it did?
+
+    The three arms support three different grades of explanation, and saying which
+    is which is the point: exact closed form for the linear arm, exact TreeSHAP for
+    the trees, and approximate occlusion for TabPFN because it has no native
+    attribution at all.
+    """
+    import numpy as np
+    from src import data as D
+    from src import explain as E
+    from src import models as M
+
+    st.subheader("Why this stop? — local explanation")
+    grade = {
+        "scorecard": ("EXACT — Shapley in closed form", "success",
+                      "For a linear model the Shapley value of feature j is "
+                      "`coef_j x (x_j - E[x_j])`. No sampling, no approximation."),
+        "gbm": ("EXACT — TreeSHAP", "success",
+                "xgboost computes exact Shapley values for trees natively via "
+                "`predict(pred_contribs=True)`."),
+        "tabpfn": ("APPROXIMATE — occlusion, NOT Shapley", "warning",
+                   "TabPFN exposes no attribution of its own. We replace each feature "
+                   "with its background value and measure the change. This ignores "
+                   "interactions and its error cannot be bounded — which is a real "
+                   "cost of the black box, not a detail."),
+    }[arm]
+    (st.success if grade[1] == "success" else st.warning)(f"**{grade[0]}** — {grade[2]}")
+
+    i = st.number_input("Test-set row", 0, len(scores) - 1, 0, step=1, key=f"exp_{arm}")
+    row_meta = scores.iloc[int(i)]
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Race", str(row_meta["subject_race"]))
+    c2.metric("Contraband found", "yes" if row_meta["y"] == 1 else "no")
+    c3.metric(f"{arm} score", f"{row_meta.get('score_' + arm, float('nan')):.4f}")
+
+    if not st.button("Explain this stop", key=f"btn_{arm}"):
+        st.caption("Fitting the arm and attributing one prediction takes a few seconds.")
+        return
+    with st.spinner("Fitting and attributing…"):
+        df = D.load_searches()
+        X, y, meta = D.build_xy(df, search_type="consent")
+        X = X.reset_index(drop=True); y = np.asarray(y); meta = meta.reset_index(drop=True)
+        tr = (meta["year"] < 2016).to_numpy()
+        idx = np.random.default_rng(42).choice(int(tr.sum()), 2000, replace=False)
+        Xtr, ytr = X[tr].iloc[idx], y[tr][idx]
+        model = {"scorecard": M.make_scorecard, "gbm": M.make_gbm}.get(arm)
+        model = M.TabPFNArm(max_train=2000).fit(Xtr, ytr) if model is None else model(Xtr).fit(Xtr, ytr)
+        res = E.explain_row(arm, model, Xtr, X[~tr].iloc[[int(i)]])
+    c = res["contributions"].rename("contribution").to_frame().reset_index(names="feature")
+    fig = px.bar(c, x="contribution", y="feature", orientation="h",
+                 color=c["contribution"] > 0,
+                 color_discrete_map={True: "#c0392b", False: "#2c7fb8"})
+    fig.update_layout(showlegend=False, yaxis={"categoryorder": "total ascending"},
+                      xaxis_title=f"contribution ({res['units']})")
+    st.plotly_chart(fig, width="stretch")
+    st.caption(f"Method: {res['method']}. One-hot columns are summed back to their source "
+               "feature — valid because Shapley values are additive. Red pushes the score up.")
+
+
+def render(arm: str, title: str, description: str, missing_hint: str, explain_todo: str = "") -> None:
     st.header(title)
     st.markdown(description)
 
@@ -101,4 +161,4 @@ def render(arm: str, title: str, description: str, missing_hint: str, explain_to
                        "same rate for every group? Lines off the diagonal are miscalibrated. "
                        f"Score deciles are cut on all groups together; {dropped} group-decile cells with "
                        f"fewer than {MIN_BIN} searches are left out as too noisy.")
-    st.info(explain_todo)
+        _local_explanation(arm, scores)

@@ -49,3 +49,12 @@ outputs/
 .DS_Store
 .vscode/
 .idea/
+
+# Local OPP pipeline (scripts_claude): raw download, Census downloads, intermediate features
+# Modelling table built by scripts_claude/build_master.py - committed on purpose
+!data/nashville_consent_searches.parquet
+!data/nashville_columns.csv
+!data/officer_model_predictions.parquet
+
+# Local pipeline outputs (scripts_claude) - rebuildable, too big for GitHub
+opp_data/

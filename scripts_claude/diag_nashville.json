@@ -1,0 +1,1181 @@
+{
+ "1_row_integrity": {
+  "n_rows": 3092351,
+  "dup_key": [
+   "date",
+   "time",
+   "officer_id_hash",
+   "subject_age",
+   "subject_sex",
+   "subject_race",
+   "location"
+  ],
+  "dup_on_key": 3,
+  "search_conducted_NA": 39,
+  "type_counts": {
+   "vehicular": 3092351
+  }
+ },
+ "2_target": {
+  "n_search": 127705,
+  "contraband_TRUE_when_no_search": 0,
+  "contraband_NA_among_searches": 0,
+  "monthly_series": {
+   "2010-01": [
+    1402,
+    16.7
+   ],
+   "2010-02": [
+    1421,
+    14.7
+   ],
+   "2010-03": [
+    1335,
+    16.8
+   ],
+   "2010-04": [
+    1225,
+    16.2
+   ],
+   "2010-05": [
+    1033,
+    13.6
+   ],
+   "2010-06": [
+    1228,
+    18.0
+   ],
+   "2010-07": [
+    1144,
+    13.3
+   ],
+   "2010-08": [
+    1280,
+    15.2
+   ],
+   "2010-09": [
+    1171,
+    15.5
+   ],
+   "2010-10": [
+    1061,
+    17.2
+   ],
+   "2010-11": [
+    1223,
+    18.2
+   ],
+   "2010-12": [
+    1209,
+    18.3
+   ],
+   "2011-01": [
+    1430,
+    17.6
+   ],
+   "2011-02": [
+    1314,
+    18.0
+   ],
+   "2011-03": [
+    1807,
+    16.5
+   ],
+   "2011-04": [
+    1524,
+    15.0
+   ],
+   "2011-05": [
+    1427,
+    15.6
+   ],
+   "2011-06": [
+    1309,
+    15.1
+   ],
+   "2011-07": [
+    1288,
+    17.2
+   ],
+   "2011-08": [
+    1660,
+    15.2
+   ],
+   "2011-09": [
+    1424,
+    16.6
+   ],
+   "2011-10": [
+    1421,
+    18.9
+   ],
+   "2011-11": [
+    1392,
+    21.1
+   ],
+   "2011-12": [
+    1411,
+    17.9
+   ],
+   "2012-01": [
+    1755,
+    19.6
+   ],
+   "2012-02": [
+    1704,
+    20.0
+   ],
+   "2012-03": [
+    1688,
+    20.9
+   ],
+   "2012-04": [
+    1553,
+    17.5
+   ],
+   "2012-05": [
+    1503,
+    16.5
+   ],
+   "2012-06": [
+    1468,
+    18.5
+   ],
+   "2012-07": [
+    1385,
+    16.6
+   ],
+   "2012-08": [
+    1503,
+    17.0
+   ],
+   "2012-09": [
+    1284,
+    17.6
+   ],
+   "2012-10": [
+    1490,
+    18.7
+   ],
+   "2012-11": [
+    1466,
+    20.2
+   ],
+   "2012-12": [
+    1272,
+    18.8
+   ],
+   "2013-01": [
+    1834,
+    19.7
+   ],
+   "2013-02": [
+    1577,
+    22.3
+   ],
+   "2013-03": [
+    1496,
+    19.5
+   ],
+   "2013-04": [
+    1508,
+    19.8
+   ],
+   "2013-05": [
+    1509,
+    20.7
+   ],
+   "2013-06": [
+    1360,
+    19.9
+   ],
+   "2013-07": [
+    1387,
+    20.8
+   ],
+   "2013-08": [
+    1306,
+    20.4
+   ],
+   "2013-09": [
+    1283,
+    20.3
+   ],
+   "2013-10": [
+    1486,
+    21.9
+   ],
+   "2013-11": [
+    1320,
+    19.6
+   ],
+   "2013-12": [
+    1093,
+    19.7
+   ],
+   "2014-01": [
+    1829,
+    20.9
+   ],
+   "2014-02": [
+    1480,
+    19.0
+   ],
+   "2014-03": [
+    1690,
+    20.5
+   ],
+   "2014-04": [
+    1537,
+    18.9
+   ],
+   "2014-05": [
+    1496,
+    18.2
+   ],
+   "2014-06": [
+    1426,
+    18.3
+   ],
+   "2014-07": [
+    1123,
+    22.7
+   ],
+   "2014-08": [
+    1162,
+    19.2
+   ],
+   "2014-09": [
+    1193,
+    21.7
+   ],
+   "2014-10": [
+    1409,
+    20.0
+   ],
+   "2014-11": [
+    1274,
+    21.7
+   ],
+   "2014-12": [
+    1080,
+    20.5
+   ],
+   "2015-01": [
+    1516,
+    19.5
+   ],
+   "2015-02": [
+    1231,
+    19.9
+   ],
+   "2015-03": [
+    1369,
+    21.8
+   ],
+   "2015-04": [
+    1270,
+    21.6
+   ],
+   "2015-05": [
+    1213,
+    22.4
+   ],
+   "2015-06": [
+    1111,
+    21.0
+   ],
+   "2015-07": [
+    1092,
+    23.5
+   ],
+   "2015-08": [
+    983,
+    26.0
+   ],
+   "2015-09": [
+    1029,
+    24.9
+   ],
+   "2015-10": [
+    1064,
+    22.7
+   ],
+   "2015-11": [
+    1041,
+    24.6
+   ],
+   "2015-12": [
+    950,
+    26.8
+   ],
+   "2016-01": [
+    1332,
+    21.1
+   ],
+   "2016-02": [
+    1148,
+    24.6
+   ],
+   "2016-03": [
+    1341,
+    25.3
+   ],
+   "2016-04": [
+    1143,
+    24.4
+   ],
+   "2016-05": [
+    995,
+    23.0
+   ],
+   "2016-06": [
+    977,
+    20.6
+   ],
+   "2016-07": [
+    861,
+    20.9
+   ],
+   "2016-08": [
+    964,
+    23.4
+   ],
+   "2016-09": [
+    783,
+    25.7
+   ],
+   "2016-10": [
+    628,
+    27.1
+   ],
+   "2016-11": [
+    748,
+    24.9
+   ],
+   "2016-12": [
+    808,
+    26.4
+   ],
+   "2017-01": [
+    1029,
+    21.9
+   ],
+   "2017-02": [
+    880,
+    23.3
+   ],
+   "2017-03": [
+    808,
+    28.6
+   ],
+   "2017-04": [
+    772,
+    25.6
+   ],
+   "2017-05": [
+    777,
+    30.1
+   ],
+   "2017-06": [
+    657,
+    28.2
+   ],
+   "2017-07": [
+    738,
+    23.7
+   ],
+   "2017-08": [
+    741,
+    27.1
+   ],
+   "2017-09": [
+    670,
+    22.8
+   ],
+   "2017-10": [
+    762,
+    21.7
+   ],
+   "2017-11": [
+    708,
+    27.7
+   ],
+   "2017-12": [
+    658,
+    25.4
+   ],
+   "2018-01": [
+    1167,
+    29.1
+   ],
+   "2018-02": [
+    867,
+    29.6
+   ],
+   "2018-03": [
+    1044,
+    26.6
+   ],
+   "2018-04": [
+    913,
+    27.6
+   ],
+   "2018-05": [
+    741,
+    25.8
+   ],
+   "2018-06": [
+    642,
+    26.2
+   ],
+   "2018-07": [
+    667,
+    30.9
+   ],
+   "2018-08": [
+    612,
+    28.9
+   ],
+   "2018-09": [
+    477,
+    28.3
+   ],
+   "2018-10": [
+    488,
+    25.0
+   ],
+   "2018-11": [
+    424,
+    24.3
+   ],
+   "2018-12": [
+    215,
+    27.9
+   ],
+   "2019-01": [
+    250,
+    29.6
+   ],
+   "2019-02": [
+    165,
+    24.8
+   ],
+   "2019-03": [
+    168,
+    25.6
+   ]
+  },
+  "officers_ge30": 779,
+  "officers_0pct": 20,
+  "searches_of_0pct_officers": 3063,
+  "officers_100pct": 0,
+  "officer_rate_quantiles": {
+   "0.05": 0.023,
+   "0.25": 0.143,
+   "0.5": 0.219,
+   "0.75": 0.292,
+   "0.95": 0.384
+  }
+ },
+ "3_protected": {
+  "race_counts": {
+   "white": 1670873,
+   "black": 1165871,
+   "hispanic": 164814,
+   "asian/pacific islander": 41668,
+   "unknown": 36878,
+   "other": 10397,
+   "NA": 1850
+  },
+  "race_share_by_year": {
+   "2010": {
+    "NA": 0.0,
+    "asian/pacific islander": 1.2,
+    "black": 37.0,
+    "hispanic": 5.1,
+    "other": 1.9,
+    "unknown": 0.3,
+    "white": 54.5
+   },
+   "2011": {
+    "NA": 0.0,
+    "asian/pacific islander": 1.2,
+    "black": 38.9,
+    "hispanic": 4.8,
+    "other": 0.6,
+    "unknown": 0.9,
+    "white": 53.5
+   },
+   "2012": {
+    "NA": 0.0,
+    "asian/pacific islander": 1.3,
+    "black": 39.0,
+    "hispanic": 4.8,
+    "other": 0.1,
+    "unknown": 1.2,
+    "white": 53.5
+   },
+   "2013": {
+    "NA": 0.1,
+    "asian/pacific islander": 1.3,
+    "black": 39.0,
+    "hispanic": 4.9,
+    "other": 0.1,
+    "unknown": 1.3,
+    "white": 53.3
+   },
+   "2014": {
+    "NA": 0.1,
+    "asian/pacific islander": 1.4,
+    "black": 37.7,
+    "hispanic": 5.1,
+    "other": 0.1,
+    "unknown": 1.3,
+    "white": 54.4
+   },
+   "2015": {
+    "NA": 0.1,
+    "asian/pacific islander": 1.4,
+    "black": 36.3,
+    "hispanic": 5.6,
+    "other": 0.1,
+    "unknown": 1.3,
+    "white": 55.1
+   },
+   "2016": {
+    "NA": 0.1,
+    "asian/pacific islander": 1.5,
+    "black": 36.7,
+    "hispanic": 6.2,
+    "other": 0.1,
+    "unknown": 1.3,
+    "white": 54.1
+   },
+   "2017": {
+    "NA": 0.1,
+    "asian/pacific islander": 1.5,
+    "black": 36.1,
+    "hispanic": 6.0,
+    "other": 0.1,
+    "unknown": 1.4,
+    "white": 54.8
+   },
+   "2018": {
+    "NA": 0.1,
+    "asian/pacific islander": 1.4,
+    "black": 36.9,
+    "hispanic": 6.4,
+    "other": 0.0,
+    "unknown": 1.8,
+    "white": 53.4
+   },
+   "2019": {
+    "NA": 0.1,
+    "asian/pacific islander": 1.7,
+    "black": 35.2,
+    "hispanic": 7.6,
+    "other": 0.1,
+    "unknown": 2.5,
+    "white": 52.8
+   }
+  },
+  "age_missing_pct": 0.03,
+  "age_lt15": 242,
+  "age_gt90": 2299,
+  "age_quantiles": {
+   "0.01": 17.0,
+   "0.05": 19.0,
+   "0.5": 34.0,
+   "0.95": 63.0,
+   "0.99": 75.0
+  },
+  "age_top_values": {
+   "25": 111775,
+   "24": 110966,
+   "23": 110384,
+   "26": 106942,
+   "27": 102687,
+   "22": 101150,
+   "28": 98855,
+   "21": 93538
+  },
+  "sex_counts": {
+   "male": 1827043,
+   "female": 1252486,
+   "NA": 12822
+  }
+ },
+ "4_datetime": {
+  "date_min": "2010-01-01",
+  "date_max": "2019-03-24",
+  "months_expected": 111,
+  "months_present": 111,
+  "missing_months": [],
+  "low_months": [
+   [
+    "2018-11",
+    10369
+   ],
+   [
+    "2018-12",
+    4710
+   ],
+   [
+    "2019-01",
+    5814
+   ],
+   [
+    "2019-02",
+    4398
+   ],
+   [
+    "2019-03",
+    4023
+   ]
+  ],
+  "stops_per_year": {
+   "2010": 310622,
+   "2011": 393248,
+   "2012": 444146,
+   "2013": 412695,
+   "2014": 413114,
+   "2015": 357261,
+   "2016": 297248,
+   "2017": 245565,
+   "2018": 204217,
+   "2019": 14235
+  },
+  "time_missing_pct": 0.18,
+  "time_missing_by_year": {
+   "2010": 0.3,
+   "2011": 0.2,
+   "2012": 0.2,
+   "2013": 0.2,
+   "2014": 0.2,
+   "2015": 0.2,
+   "2016": 0.2,
+   "2017": 0.1,
+   "2018": 0.1,
+   "2019": 0.1
+  },
+  "minute_top": {
+   "30": 2.4,
+   "00": 2.3,
+   "15": 2.1,
+   "20": 2.1,
+   "45": 2.1,
+   "50": 2.1
+  },
+  "hour_top": {
+   "16": 5.9,
+   "23": 5.7,
+   "10": 5.4,
+   "20": 5.3,
+   "21": 5.3,
+   "12": 5.2
+  }
+ },
+ "5_geography": {
+  "latlng_missing_pct": 6.05,
+  "outside_davidson_box": 20394,
+  "distinct_coords_4dp": 60601,
+  "lat_decimal_places": {
+   "7": 2072379,
+   "14": 430126,
+   "6": 330614,
+   "15": 44774,
+   "5": 26162
+  },
+  "top10_coord_share_pct": 9.92,
+  "coords_used_once_pct": 43.6,
+  "precinct_missing_pct": 12.62,
+  "precinct_n_levels": 9,
+  "precinct_missing_by_year": {
+   "2010": 17.6,
+   "2011": 12.1,
+   "2012": 7.2,
+   "2013": 12.0,
+   "2014": 19.6,
+   "2015": 19.6,
+   "2016": 18.5,
+   "2017": 0.2,
+   "2018": 0.1,
+   "2019": 0.0
+  },
+  "zone_missing_pct": 12.62,
+  "zone_n_levels": 81,
+  "zone_missing_by_year": {
+   "2010": 17.6,
+   "2011": 12.1,
+   "2012": 7.2,
+   "2013": 12.0,
+   "2014": 19.6,
+   "2015": 19.6,
+   "2016": 18.5,
+   "2017": 0.2,
+   "2018": 0.1,
+   "2019": 0.0
+  },
+  "reporting_area_missing_pct": 10.75,
+  "reporting_area_n_levels": 2036,
+  "reporting_area_missing_by_year": {
+   "2010": 15.1,
+   "2011": 10.8,
+   "2012": 7.0,
+   "2013": 10.2,
+   "2014": 15.9,
+   "2015": 16.1,
+   "2016": 15.5,
+   "2017": 0.1,
+   "2018": 0.1,
+   "2019": 0.0
+  }
+ },
+ "6_categoricals": {
+  "reason_counts": {
+   "moving traffic violation": 1546865,
+   "vehicle equipment violation": 996282,
+   "safety violation": 186139,
+   "registration": 185756,
+   "seatbelt violation": 103199,
+   "investigative stop": 56489,
+   "parking violation": 8483,
+   "NA": 8020,
+   "child restraint": 1118
+  },
+  "reason_share_by_year": {
+   "2010": {
+    "investigative stop": 3.2,
+    "moving traffic violation": 50.8,
+    "registration": 1.3,
+    "safety violation": 1.3,
+    "seatbelt violation": 3.8,
+    "vehicle equipment violation": 39.2
+   },
+   "2011": {
+    "investigative stop": 2.9,
+    "moving traffic violation": 47.3,
+    "registration": 2.4,
+    "safety violation": 3.0,
+    "seatbelt violation": 4.0,
+    "vehicle equipment violation": 39.9
+   },
+   "2012": {
+    "investigative stop": 2.0,
+    "moving traffic violation": 50.5,
+    "registration": 4.2,
+    "safety violation": 4.7,
+    "seatbelt violation": 4.4,
+    "vehicle equipment violation": 33.5
+   },
+   "2013": {
+    "investigative stop": 1.7,
+    "moving traffic violation": 50.3,
+    "registration": 6.2,
+    "safety violation": 6.8,
+    "seatbelt violation": 3.4,
+    "vehicle equipment violation": 30.9
+   },
+   "2014": {
+    "investigative stop": 1.4,
+    "moving traffic violation": 49.5,
+    "registration": 7.7,
+    "safety violation": 7.6,
+    "seatbelt violation": 3.3,
+    "vehicle equipment violation": 29.9
+   },
+   "2015": {
+    "investigative stop": 1.2,
+    "moving traffic violation": 49.8,
+    "registration": 7.4,
+    "safety violation": 7.7,
+    "seatbelt violation": 2.8,
+    "vehicle equipment violation": 30.6
+   },
+   "2016": {
+    "investigative stop": 1.1,
+    "moving traffic violation": 51.1,
+    "registration": 7.6,
+    "safety violation": 7.7,
+    "seatbelt violation": 2.7,
+    "vehicle equipment violation": 29.4
+   },
+   "2017": {
+    "investigative stop": 1.1,
+    "moving traffic violation": 50.8,
+    "registration": 9.4,
+    "safety violation": 8.7,
+    "seatbelt violation": 2.5,
+    "vehicle equipment violation": 27.0
+   },
+   "2018": {
+    "investigative stop": 1.3,
+    "moving traffic violation": 50.0,
+    "registration": 11.4,
+    "safety violation": 8.7,
+    "seatbelt violation": 2.2,
+    "vehicle equipment violation": 25.9
+   },
+   "2019": {
+    "investigative stop": 1.8,
+    "moving traffic violation": 71.0,
+    "registration": 8.7,
+    "safety violation": 3.9,
+    "seatbelt violation": 1.2,
+    "vehicle equipment violation": 12.9
+   }
+  },
+  "violation_n_levels": 9,
+  "violation_top20_coverage_pct": 100.0,
+  "violation_top8": {
+   "moving traffic violation": 50.0,
+   "vehicle equipment violation": 32.2,
+   "safety violation": 6.0,
+   "registration": 6.0,
+   "seatbelt violation": 3.3,
+   "investigative stop": 1.8,
+   "parking violation": 0.3,
+   "NA": 0.3
+  },
+  "n_officers": 2295,
+  "officer_stops_quantiles": {
+   "0.25": 63,
+   "0.5": 545,
+   "0.75": 1890,
+   "0.95": 4604
+  },
+  "officers_pre2017": 2053,
+  "officers_post2017": 1319,
+  "post2017_stops_by_unseen_officers_pct": 9.7,
+  "regstate_TN_pct": 93.2,
+  "regstate_missing_pct": 1.03
+ },
+ "7_sample": {
+  "basis_counts": {
+   "consent": 67629,
+   "other": 25620,
+   "plain view": 18443,
+   "probable cause": 16013
+  },
+  "basis_share_by_year": {
+   "2010": {
+    "consent": 61.4,
+    "other": 20.7,
+    "plain view": 9.7,
+    "probable cause": 8.2
+   },
+   "2011": {
+    "consent": 62.4,
+    "other": 17.8,
+    "plain view": 10.5,
+    "probable cause": 9.3
+   },
+   "2012": {
+    "consent": 56.4,
+    "other": 18.2,
+    "plain view": 15.9,
+    "probable cause": 9.5
+   },
+   "2013": {
+    "consent": 59.0,
+    "other": 15.7,
+    "plain view": 15.1,
+    "probable cause": 10.3
+   },
+   "2014": {
+    "consent": 56.1,
+    "other": 16.2,
+    "plain view": 16.9,
+    "probable cause": 10.8
+   },
+   "2015": {
+    "consent": 49.2,
+    "other": 18.5,
+    "plain view": 18.3,
+    "probable cause": 14.0
+   },
+   "2016": {
+    "consent": 43.2,
+    "other": 20.0,
+    "plain view": 17.5,
+    "probable cause": 19.3
+   },
+   "2017": {
+    "consent": 35.0,
+    "other": 32.2,
+    "plain view": 13.2,
+    "probable cause": 19.5
+   },
+   "2018": {
+    "consent": 33.6,
+    "other": 32.6,
+    "plain view": 12.5,
+    "probable cause": 21.2
+   },
+   "2019": {
+    "consent": 28.5,
+    "other": 41.0,
+    "plain view": 8.2,
+    "probable cause": 22.3
+   }
+  },
+  "raw_flag_counts": {
+   "raw_search_consent": 69430,
+   "raw_search_arrest": 33856,
+   "raw_search_warrant": 2966,
+   "raw_search_inventory": 5426,
+   "raw_search_plain_view": 18443
+  },
+  "n_flags_per_search": {
+   "0": 16013,
+   "1": 95521,
+   "2": 14120,
+   "3": 1859,
+   "4": 177,
+   "5": 15
+  },
+  "consent_flag_total": 69430,
+  "consent_AND_other_flag": 10456,
+  "consent_n": 67629,
+  "consent_by_year_race": {
+   "2010": {
+    "black": 4766,
+    "white": 3207,
+    "hispanic": 944,
+    "other": 76,
+    "asian/pacific islander": 42,
+    "unknown": 6
+   },
+   "2011": {
+    "black": 5557,
+    "white": 4186,
+    "hispanic": 990,
+    "unknown": 45,
+    "asian/pacific islander": 42,
+    "other": 38
+   },
+   "2012": {
+    "black": 5562,
+    "white": 3741,
+    "hispanic": 779,
+    "unknown": 56,
+    "asian/pacific islander": 42,
+    "other": 4
+   },
+   "2013": {
+    "black": 5832,
+    "white": 3464,
+    "hispanic": 712,
+    "asian/pacific islander": 53,
+    "unknown": 37,
+    "NA": 11,
+    "other": 7
+   },
+   "2014": {
+    "black": 5362,
+    "white": 3319,
+    "hispanic": 592,
+    "asian/pacific islander": 42,
+    "unknown": 38,
+    "NA": 11,
+    "other": 7
+   },
+   "2015": {
+    "black": 3844,
+    "white": 2453,
+    "hispanic": 454,
+    "asian/pacific islander": 37,
+    "unknown": 28,
+    "other": 7,
+    "NA": 1
+   },
+   "2016": {
+    "black": 2701,
+    "white": 1919,
+    "hispanic": 376,
+    "asian/pacific islander": 35,
+    "unknown": 29,
+    "other": 5,
+    "NA": 4
+   },
+   "2017": {
+    "black": 1750,
+    "white": 1204,
+    "hispanic": 237,
+    "asian/pacific islander": 18,
+    "unknown": 11,
+    "NA": 1,
+    "other": 1
+   },
+   "2018": {
+    "black": 1521,
+    "white": 1026,
+    "hispanic": 206,
+    "asian/pacific islander": 12,
+    "unknown": 9,
+    "NA": 4
+   },
+   "2019": {
+    "black": 84,
+    "white": 61,
+    "hispanic": 18,
+    "unknown": 3
+   }
+  },
+  "consent_hit_by_year": {
+   "2010": [
+    9041,
+    14.0
+   ],
+   "2011": [
+    10858,
+    14.4
+   ],
+   "2012": [
+    10184,
+    17.5
+   ],
+   "2013": [
+    10116,
+    19.1
+   ],
+   "2014": [
+    9371,
+    18.4
+   ],
+   "2015": [
+    6824,
+    20.8
+   ],
+   "2016": [
+    5069,
+    20.6
+   ],
+   "2017": [
+    3222,
+    23.5
+   ],
+   "2018": [
+    2778,
+    24.9
+   ],
+   "2019": [
+    166,
+    21.1
+   ]
+  },
+  "consent_hit_by_race": {
+   "NA": [
+    32,
+    12.5
+   ],
+   "asian/pacific islander": [
+    323,
+    19.5
+   ],
+   "black": [
+    36979,
+    17.2
+   ],
+   "hispanic": [
+    5308,
+    8.6
+   ],
+   "other": [
+    145,
+    18.6
+   ],
+   "unknown": [
+    262,
+    10.7
+   ],
+   "white": [
+    24580,
+    21.5
+   ]
+  }
+ },
+ "8_drift": {
+  "2010": {
+   "n": 9041,
+   "hit_pct": 14.0,
+   "male_pct": 82.7,
+   "age_mean": 30.2,
+   "black_pct": 52.7,
+   "top_reason": "vehicle equipment violation"
+  },
+  "2011": {
+   "n": 10858,
+   "hit_pct": 14.4,
+   "male_pct": 81.5,
+   "age_mean": 30.3,
+   "black_pct": 51.2,
+   "top_reason": "vehicle equipment violation"
+  },
+  "2012": {
+   "n": 10184,
+   "hit_pct": 17.5,
+   "male_pct": 82.0,
+   "age_mean": 30.8,
+   "black_pct": 54.6,
+   "top_reason": "vehicle equipment violation"
+  },
+  "2013": {
+   "n": 10116,
+   "hit_pct": 19.1,
+   "male_pct": 80.8,
+   "age_mean": 31.3,
+   "black_pct": 57.7,
+   "top_reason": "moving traffic violation"
+  },
+  "2014": {
+   "n": 9371,
+   "hit_pct": 18.4,
+   "male_pct": 77.9,
+   "age_mean": 31.5,
+   "black_pct": 57.2,
+   "top_reason": "moving traffic violation"
+  },
+  "2015": {
+   "n": 6824,
+   "hit_pct": 20.8,
+   "male_pct": 78.8,
+   "age_mean": 31.4,
+   "black_pct": 56.3,
+   "top_reason": "moving traffic violation"
+  },
+  "2016": {
+   "n": 5069,
+   "hit_pct": 20.6,
+   "male_pct": 79.0,
+   "age_mean": 31.9,
+   "black_pct": 53.3,
+   "top_reason": "moving traffic violation"
+  },
+  "2017": {
+   "n": 3222,
+   "hit_pct": 23.5,
+   "male_pct": 78.2,
+   "age_mean": 32.7,
+   "black_pct": 54.3,
+   "top_reason": "moving traffic violation"
+  },
+  "2018": {
+   "n": 2778,
+   "hit_pct": 24.9,
+   "male_pct": 78.9,
+   "age_mean": 32.5,
+   "black_pct": 54.8,
+   "top_reason": "moving traffic violation"
+  },
+  "2019": {
+   "n": 166,
+   "hit_pct": 21.1,
+   "male_pct": 82.5,
+   "age_mean": 32.6,
+   "black_pct": 50.6,
+   "top_reason": "moving traffic violation"
+  }
+ }
+}

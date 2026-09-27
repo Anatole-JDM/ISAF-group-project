@@ -1,0 +1,124 @@
+column,role,dtype,missing_pct,note
+stop_id,id,int64,0.0,row key shared by every table
+raw_row_number,id,string,0.0,row number in the original OPP file (traceability)
+date,split_helper,datetime64[us],0.0,"for time splits, grouped validation, officer-level analysis - not a feature"
+location,analysis_helper,string,0.0,"maps, veil-of-darkness test, descriptive tables - not a feature by default"
+lat,analysis_helper,float64,4.02,"maps, veil-of-darkness test, descriptive tables - not a feature by default"
+lng,analysis_helper,float64,4.02,"maps, veil-of-darkness test, descriptive tables - not a feature by default"
+precinct,feature,string,12.22,from the cleaned table
+zone,feature,string,12.22,from the cleaned table
+reporting_area,feature,string,10.52,from the cleaned table
+subject_age,protected_and_feature,float64,0.01,protected attribute that is also a legitimate predictor - state it
+subject_race,protected,string,0.05,"officer-perceived race - for fairness evaluation, not a feature"
+subject_sex,protected_and_feature,string,0.43,protected attribute that is also a legitimate predictor - state it
+officer_id_hash,split_helper,string,0.0,"for time splits, grouped validation, officer-level analysis - not a feature"
+reason_for_stop,feature,string,0.51,from the cleaned table
+contraband_found,target,boolean,0.0,contraband found in the search (main target)
+geo_outside_davidson_box,quality_flag,boolean,0.0,data-quality flag
+post_search_person,post_decision_DO_NOT_USE,boolean,0.0,recorded at or after the search decision - leakage if used as a feature
+post_search_vehicle,post_decision_DO_NOT_USE,boolean,0.0,recorded at or after the search decision - leakage if used as a feature
+post_frisk_performed,post_decision_DO_NOT_USE,boolean,0.0,recorded at or after the search decision - leakage if used as a feature
+post_contraband_drugs,post_decision_DO_NOT_USE,boolean,0.0,recorded at or after the search decision - leakage if used as a feature
+post_contraband_weapons,post_decision_DO_NOT_USE,boolean,0.0,recorded at or after the search decision - leakage if used as a feature
+post_arrest_made,post_decision_DO_NOT_USE,boolean,0.0,recorded at or after the search decision - leakage if used as a feature
+post_citation_issued,post_decision_DO_NOT_USE,boolean,0.0,recorded at or after the search decision - leakage if used as a feature
+post_warning_issued,post_decision_DO_NOT_USE,boolean,0.0,recorded at or after the search decision - leakage if used as a feature
+post_outcome,post_decision_DO_NOT_USE,string,0.01,recorded at or after the search decision - leakage if used as a feature
+post_raw_driver_searched,post_decision_DO_NOT_USE,boolean,0.0,recorded at or after the search decision - leakage if used as a feature
+post_raw_passenger_searched,post_decision_DO_NOT_USE,boolean,0.0,recorded at or after the search decision - leakage if used as a feature
+acs_vintage,quality_flag,int64,0.0,data-quality flag
+acs_window_overlaps_stop,quality_flag,bool,0.0,data-quality flag
+nbh800_pop_density,feature,float32,4.92,"neighbourhood (ACS), 800 m population-weighted circle"
+nbh800_share_black,feature_D3_open,float32,4.85,neighbourhood racial make-up: model input or fairness-only (decision D3)
+nbh800_share_white,feature_D3_open,float32,4.85,neighbourhood racial make-up: model input or fairness-only (decision D3)
+nbh800_share_hispanic,feature_D3_open,float32,4.85,neighbourhood racial make-up: model input or fairness-only (decision D3)
+nbh800_share_asian,feature_D3_open,float32,4.85,neighbourhood racial make-up: model input or fairness-only (decision D3)
+nbh800_poverty_rate,feature,float32,4.85,"neighbourhood (ACS), 800 m population-weighted circle"
+nbh800_share_no_vehicle,feature,float32,4.85,"neighbourhood (ACS), 800 m population-weighted circle"
+nbh800_renter_share,feature,float32,4.85,"neighbourhood (ACS), 800 m population-weighted circle"
+nbh800_unemployment_rate,analysis_helper,float32,4.85,tracks the business cycle (a date proxy) - use unemployment_rel
+nbh800_share_bach_plus,feature,float32,4.85,"neighbourhood (ACS), 800 m population-weighted circle"
+nbh800_residential_stability,feature,float32,4.85,"neighbourhood (ACS), 800 m population-weighted circle"
+nbh800_share_drive_to_work,feature,float32,4.85,"neighbourhood (ACS), 800 m population-weighted circle"
+nbh800_unemployment_rel,feature,float32,4.85,"neighbourhood (ACS), 800 m population-weighted circle"
+nbh800_median_income_approx,feature,float32,4.85,approximation (weighted mean of tract medians) - prefer income_pctile for income
+nbh800_income_weight_missing,quality_flag,float32,4.91,neighbourhood-circle quality flag
+nbh800_median_age_approx,feature,float32,4.85,approximation (weighted mean of tract medians) - prefer income_pctile for income
+nbh800_income_pctile,feature,float32,4.92,"neighbourhood (ACS), 800 m population-weighted circle"
+nbh800_residents_2010,quality_flag,float32,4.73,neighbourhood-circle quality flag
+nbh1200_pop_density,robustness,float32,4.76,"same feature on a 1,200 m circle - robustness check only"
+nbh1200_share_black,robustness,float32,4.69,"same feature on a 1,200 m circle - robustness check only"
+nbh1200_share_white,robustness,float32,4.69,"same feature on a 1,200 m circle - robustness check only"
+nbh1200_share_hispanic,robustness,float32,4.69,"same feature on a 1,200 m circle - robustness check only"
+nbh1200_share_asian,robustness,float32,4.69,"same feature on a 1,200 m circle - robustness check only"
+nbh1200_poverty_rate,robustness,float32,4.69,"same feature on a 1,200 m circle - robustness check only"
+nbh1200_share_no_vehicle,robustness,float32,4.69,"same feature on a 1,200 m circle - robustness check only"
+nbh1200_renter_share,robustness,float32,4.69,"same feature on a 1,200 m circle - robustness check only"
+nbh1200_unemployment_rate,robustness,float32,4.69,"same feature on a 1,200 m circle - robustness check only"
+nbh1200_share_bach_plus,robustness,float32,4.69,"same feature on a 1,200 m circle - robustness check only"
+nbh1200_residential_stability,robustness,float32,4.69,"same feature on a 1,200 m circle - robustness check only"
+nbh1200_share_drive_to_work,robustness,float32,4.69,"same feature on a 1,200 m circle - robustness check only"
+nbh1200_unemployment_rel,robustness,float32,4.69,"same feature on a 1,200 m circle - robustness check only"
+nbh1200_median_income_approx,robustness,float32,4.69,"same feature on a 1,200 m circle - robustness check only"
+nbh1200_income_weight_missing,quality_flag,float32,4.75,neighbourhood-circle quality flag
+nbh1200_median_age_approx,robustness,float32,4.69,"same feature on a 1,200 m circle - robustness check only"
+nbh1200_income_pctile,robustness,float32,4.76,"same feature on a 1,200 m circle - robustness check only"
+nbh1200_residents_2010,quality_flag,float32,4.73,neighbourhood-circle quality flag
+nbh800_circle_truncated,quality_flag,object,4.66,neighbourhood-circle quality flag
+nbh1200_circle_truncated,quality_flag,object,4.66,neighbourhood-circle quality flag
+nbh800_low_residents,quality_flag,object,4.66,neighbourhood-circle quality flag
+nbh1200_low_residents,quality_flag,object,4.66,neighbourhood-circle quality flag
+geo_bucket,quality_flag,object,4.66,data-quality flag
+nbh_geo_source,quality_flag,str,0.0,data-quality flag
+plate_missing,quality_flag,bool,0.0,"recording change in 2017 - a date proxy, never a predictor"
+plate_state,analysis_helper,category,0.0,"maps, veil-of-darkness test, descriptive tables - not a feature by default"
+plate_out_of_state,feature,boolean,0.82,registration plate (share rises over time - monitor)
+plate_group,feature,category,0.0,registration plate
+plate_region,feature,category,0.0,registration plate
+plate_distance_km,feature,float32,0.82,registration plate
+hour_missing,feature,bool,0.0,time of the stop
+hour,feature,int8,0.0,time of the stop
+minute_of_day,feature,Int16,0.25,time of the stop
+hour_sin,feature,float32,0.25,time of the stop
+hour_cos,feature,float32,0.25,time of the stop
+time_heaped,quality_flag,boolean,0.0,data-quality flag
+day_of_week,feature,int8,0.0,time of the stop
+is_weekend,feature,bool,0.0,time of the stop
+month,feature,int8,0.0,time of the stop
+month_sin,feature,float32,0.0,time of the stop
+month_cos,feature,float32,0.0,time of the stop
+year,split_helper,int16,0.0,"for time splits, grouped validation, officer-level analysis - not a feature"
+is_federal_holiday,feature,bool,0.0,time of the stop
+is_holiday_window,feature,bool,0.0,time of the stop
+dst_ambiguous,quality_flag,bool,0.0,data-quality flag
+is_dst,feature,boolean,0.25,time of the stop
+sun_elevation_deg,feature,float32,0.25,time of the stop
+light_period,feature,category,0.25,time of the stop
+is_dark,feature,boolean,0.25,time of the stop
+minutes_after_civil_dusk,analysis_helper,Int16,0.25,"maps, veil-of-darkness test, descriptive tables - not a feature by default"
+in_intertwilight,analysis_helper,boolean,0.0,"maps, veil-of-darkness test, descriptive tables - not a feature by default"
+off_stops_365d,feature,float32,0.0,"officer track record, strictly from past stops"
+off_searches_365d,feature,float32,0.0,"officer track record, strictly from past stops"
+off_hits_365d,feature,float32,0.0,"officer track record, strictly from past stops"
+off_consent_365d,feature,float32,0.0,"officer track record, strictly from past stops"
+off_consent_hits_365d,feature,float32,0.0,"officer track record, strictly from past stops"
+off_search_rate_365d,feature,float32,0.16,"officer track record, strictly from past stops"
+off_hit_rate_365d_shrunk,feature,float32,0.0,"officer track record, strictly from past stops"
+off_consent_hit_rate_365d_shrunk,feature,float32,0.0,"officer track record, strictly from past stops"
+off_stops_today_before,feature,float32,0.25,"officer track record, strictly from past stops"
+off_searches_today_before,feature,float32,0.25,"officer track record, strictly from past stops"
+off_hits_today_before,feature,float32,0.25,"officer track record, strictly from past stops"
+off_minutes_since_first_stop_today,feature,float32,0.25,"officer track record, strictly from past stops"
+off_minutes_since_last_search,feature,float32,1.3,"officer track record, strictly from past stops"
+off_last_search_hit,feature,float32,1.3,"officer track record, strictly from past stops"
+off_experience_days,feature,float32,0.0,"officer track record, strictly from past stops"
+off_experience_censored,quality_flag,boolean,0.0,officer history incomplete (active before 2010 / stop in 2010)
+off_history_warmup,quality_flag,boolean,0.0,officer history incomplete (active before 2010 / stop in 2010)
+off_consent_white_past,feature,float32,0.0,officer disparity over the officer's past stops (search skew / outcome gap by race)
+off_consent_black_past,feature,float32,0.0,officer disparity over the officer's past stops (search skew / outcome gap by race)
+off_consent_hisp_past,feature,float32,0.0,officer disparity over the officer's past stops (search skew / outcome gap by race)
+off_log_search_ratio_black_white,feature,float32,2.52,officer disparity over the officer's past stops (search skew / outcome gap by race)
+off_log_search_ratio_hisp_white,feature,float32,2.52,officer disparity over the officer's past stops (search skew / outcome gap by race)
+off_hit_gap_black_white,feature,float32,0.0,officer disparity over the officer's past stops (search skew / outcome gap by race)
+off_hit_gap_hisp_white,feature,float32,0.0,officer disparity over the officer's past stops (search skew / outcome gap by race)
+off_hit_rate_same_race_past,feature_race_derived,float32,0.0,officer's past hit rate on drivers of THIS driver's race - uses the driver race: never in a race-blind model

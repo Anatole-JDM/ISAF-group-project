@@ -1,0 +1,799 @@
+{
+ "seeds": [
+  0,
+  1,
+  2,
+  3,
+  4
+ ],
+ "note": "officer holdout repeated over draws of held-out officers; the main run uses seed 42",
+ "per_seed": {
+  "0": {
+   "n_train": 39739,
+   "n_test": 1436,
+   "base_rate_test": 0.2361,
+   "test_officers": 147,
+   "test_officers_seen_in_training": 0,
+   "models": {
+    "full_time/scorecard": {
+     "auc": 0.5682
+    },
+    "full_time/xgboost": {
+     "auc": 0.5969
+    },
+    "full_time_officer/scorecard": {
+     "auc": 0.602,
+     "gain_vs_full_time_scorecard": [
+      0.0338,
+      [
+       0.0057,
+       0.061
+      ]
+     ]
+    },
+    "full_time_officer/xgboost": {
+     "auc": 0.6283,
+     "gain_vs_full_time_xgboost": [
+      0.0314,
+      [
+       -0.0004,
+       0.0617
+      ]
+     ]
+    },
+    "full_time_officer/pltr": {
+     "auc": 0.6182,
+     "gain_vs_full_time_scorecard": [
+      0.0501,
+      [
+       0.0146,
+       0.0864
+      ]
+     ],
+     "terms": 58
+    },
+    "full_time_officer/pltr_sparse": {
+     "auc": 0.5888,
+     "gain_vs_full_time_scorecard": [
+      0.0207,
+      [
+       -0.0147,
+       0.0538
+      ]
+     ],
+     "terms": 24
+    },
+    "full_time_officer_blind/scorecard": {
+     "auc": 0.5954,
+     "gain_vs_full_time_scorecard": [
+      0.0272,
+      [
+       -0.0147,
+       0.0662
+      ]
+     ]
+    },
+    "full_time_officer_blind/xgboost": {
+     "auc": 0.6291,
+     "gain_vs_full_time_xgboost": [
+      0.0322,
+      [
+       -0.0019,
+       0.0632
+      ]
+     ]
+    },
+    "full_time_officer_blind/pltr": {
+     "auc": 0.6094,
+     "gain_vs_full_time_scorecard": [
+      0.0413,
+      [
+       0.0021,
+       0.0866
+      ]
+     ],
+     "terms": 54
+    },
+    "full_time_officer_blind/pltr_sparse": {
+     "auc": 0.5816,
+     "gain_vs_full_time_scorecard": [
+      0.0135,
+      [
+       -0.0274,
+       0.054
+      ]
+     ],
+     "terms": 19
+    },
+    "officer_only/scorecard": {
+     "auc": 0.588,
+     "gain_vs_full_time_scorecard": [
+      0.0198,
+      [
+       -0.0207,
+       0.0687
+      ]
+     ]
+    },
+    "officer_only/xgboost": {
+     "auc": 0.6113,
+     "gain_vs_full_time_xgboost": [
+      0.0144,
+      [
+       -0.0298,
+       0.0594
+      ]
+     ]
+    }
+   }
+  },
+  "1": {
+   "n_train": 38917,
+   "n_test": 1492,
+   "base_rate_test": 0.2051,
+   "test_officers": 150,
+   "test_officers_seen_in_training": 0,
+   "models": {
+    "full_time/scorecard": {
+     "auc": 0.5192
+    },
+    "full_time/xgboost": {
+     "auc": 0.5419
+    },
+    "full_time_officer/scorecard": {
+     "auc": 0.6035,
+     "gain_vs_full_time_scorecard": [
+      0.0843,
+      [
+       0.0532,
+       0.1158
+      ]
+     ]
+    },
+    "full_time_officer/xgboost": {
+     "auc": 0.5953,
+     "gain_vs_full_time_xgboost": [
+      0.0534,
+      [
+       0.0094,
+       0.0884
+      ]
+     ]
+    },
+    "full_time_officer/pltr": {
+     "auc": 0.5897,
+     "gain_vs_full_time_scorecard": [
+      0.0705,
+      [
+       0.0342,
+       0.1139
+      ]
+     ],
+     "terms": 80
+    },
+    "full_time_officer/pltr_sparse": {
+     "auc": 0.6086,
+     "gain_vs_full_time_scorecard": [
+      0.0893,
+      [
+       0.0405,
+       0.1351
+      ]
+     ],
+     "terms": 22
+    },
+    "full_time_officer_blind/scorecard": {
+     "auc": 0.6257,
+     "gain_vs_full_time_scorecard": [
+      0.1065,
+      [
+       0.0607,
+       0.1479
+      ]
+     ]
+    },
+    "full_time_officer_blind/xgboost": {
+     "auc": 0.5844,
+     "gain_vs_full_time_xgboost": [
+      0.0425,
+      [
+       0.0037,
+       0.0827
+      ]
+     ]
+    },
+    "full_time_officer_blind/pltr": {
+     "auc": 0.6051,
+     "gain_vs_full_time_scorecard": [
+      0.0858,
+      [
+       0.0438,
+       0.1332
+      ]
+     ],
+     "terms": 50
+    },
+    "full_time_officer_blind/pltr_sparse": {
+     "auc": 0.617,
+     "gain_vs_full_time_scorecard": [
+      0.0978,
+      [
+       0.0519,
+       0.1473
+      ]
+     ],
+     "terms": 18
+    },
+    "officer_only/scorecard": {
+     "auc": 0.6239,
+     "gain_vs_full_time_scorecard": [
+      0.1047,
+      [
+       0.0523,
+       0.1446
+      ]
+     ]
+    },
+    "officer_only/xgboost": {
+     "auc": 0.6092,
+     "gain_vs_full_time_xgboost": [
+      0.0672,
+      [
+       0.0271,
+       0.1134
+      ]
+     ]
+    }
+   }
+  },
+  "2": {
+   "n_train": 39497,
+   "n_test": 1767,
+   "base_rate_test": 0.2207,
+   "test_officers": 159,
+   "test_officers_seen_in_training": 0,
+   "models": {
+    "full_time/scorecard": {
+     "auc": 0.5488
+    },
+    "full_time/xgboost": {
+     "auc": 0.5745
+    },
+    "full_time_officer/scorecard": {
+     "auc": 0.6093,
+     "gain_vs_full_time_scorecard": [
+      0.0606,
+      [
+       0.0367,
+       0.0876
+      ]
+     ]
+    },
+    "full_time_officer/xgboost": {
+     "auc": 0.6377,
+     "gain_vs_full_time_xgboost": [
+      0.0631,
+      [
+       0.029,
+       0.0959
+      ]
+     ]
+    },
+    "full_time_officer/pltr": {
+     "auc": 0.6234,
+     "gain_vs_full_time_scorecard": [
+      0.0746,
+      [
+       0.0404,
+       0.1009
+      ]
+     ],
+     "terms": 48
+    },
+    "full_time_officer/pltr_sparse": {
+     "auc": 0.6125,
+     "gain_vs_full_time_scorecard": [
+      0.0638,
+      [
+       0.0299,
+       0.0979
+      ]
+     ],
+     "terms": 25
+    },
+    "full_time_officer_blind/scorecard": {
+     "auc": 0.5962,
+     "gain_vs_full_time_scorecard": [
+      0.0474,
+      [
+       0.0051,
+       0.0843
+      ]
+     ]
+    },
+    "full_time_officer_blind/xgboost": {
+     "auc": 0.6281,
+     "gain_vs_full_time_xgboost": [
+      0.0535,
+      [
+       0.0132,
+       0.0891
+      ]
+     ]
+    },
+    "full_time_officer_blind/pltr": {
+     "auc": 0.6068,
+     "gain_vs_full_time_scorecard": [
+      0.058,
+      [
+       0.022,
+       0.0923
+      ]
+     ],
+     "terms": 40
+    },
+    "full_time_officer_blind/pltr_sparse": {
+     "auc": 0.5996,
+     "gain_vs_full_time_scorecard": [
+      0.0509,
+      [
+       0.0116,
+       0.0883
+      ]
+     ],
+     "terms": 23
+    },
+    "officer_only/scorecard": {
+     "auc": 0.6079,
+     "gain_vs_full_time_scorecard": [
+      0.0591,
+      [
+       0.0062,
+       0.1003
+      ]
+     ]
+    },
+    "officer_only/xgboost": {
+     "auc": 0.6164,
+     "gain_vs_full_time_xgboost": [
+      0.0419,
+      [
+       0.001,
+       0.0844
+      ]
+     ]
+    }
+   }
+  },
+  "3": {
+   "n_train": 40564,
+   "n_test": 2262,
+   "base_rate_test": 0.1799,
+   "test_officers": 156,
+   "test_officers_seen_in_training": 0,
+   "models": {
+    "full_time/scorecard": {
+     "auc": 0.5502
+    },
+    "full_time/xgboost": {
+     "auc": 0.5668
+    },
+    "full_time_officer/scorecard": {
+     "auc": 0.615,
+     "gain_vs_full_time_scorecard": [
+      0.0648,
+      [
+       0.041,
+       0.0903
+      ]
+     ]
+    },
+    "full_time_officer/xgboost": {
+     "auc": 0.6181,
+     "gain_vs_full_time_xgboost": [
+      0.0513,
+      [
+       0.0238,
+       0.0814
+      ]
+     ]
+    },
+    "full_time_officer/pltr": {
+     "auc": 0.6202,
+     "gain_vs_full_time_scorecard": [
+      0.07,
+      [
+       0.0444,
+       0.1013
+      ]
+     ],
+     "terms": 55
+    },
+    "full_time_officer/pltr_sparse": {
+     "auc": 0.6181,
+     "gain_vs_full_time_scorecard": [
+      0.0679,
+      [
+       0.0347,
+       0.0952
+      ]
+     ],
+     "terms": 17
+    },
+    "full_time_officer_blind/scorecard": {
+     "auc": 0.6173,
+     "gain_vs_full_time_scorecard": [
+      0.0671,
+      [
+       0.0342,
+       0.0939
+      ]
+     ]
+    },
+    "full_time_officer_blind/xgboost": {
+     "auc": 0.6207,
+     "gain_vs_full_time_xgboost": [
+      0.0539,
+      [
+       0.0217,
+       0.0877
+      ]
+     ]
+    },
+    "full_time_officer_blind/pltr": {
+     "auc": 0.6125,
+     "gain_vs_full_time_scorecard": [
+      0.0624,
+      [
+       0.0288,
+       0.098
+      ]
+     ],
+     "terms": 73
+    },
+    "full_time_officer_blind/pltr_sparse": {
+     "auc": 0.6224,
+     "gain_vs_full_time_scorecard": [
+      0.0722,
+      [
+       0.0357,
+       0.1132
+      ]
+     ],
+     "terms": 30
+    },
+    "officer_only/scorecard": {
+     "auc": 0.6154,
+     "gain_vs_full_time_scorecard": [
+      0.0652,
+      [
+       0.0224,
+       0.1089
+      ]
+     ]
+    },
+    "officer_only/xgboost": {
+     "auc": 0.6067,
+     "gain_vs_full_time_xgboost": [
+      0.0399,
+      [
+       0.0033,
+       0.0782
+      ]
+     ]
+    }
+   }
+  },
+  "4": {
+   "n_train": 39014,
+   "n_test": 2103,
+   "base_rate_test": 0.2068,
+   "test_officers": 147,
+   "test_officers_seen_in_training": 0,
+   "models": {
+    "full_time/scorecard": {
+     "auc": 0.5455
+    },
+    "full_time/xgboost": {
+     "auc": 0.5769
+    },
+    "full_time_officer/scorecard": {
+     "auc": 0.6667,
+     "gain_vs_full_time_scorecard": [
+      0.1211,
+      [
+       0.095,
+       0.1482
+      ]
+     ]
+    },
+    "full_time_officer/xgboost": {
+     "auc": 0.6946,
+     "gain_vs_full_time_xgboost": [
+      0.1177,
+      [
+       0.0888,
+       0.1515
+      ]
+     ]
+    },
+    "full_time_officer/pltr": {
+     "auc": 0.6752,
+     "gain_vs_full_time_scorecard": [
+      0.1296,
+      [
+       0.104,
+       0.1609
+      ]
+     ],
+     "terms": 60
+    },
+    "full_time_officer/pltr_sparse": {
+     "auc": 0.66,
+     "gain_vs_full_time_scorecard": [
+      0.1145,
+      [
+       0.0801,
+       0.1495
+      ]
+     ],
+     "terms": 16
+    },
+    "full_time_officer_blind/scorecard": {
+     "auc": 0.661,
+     "gain_vs_full_time_scorecard": [
+      0.1154,
+      [
+       0.0828,
+       0.1452
+      ]
+     ]
+    },
+    "full_time_officer_blind/xgboost": {
+     "auc": 0.6902,
+     "gain_vs_full_time_xgboost": [
+      0.1133,
+      [
+       0.0786,
+       0.1458
+      ]
+     ]
+    },
+    "full_time_officer_blind/pltr": {
+     "auc": 0.6671,
+     "gain_vs_full_time_scorecard": [
+      0.1216,
+      [
+       0.0839,
+       0.156
+      ]
+     ],
+     "terms": 44
+    },
+    "full_time_officer_blind/pltr_sparse": {
+     "auc": 0.6633,
+     "gain_vs_full_time_scorecard": [
+      0.1177,
+      [
+       0.0784,
+       0.152
+      ]
+     ],
+     "terms": 27
+    },
+    "officer_only/scorecard": {
+     "auc": 0.6665,
+     "gain_vs_full_time_scorecard": [
+      0.121,
+      [
+       0.0804,
+       0.1588
+      ]
+     ]
+    },
+    "officer_only/xgboost": {
+     "auc": 0.668,
+     "gain_vs_full_time_xgboost": [
+      0.0911,
+      [
+       0.0515,
+       0.1306
+      ]
+     ]
+    }
+   }
+  }
+ },
+ "summary_across_draws": {
+  "full_time/scorecard": {
+   "auc_mean": 0.5464,
+   "auc_sd": 0.0176,
+   "auc_min": 0.5192,
+   "auc_max": 0.5682
+  },
+  "full_time/xgboost": {
+   "auc_mean": 0.5714,
+   "auc_sd": 0.0199,
+   "auc_min": 0.5419,
+   "auc_max": 0.5969
+  },
+  "full_time_officer/scorecard": {
+   "auc_mean": 0.6193,
+   "auc_sd": 0.027,
+   "auc_min": 0.602,
+   "auc_max": 0.6667,
+   "gain_vs": "full_time_scorecard",
+   "gain_mean": 0.0729,
+   "gain_min": 0.0338,
+   "gain_max": 0.1211,
+   "draws_with_gain_ci_above_0": 5
+  },
+  "full_time_officer/xgboost": {
+   "auc_mean": 0.6348,
+   "auc_sd": 0.037,
+   "auc_min": 0.5953,
+   "auc_max": 0.6946,
+   "gain_vs": "full_time_xgboost",
+   "gain_mean": 0.0634,
+   "gain_min": 0.0314,
+   "gain_max": 0.1177,
+   "draws_with_gain_ci_above_0": 4
+  },
+  "full_time_officer/pltr": {
+   "auc_mean": 0.6253,
+   "auc_sd": 0.031,
+   "auc_min": 0.5897,
+   "auc_max": 0.6752,
+   "gain_vs": "full_time_scorecard",
+   "gain_mean": 0.079,
+   "gain_min": 0.0501,
+   "gain_max": 0.1296,
+   "draws_with_gain_ci_above_0": 5
+  },
+  "full_time_officer/pltr_sparse": {
+   "auc_mean": 0.6176,
+   "auc_sd": 0.0261,
+   "auc_min": 0.5888,
+   "auc_max": 0.66,
+   "gain_vs": "full_time_scorecard",
+   "gain_mean": 0.0712,
+   "gain_min": 0.0207,
+   "gain_max": 0.1145,
+   "draws_with_gain_ci_above_0": 4
+  },
+  "full_time_officer_blind/scorecard": {
+   "auc_mean": 0.6191,
+   "auc_sd": 0.0269,
+   "auc_min": 0.5954,
+   "auc_max": 0.661,
+   "gain_vs": "full_time_scorecard",
+   "gain_mean": 0.0727,
+   "gain_min": 0.0272,
+   "gain_max": 0.1154,
+   "draws_with_gain_ci_above_0": 4
+  },
+  "full_time_officer_blind/xgboost": {
+   "auc_mean": 0.6305,
+   "auc_sd": 0.0381,
+   "auc_min": 0.5844,
+   "auc_max": 0.6902,
+   "gain_vs": "full_time_xgboost",
+   "gain_mean": 0.0591,
+   "gain_min": 0.0322,
+   "gain_max": 0.1133,
+   "draws_with_gain_ci_above_0": 4
+  },
+  "full_time_officer_blind/pltr": {
+   "auc_mean": 0.6202,
+   "auc_sd": 0.0264,
+   "auc_min": 0.6051,
+   "auc_max": 0.6671,
+   "gain_vs": "full_time_scorecard",
+   "gain_mean": 0.0738,
+   "gain_min": 0.0413,
+   "gain_max": 0.1216,
+   "draws_with_gain_ci_above_0": 5
+  },
+  "full_time_officer_blind/pltr_sparse": {
+   "auc_mean": 0.6168,
+   "auc_sd": 0.0305,
+   "auc_min": 0.5816,
+   "auc_max": 0.6633,
+   "gain_vs": "full_time_scorecard",
+   "gain_mean": 0.0704,
+   "gain_min": 0.0135,
+   "gain_max": 0.1177,
+   "draws_with_gain_ci_above_0": 4
+  },
+  "officer_only/scorecard": {
+   "auc_mean": 0.6203,
+   "auc_sd": 0.029,
+   "auc_min": 0.588,
+   "auc_max": 0.6665,
+   "gain_vs": "full_time_scorecard",
+   "gain_mean": 0.074,
+   "gain_min": 0.0198,
+   "gain_max": 0.121,
+   "draws_with_gain_ci_above_0": 4
+  },
+  "officer_only/xgboost": {
+   "auc_mean": 0.6223,
+   "auc_sd": 0.0258,
+   "auc_min": 0.6067,
+   "auc_max": 0.668,
+   "gain_vs": "full_time_xgboost",
+   "gain_mean": 0.0509,
+   "gain_min": 0.0144,
+   "gain_max": 0.0911,
+   "draws_with_gain_ci_above_0": 4
+  }
+ },
+ "pltr_stable_core": {
+  "full_time_officer/pltr": {
+   "variable_combos_in_every_draw": [
+    "off_consent_hit_rate_365d_shrunk",
+    "off_hit_rate_same_race_past",
+    "off_log_search_ratio_hisp_white",
+    "precinct",
+    "subject_race",
+    "zone"
+   ],
+   "mean_pairwise_jaccard": 0.249,
+   "combos_per_draw": [
+    50,
+    67,
+    45,
+    47,
+    51
+   ]
+  },
+  "full_time_officer/pltr_sparse": {
+   "variable_combos_in_every_draw": [
+    "off_consent_hit_rate_365d_shrunk",
+    "subject_race"
+   ],
+   "mean_pairwise_jaccard": 0.194,
+   "combos_per_draw": [
+    21,
+    21,
+    22,
+    16,
+    16
+   ]
+  },
+  "full_time_officer_blind/pltr": {
+   "variable_combos_in_every_draw": [
+    "off_consent_hit_rate_365d_shrunk",
+    "off_consent_hit_rate_365d_shrunk|off_hit_rate_365d_shrunk",
+    "off_last_search_hit|off_minutes_since_first_stop_today",
+    "off_log_search_ratio_hisp_white",
+    "precinct",
+    "zone"
+   ],
+   "mean_pairwise_jaccard": 0.261,
+   "combos_per_draw": [
+    48,
+    42,
+    38,
+    59,
+    40
+   ]
+  },
+  "full_time_officer_blind/pltr_sparse": {
+   "variable_combos_in_every_draw": [
+    "off_consent_hit_rate_365d_shrunk",
+    "off_consent_hit_rate_365d_shrunk|off_hit_rate_365d_shrunk",
+    "off_log_search_ratio_hisp_white",
+    "reason_for_stop"
+   ],
+   "mean_pairwise_jaccard": 0.267,
+   "combos_per_draw": [
+    17,
+    16,
+    22,
+    27,
+    27
+   ]
+  }
+ }
+}

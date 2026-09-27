@@ -101,6 +101,53 @@ def sufficiency(rates: pd.DataFrame, reference: str = "white") -> pd.Series:
     return rates["PPV"] - rates.loc[reference, "PPV"]
 
 
+def group_rates_ci(y_true, y_pred, groups, n_boot: int = 2000,
+                   alpha: float = 0.05, seed: int = 0) -> pd.DataFrame:
+    """Percentile bootstrap CIs on the per-group rates.
+
+    WHY THIS IS NOT OPTIONAL HERE. Subgroup sizes are wildly uneven -- on the
+    consent test set, white n=3,368 and black n=4,947 but hispanic n=689, and at
+    a top-K of 2,000 only ~12 hispanic drivers are selected. A TPR or PPV built
+    on a dozen cases is not a measurement, and reporting it as a bare point
+    estimate invites a question you cannot answer.
+
+    Resampling is done WITHIN each group, with the decision rule held fixed
+    (y_pred is passed in already thresholded), so the interval reflects sampling
+    variability in the group's rates and not variability in where the cutoff
+    happened to fall.
+    """
+    y_true = np.asarray(y_true).astype(int)
+    y_pred = np.asarray(y_pred).astype(int)
+    g = pd.Series(groups).reset_index(drop=True)
+    rng = np.random.default_rng(seed)
+    lo_q, hi_q = 100 * alpha / 2, 100 * (1 - alpha / 2)
+
+    rows = []
+    for grp, idx in g.groupby(g).groups.items():
+        i = np.asarray(idx)
+        yt, yp = y_true[i], y_pred[i]
+        draws = {k: [] for k in ("selection_rate", "TPR", "FPR", "PPV", "base_rate")}
+        for _ in range(n_boot):
+            b = rng.integers(0, len(i), len(i))
+            t, p = yt[b], yp[b]
+            tp = int(((t == 1) & (p == 1)).sum()); fp = int(((t == 0) & (p == 1)).sum())
+            fn = int(((t == 1) & (p == 0)).sum()); tn = int(((t == 0) & (p == 0)).sum())
+            draws["selection_rate"].append(p.mean())
+            draws["base_rate"].append(t.mean())
+            draws["TPR"].append(tp / (tp + fn) if (tp + fn) else np.nan)
+            draws["FPR"].append(fp / (fp + tn) if (fp + tn) else np.nan)
+            draws["PPV"].append(tp / (tp + fp) if (tp + fp) else np.nan)
+        row = {"group": grp, "n": len(i), "n_selected": int(yp.sum())}
+        for k, v in draws.items():
+            a = np.asarray(v, dtype=float)
+            row[k] = np.nanmean(a)
+            row[f"{k}_lo"] = np.nanpercentile(a, lo_q)
+            row[f"{k}_hi"] = np.nanpercentile(a, hi_q)
+            row[f"{k}_width"] = row[f"{k}_hi"] - row[f"{k}_lo"]
+        rows.append(row)
+    return pd.DataFrame(rows).set_index("group")
+
+
 def calibration_by_group(y_true, y_score, groups, bins: int = 10) -> pd.DataFrame:
     """Observed frequency vs predicted score, per group. Sufficiency, continuous form."""
     d = pd.DataFrame({
@@ -134,7 +181,136 @@ def both_codings(y_true, y_pred, groups, reference: str = "white") -> dict:
     }
 
 
+# --------------------------------------------------------------------------- hypothesis tests
+def chi2_parity_test(y_pred, groups, ref: str = "white", other: str = "black") -> dict:
+    """Chi-square test of independence on the 2x2 of (selected) x (group).
+
+    The course frames fairness as a TEST with a statistic and a critical value,
+    not as a confidence interval. This is that test for statistical parity:
+    H0 = selection is independent of group.
+    """
+    from scipy.stats import chi2_contingency
+
+    g = pd.Series(groups).reset_index(drop=True)
+    yp = pd.Series(np.asarray(y_pred).astype(int)).reset_index(drop=True)
+    m = g.isin([ref, other])
+    ct = pd.crosstab(g[m], yp[m])
+    chi2, p, dof, exp = chi2_contingency(ct)
+    rates = {k: float(yp[m][(g[m] == k)].mean()) for k in (ref, other)}
+    return {"chi2": float(chi2), "p_value": float(p), "dof": int(dof),
+            "contingency": ct.to_dict(),
+            "selection_rate": rates,
+            "gap_pp": (rates[other] - rates[ref]) * 100,
+            "n": int(m.sum())}
+
+
+def tost_equivalence(y_pred, groups, delta: float,
+                     ref: str = "white", other: str = "black",
+                     alpha: float = 0.05) -> dict:
+    """TOST: two one-sided tests for EQUIVALENCE of selection rates.
+
+    A chi-square rejection says "not exactly equal", which on large n is nearly
+    automatic and therefore weak. Equivalence testing inverts the burden: it asks
+    whether the gap is small enough to CERTIFY as fair, within a tolerance delta.
+
+        theta_hat = p_other - p_ref
+        se        = sqrt( p_r(1-p_r)/n_r + p_o(1-p_o)/n_o )     (unpooled)
+        z_L = (theta_hat + delta) / se        z_U = (delta - theta_hat) / se
+        equivalent  iff  min(z_L, z_U) > z_{1-alpha}
+
+    The deck never assigns delta a numeric value, so the honest move is to sweep
+    it and report the smallest delta at which the model would certify -- see
+    tost_delta_sweep. That number IS the answer to "how much unfairness would you
+    have to tolerate to call this model fair".
+    """
+    from scipy.stats import norm
+
+    g = pd.Series(groups).reset_index(drop=True)
+    yp = pd.Series(np.asarray(y_pred).astype(int)).reset_index(drop=True)
+    pr = yp[g == ref]; po = yp[g == other]
+    p_r, p_o, n_r, n_o = pr.mean(), po.mean(), len(pr), len(po)
+    theta = p_o - p_r
+    se = float(np.sqrt(p_r * (1 - p_r) / n_r + p_o * (1 - p_o) / n_o))
+    zL, zU = (theta + delta) / se, (delta - theta) / se
+    zc = norm.ppf(1 - alpha)
+    return {"delta": delta, "theta_hat": float(theta), "se": se,
+            "z_lower": float(zL), "z_upper": float(zU), "z_crit": float(zc),
+            "equivalent": bool(min(zL, zU) > zc),
+            "n_ref": int(n_r), "n_other": int(n_o)}
+
+
+def tost_delta_sweep(y_pred, groups, deltas=None, **kw) -> pd.DataFrame:
+    """Sweep the equivalence margin and find where the model would certify as fair."""
+    deltas = deltas if deltas is not None else np.arange(0.01, 0.51, 0.01)
+    rows = [tost_equivalence(y_pred, groups, float(d), **kw) for d in deltas]
+    return pd.DataFrame(rows)
+
+
 # --------------------------------------------------------------------------- headline
+def pooled_vs_stratified_ci(
+    df: pd.DataFrame,
+    target: str = C.TARGET,
+    group_col: str = C.PRIMARY_PROTECTED,
+    stratum_col: str = "search_type",
+    discretionary: str = C.SEARCH_TYPE_DISCRETIONARY,
+    reference: str = "white",
+    groups=None,
+    n_boot: int = 2000,
+    alpha: float = 0.05,
+    seed: int = 0,
+) -> pd.DataFrame:
+    """Bootstrap CIs on the hit-rate GAP in each stratum.
+
+    The gap is the claim, so the interval belongs on the gap, not on the two
+    rates separately. Resampling is within (stratum x group), which preserves
+    the group sizes and asks only "how stable is this gap".
+
+    What the deck needs this to show:
+      - consent gap CI EXCLUDES zero and is negative
+      - non-consent gap CI EXCLUDES zero and is positive
+      - pooled gap CI INCLUDES zero
+    i.e. two real effects of opposite sign that cancel under pooling. Without
+    intervals, a sceptic can dismiss the whole reversal as noise.
+    """
+    groups = groups or C.RACE_REPORTABLE
+    d = df[df[group_col].isin(groups)].copy()
+    hit = d[target].astype("string").str.strip().isin({"TRUE", "True", "1"}).astype(int)
+    d = d.assign(_hit=hit.to_numpy(), _disc=d[stratum_col].eq(discretionary).to_numpy())
+
+    rng = np.random.default_rng(seed)
+    lo_q, hi_q = 100 * alpha / 2, 100 * (1 - alpha / 2)
+    rows = []
+    for label, sub in [(discretionary, d[d["_disc"]]),
+                       (f"non-{discretionary}", d[~d["_disc"]]),
+                       ("POOLED", d)]:
+        cells = {g: sub.loc[sub[group_col] == g, "_hit"].to_numpy() for g in groups}
+        draws = {g: [] for g in groups if g != reference}
+        rates = {g: [] for g in groups}
+        for _ in range(n_boot):
+            bs = {g: v[rng.integers(0, len(v), len(v))] if len(v) else v
+                  for g, v in cells.items()}
+            ref_rate = bs[reference].mean() if len(bs[reference]) else np.nan
+            for g in groups:
+                rates[g].append(bs[g].mean() if len(bs[g]) else np.nan)
+                if g != reference:
+                    draws[g].append((bs[g].mean() if len(bs[g]) else np.nan) - ref_rate)
+        for g in groups:
+            row = {"stratum": label, "group": g, "n": len(cells[g]),
+                   "hits": int(cells[g].sum()),
+                   "hit_rate": float(cells[g].mean()) if len(cells[g]) else np.nan}
+            a = np.asarray(rates[g], dtype=float)
+            row["hit_rate_lo"] = np.nanpercentile(a, lo_q)
+            row["hit_rate_hi"] = np.nanpercentile(a, hi_q)
+            if g != reference:
+                b = np.asarray(draws[g], dtype=float)
+                row["gap_pp"] = float(np.nanmean(b) * 100)
+                row["gap_lo_pp"] = float(np.nanpercentile(b, lo_q) * 100)
+                row["gap_hi_pp"] = float(np.nanpercentile(b, hi_q) * 100)
+                row["excludes_zero"] = bool(row["gap_lo_pp"] > 0 or row["gap_hi_pp"] < 0)
+            rows.append(row)
+    return pd.DataFrame(rows)
+
+
 def pooled_vs_stratified(
     df: pd.DataFrame,
     target: str = C.TARGET,
