@@ -21,12 +21,17 @@ Splits
 Reported: AUC with bootstrap 95% CI, PR-AUC, Brier; the AUC gain over full_time with a PAIRED
 bootstrap CI (same resampled rows for both models); fairness at a fixed search budget (top 22% of
 test rows, the team's K=2,000/9,113): selection rate, false positive rate, hit rate by race, with CIs;
-PLTR's selected terms with odds ratios and average marginal effects.
+PLTR's selected terms with odds ratios, average marginal effects and importance (|coef| x sd).
+
+PLTR is reported twice from the same fit: `pltr` (penalty by the one-standard-error rule) and
+`pltr_sparse` (the weakest penalty keeping <= PLTR_MAX_TERMS terms, chosen on the training data).
+Every test prediction is saved for officer_model_diagnostics.py (year-by-year AUC, economics,
+calibration by race).
 
 Usage
   python scripts_claude/evaluate_officer_models.py            # everything (PLTR is the slow part)
   python scripts_claude/evaluate_officer_models.py --quick    # temporal split only
-Outputs: data/officer_model_results.json, data/pltr_terms.json
+Outputs: data/officer_model_results.json, data/pltr_terms.json, data/officer_model_predictions.parquet
 """
 import argparse
 import json
@@ -50,6 +55,7 @@ ROOT = Path(__file__).resolve().parents[1]
 TABLE = ROOT / 'data' / 'nashville_consent_searches.parquet'
 OUT = ROOT / 'data' / 'officer_model_results.json'
 OUT_TERMS = ROOT / 'data' / 'pltr_terms.json'
+OUT_PRED = ROOT / 'data' / 'officer_model_predictions.parquet'
 
 SEED, SPLIT_YEAR, TOPK_SHARE = 42, 2016, 0.22
 N_BOOT, N_BOOT_FAIR = 1000, 500
@@ -72,6 +78,7 @@ MODES = {
     'officer_only': (OFF, []),
 }
 PLTR_MODES = ['full_time_officer', 'full_time_officer_blind']
+PLTR_MAX_TERMS = 30
 
 
 def log(msg):
@@ -93,9 +100,9 @@ def load():
     return d
 
 
-def splits(d):
+def splits(d, seed=SEED):
     train_t, test_t = d['year'] < SPLIT_YEAR, d['year'] >= SPLIT_YEAR
-    gss = GroupShuffleSplit(n_splits=1, test_size=0.2, random_state=SEED)
+    gss = GroupShuffleSplit(n_splits=1, test_size=0.2, random_state=seed)
     officers = d['officer_id_hash'].fillna('__none__').to_numpy()
     tr_idx, te_idx = next(gss.split(d, groups=officers))
     held = np.zeros(len(d), bool)
@@ -158,6 +165,13 @@ def fairness(y, p, race, rng):
     return out
 
 
+def score(y_te, p, race_te, rng, n_features, seconds):
+    return {'auc': round(float(roc_auc_score(y_te, p)), 4), 'auc_ci95': auc_ci(y_te, p, rng),
+            'pr_auc': round(float(average_precision_score(y_te, p)), 4),
+            'brier': round(float(brier_score_loss(y_te, p)), 4),
+            'n_features': n_features, 'seconds': seconds}
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--quick', action='store_true', help='temporal split only')
@@ -170,8 +184,9 @@ def main():
         sp = {'temporal': sp['temporal']}
 
     results = {'built_utc': datetime.now(timezone.utc).isoformat(), 'rows': int(len(d)),
-               'split_year': SPLIT_YEAR, 'topk_share': TOPK_SHARE, 'splits': {}}
-    terms_out = {}
+               'split_year': SPLIT_YEAR, 'topk_share': TOPK_SHARE, 'pltr_sparse_max_terms': PLTR_MAX_TERMS,
+               'splits': {}}
+    terms_out, pred_frames = {}, []
     for sname, (tr, te) in sp.items():
         y_tr, y_te = d.loc[tr, 'y'].to_numpy(), d.loc[te, 'y'].to_numpy()
         race_te = d.loc[te, 'subject_race'].to_numpy()
@@ -189,36 +204,42 @@ def main():
                 t0 = time.time()
                 X_tr, X_te = d.loc[tr, num + cat], d.loc[te, num + cat]
                 m = make(model, num, cat).fit(X_tr, y_tr)
-                p = m.predict_proba(X_te)[:, 1]
-                preds[(mode, model)] = p
-                r = {'auc': round(float(roc_auc_score(y_te, p)), 4), 'auc_ci95': auc_ci(y_te, p, rng),
-                     'pr_auc': round(float(average_precision_score(y_te, p)), 4),
-                     'brier': round(float(brier_score_loss(y_te, p)), 4),
-                     'n_features': len(num) + len(cat), 'seconds': round(time.time() - t0, 1)}
-                if (mode, model) != ('full_time', model) and ('full_time', model) in preds and mode != 'officer_only':
-                    r['vs_full_time'] = paired_delta(y_te, p, preds[('full_time', model)], rng)
-                if mode != 'officer_only':
-                    r['fairness_topk'] = fairness(y_te, p, race_te, rng)
-                if model == 'pltr':
-                    # the new white box against the team's current white box, same test rows
-                    r['vs_scorecard_full_time'] = paired_delta(y_te, p, preds[('full_time', 'scorecard')], rng)
-                    r['pltr'] = m.summary()
-                    terms_out[f'{sname}/{mode}'] = m.terms().round(5).to_dict(orient='records')
-                if model == 'xgboost' and mode == 'full_time_officer':
-                    names = m.named_steps['prep'].get_feature_names_out()
-                    imp = m.named_steps['clf'].feature_importances_
-                    top = np.argsort(-imp)[:15]
-                    r['top_features_gain'] = {str(names[i]): round(float(imp[i]), 4) for i in top}
-                res['models'].setdefault(mode, {})[model] = r
-                cmp = r.get('vs_full_time') or r.get('vs_scorecard_full_time')
-                cmp_label = 'vs full_time' if 'vs_full_time' in r else 'vs current white box'
-                log(f'{sname:15} {mode:25} {model:9} AUC {r["auc"]:.4f} {r["auc_ci95"]}'
-                    + (f'  {cmp_label} {cmp["delta_auc"]:+.4f} {cmp["ci95"]}' if cmp else '')
-                    + f'  ({r["seconds"]}s)')
+                seconds = round(time.time() - t0, 1)
+                # PLTR: the 1-SE model and a <= PLTR_MAX_TERMS variant of the same fit (penalty chosen
+                # on the training data from the number of terms, never from test results)
+                variants = [(model, m)] + ([('pltr_sparse', m.at_most(PLTR_MAX_TERMS))] if model == 'pltr' else [])
+                for vname, mv in variants:
+                    p = mv.predict_proba(X_te)[:, 1]
+                    preds[(mode, vname)] = p
+                    pred_frames.append(pd.DataFrame({'stop_id': d.loc[te, 'stop_id'].to_numpy(), 'split': sname,
+                                                     'mode': mode, 'model': vname, 'p': p.astype('float32')}))
+                    r = score(y_te, p, race_te, rng, len(num) + len(cat), seconds)
+                    if ('full_time', model) in preds and mode not in ('full_time', 'officer_only'):
+                        r['vs_full_time'] = paired_delta(y_te, p, preds[('full_time', model)], rng)
+                    if mode != 'officer_only':
+                        r['fairness_topk'] = fairness(y_te, p, race_te, rng)
+                    if model == 'pltr':
+                        # the new white box against the team's current white box, same test rows
+                        r['vs_scorecard_full_time'] = paired_delta(y_te, p, preds[('full_time', 'scorecard')], rng)
+                        r['pltr'] = mv.summary()
+                        terms_out[f'{sname}/{mode}/{vname}'] = mv.terms().round(5).to_dict(orient='records')
+                    if model == 'xgboost' and mode == 'full_time_officer':
+                        names = mv.named_steps['prep'].get_feature_names_out()
+                        imp = mv.named_steps['clf'].feature_importances_
+                        top = np.argsort(-imp)[:15]
+                        r['top_features_gain'] = {str(names[i]): round(float(imp[i]), 4) for i in top}
+                    res['models'].setdefault(mode, {})[vname] = r
+                    cmp = r.get('vs_full_time') or r.get('vs_scorecard_full_time')
+                    cmp_label = 'vs full_time' if 'vs_full_time' in r else 'vs current white box'
+                    extra = f'  [{r["pltr"]["selected_linear"] + r["pltr"]["selected_rules"]} terms]' if 'pltr' in r else ''
+                    log(f'{sname:15} {mode:25} {vname:11} AUC {r["auc"]:.4f} {r["auc_ci95"]}'
+                        + (f'  {cmp_label} {cmp["delta_auc"]:+.4f} {cmp["ci95"]}' if cmp else '')
+                        + extra + f'  ({seconds}s)')
         results['splits'][sname] = res
         OUT.write_text(json.dumps(results, indent=1))            # save as we go
         OUT_TERMS.write_text(json.dumps(terms_out, indent=1))
-    log(f'wrote {OUT.name} and {OUT_TERMS.name}')
+        pd.concat(pred_frames, ignore_index=True).to_parquet(OUT_PRED, index=False)
+    log(f'wrote {OUT.name}, {OUT_TERMS.name} and {OUT_PRED.name}')
 
 
 if __name__ == '__main__':

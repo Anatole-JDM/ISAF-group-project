@@ -100,9 +100,38 @@ def test_honest_cv_on_noise():
           f'{m.summary()["selected_linear"] + m.summary()["selected_rules"]}  OK')
 
 
+def test_sparsity_controls():
+    """1-SE rule is never larger than the best-CV model; at_most(N) respects N; a category seen in
+    fewer than min_leaf training rows is removed from the linear part, however extreme its outcome."""
+    rng = np.random.default_rng(4)
+    n = 8000
+    X = pd.DataFrame(rng.normal(size=(n, 8)), columns=[f'x{i}' for i in range(8)])
+    X['zone'] = rng.choice([f'z{i}' for i in range(6)], n)
+    X.loc[:59, 'zone'] = 'small'           # 60 rows: own one-hot column, below min_leaf -> dropped
+    X.loc[60:70, 'zone'] = 'tiny'          # 11 rows: pooled into the encoder's 'infrequent' column -> dropped
+    eta = -1.5 + 0.6 * X['x0'] - 0.4 * X['x1'] + 0.8 * ((X['x2'] > 0) & (X['x3'] > 0))
+    y = (rng.random(n) < 1 / (1 + np.exp(-eta))).astype(int)
+    y[:71] = 1                                                    # extreme outcome on both
+    num = [f'x{i}' for i in range(8)]
+    m1 = PLTR(num_cols=num, cat_cols=['zone'], min_leaf=100).fit(X, y)
+    mb = PLTR(num_cols=num, cat_cols=['zone'], min_leaf=100, select='best').fit(X, y)
+    k1, kb = np.count_nonzero(m1.coef_), np.count_nonzero(mb.coef_)
+    assert k1 <= kb, f'1-SE model has {k1} terms, best-CV model {kb}'
+    assert not any(('small' in t) or ('infrequent' in t) for t in m1.lin_names_), 'rare categories should be dropped'
+    assert {'cat__zone_small', 'cat__zone_infrequent_sklearn'} <= set(m1.lin_dropped_), m1.lin_dropped_
+    small = m1.at_most(5)
+    assert 0 < np.count_nonzero(small.coef_) <= 5 and np.count_nonzero(m1.coef_) == k1   # original untouched
+    assert np.count_nonzero(m1.at_most(1000).coef_) == k1, 'a cap above the model size must not enlarge it'
+    t = small.terms()
+    assert t['importance'].is_monotonic_decreasing and abs(t['importance_share'].sum() - 1) < 1e-9
+    print(f'[5] sparsity: 1-SE {k1} terms vs best-CV {kb}; at_most(5) -> {np.count_nonzero(small.coef_)} terms; '
+          f'rare categories dropped; top term "{t.iloc[0]["term"]}"  OK')
+
+
 if __name__ == '__main__':
     test_rescaling_equals_weighted_lasso()
     test_recovers_interaction()
     test_categoricals()
     test_honest_cv_on_noise()
+    test_sparsity_controls()
     print('all PLTR tests passed')

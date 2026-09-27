@@ -16,12 +16,22 @@ Stage 2 - logistic regression on [original features, rules] with an ADAPTIVE LAS
   pilot ridge at C = 1 (the team's scorecard setting); lambda chosen by stratified 5-fold CV on
   the training data (AUC), with the rules, encodings and weights RE-LEARNED INSIDE EACH FOLD -
   otherwise the rules have already seen the validation labels and the CV is optimistic.
+  Default choice: the ONE-STANDARD-ERROR rule - the sparsest model whose CV AUC is within one
+  standard error of the best - because the point of PLTR is a model that can be read.
+  The whole regularisation path is refitted on the training data, so a variant with at most N
+  terms can be taken without looking at any test data (`at_most(N)`).
+
+Linear part: one-hot columns with fewer than `min_leaf` training rows are removed (a category seen
+11 times otherwise gets a huge, meaningless coefficient); those rows fall into the baseline.
+Terms are ranked by importance = |coefficient| x standard deviation of the term on the training data
+(weight x coverage: a rule that applies to 0.1% of searches cannot matter much, whatever its odds ratio).
 
 Categorical variables enter the TREES through an out-of-fold smoothed target encoding (so a
 rule reads "zone in {zones with a high past hit rate}") and enter the LINEAR part one-hot
 encoded, exactly like the team's scorecard. Every threshold on an encoded categorical is
 translated back into the list of categories it selects.
 """
+import copy
 from itertools import combinations
 
 import numpy as np
@@ -48,10 +58,12 @@ def linear_preprocessor(num, cat):
 
 class PLTR:
     def __init__(self, num_cols, cat_cols, gamma=1.0, min_leaf=200, te_smoothing=50,
-                 Cs=np.logspace(-3, 1, 9), pilot_C=1.0, cv=5, random_state=42):
+                 Cs=np.logspace(-2.5, 0, 11), pilot_C=1.0, cv=5, select='1se', random_state=42):
+        # Cs stop at 1: weaker penalties were never chosen on this data and took ~90% of the fit time
         self.num_cols, self.cat_cols = list(num_cols), list(cat_cols)
         self.gamma, self.min_leaf, self.te_smoothing = gamma, min_leaf, te_smoothing
-        self.Cs, self.pilot_C, self.cv, self.random_state = np.asarray(Cs), pilot_C, cv, random_state
+        self.Cs, self.pilot_C, self.cv, self.random_state = np.sort(np.asarray(Cs)), pilot_C, cv, random_state
+        self.select = select                             # '1se' or 'best'
 
     # ------------------------------------------------------------------ tree inputs
     def _te_fit(self, X, y):
@@ -138,7 +150,12 @@ class PLTR:
         T_oof = self._tree_inputs(X, oof=oof)
         self._extract_rules(T_oof, y)
         self.lin_ = linear_preprocessor(self.num_cols, self.cat_cols).fit(X)
-        self.lin_names_ = list(self.lin_.get_feature_names_out())
+        L = self.lin_.transform(X)
+        names = np.asarray(self.lin_.get_feature_names_out()).astype(str)
+        rare = np.char.startswith(names, 'cat__') & ((L != 0).sum(axis=0) < self.min_leaf)
+        self.lin_keep_ = np.flatnonzero(~rare)
+        self.lin_names_ = list(names[self.lin_keep_])
+        self.lin_dropped_ = list(names[rare])
         R = self._rule_matrix(T_oof)
         keep, seen = [], set()                           # drop constant and duplicate rule columns
         for j in range(R.shape[1]):
@@ -152,13 +169,13 @@ class PLTR:
             keep.append(j)
         self.keep_rules_ = np.array(keep, dtype=int)
         self.n_linear_, self.n_rules_ = len(self.lin_names_), len(self.keep_rules_)
-        return np.hstack([self.lin_.transform(X), R[:, self.keep_rules_]]).astype('float32')
+        return np.hstack([L[:, self.lin_keep_], R[:, self.keep_rules_]]).astype('float32')
 
     def _design(self, X):
         """Design matrix for new data, using what _stage1 learned."""
         T = self._tree_inputs(X)
         R = self._rule_matrix(T)[:, self.keep_rules_]
-        return np.hstack([self.lin_.transform(X), R]).astype('float32')
+        return np.hstack([self.lin_.transform(X)[:, self.lin_keep_], R]).astype('float32')
 
     def _stage2_weights(self, Z, y):
         """Column scale and adaptive weights (pilot ridge at a fixed C, like the team's scorecard)."""
@@ -196,16 +213,42 @@ class PLTR:
                 m = self._lasso(Zw_tr, y[tr], C)
                 cv_auc[k, j] = roc_auc_score(y[va], m.decision_function(Zw_va))
         self.cv_auc_ = cv_auc.mean(axis=0)
-        self.C_ = float(self.Cs[int(np.argmax(self.cv_auc_))])
+        self.cv_se_ = cv_auc.std(axis=0, ddof=1) / np.sqrt(self.cv)
+        best = int(np.argmax(self.cv_auc_))
+        self.C_best_ = float(self.Cs[best])
+        self.best_at_grid_edge_ = best == len(self.Cs) - 1
+        if self.select == '1se':                         # Cs ascending: smallest C = sparsest
+            j = int(np.flatnonzero(self.cv_auc_ >= self.cv_auc_[best] - self.cv_se_[best])[0])
+        else:
+            j = best
 
         Z = self._stage1(X, y)                           # final model on all training rows
         self.scale_, self.adapt_ = self._stage2_weights(Z, y)
-        self.lasso_ = self._lasso((Z / self.scale_ * self.adapt_).astype('float32'), y, self.C_)
-        theta = self.lasso_.coef_.ravel()
-        self.coef_ = theta * self.adapt_ / self.scale_                # back on the Z scale
-        self.intercept_ = float(self.lasso_.intercept_[0])
+        Zw = (Z / self.scale_ * self.adapt_).astype('float32')
+        self.path_ = []                                  # (coef on the Z scale, intercept) per C
+        for C in self.Cs:
+            m = self._lasso(Zw, y, C)
+            self.path_.append((m.coef_.ravel() * self.adapt_ / self.scale_, float(m.intercept_[0])))
+        self.path_terms_ = [int(np.count_nonzero(b)) for b, _ in self.path_]
         self._Z_train = Z
+        self._set(j)
         return self
+
+    def _set(self, j):
+        self.j_ = j
+        self.C_ = float(self.Cs[j])
+        self.coef_, self.intercept_ = self.path_[j]
+        return self
+
+    def at_most(self, n_terms):
+        """The same fitted model at the weakest penalty keeping <= n_terms terms (chosen on training data).
+        Never less sparse than the selected model: if that one already has <= n_terms terms, it is returned.
+        If every non-empty model on the grid is larger than n_terms, the sparsest non-empty one is returned."""
+        ok = [j for j, k in enumerate(self.path_terms_) if 0 < k <= n_terms and j <= self.j_]
+        if ok:
+            return copy.copy(self)._set(max(ok))
+        nonempty = [j for j, k in enumerate(self.path_terms_) if k > 0 and j <= self.j_]
+        return copy.copy(self)._set(min(nonempty) if nonempty else self.j_)
 
     def decision_function(self, X):
         return self._design(X).astype('float64') @ self.coef_ + self.intercept_
@@ -245,9 +288,23 @@ class PLTR:
                 ame = float(np.mean(p * (1 - p)) * b[v])
             rows.append({'term': names[v], 'kind': kinds[v], 'coef': float(b[v]),
                          'odds_ratio': float(np.exp(b[v])), 'avg_marginal_effect': ame,
-                         'support_share': float(np.mean(Z[:, v] != 0))})
-        out = pd.DataFrame(rows)
-        return out.reindex(out['avg_marginal_effect'].abs().sort_values(ascending=False).index).reset_index(drop=True)
+                         'support_share': float(np.mean(Z[:, v] != 0)),
+                         'importance': float(abs(b[v]) * Z[:, v].std()),
+                         'variables': '|'.join(self._variables(v))})
+        out = pd.DataFrame(rows, columns=['term', 'kind', 'coef', 'odds_ratio', 'avg_marginal_effect',
+                                          'support_share', 'importance', 'variables'])
+        out['importance_share'] = out['importance'] / out['importance'].sum() if len(out) else []
+        return out.sort_values('importance', ascending=False).reset_index(drop=True)
+
+    def _variables(self, v):
+        """Original variables a term uses (to compare models: thresholds move, variables should not)."""
+        if v < self.n_linear_:
+            name = self.lin_names_[v]
+            if name.startswith('num__'):
+                return [name[5:]]
+            rest = name[5:]
+            return [next((c for c in sorted(self.cat_cols, key=len, reverse=True) if rest.startswith(c + '_')), rest)]
+        return sorted({f for f, _, _ in self.rules_[self.keep_rules_[v - self.n_linear_]]})
 
     def summary(self):
         b = self.coef_
@@ -255,6 +312,12 @@ class PLTR:
                 'rules_after_dedup': self.n_rules_,
                 'selected_linear': int(np.count_nonzero(b[:self.n_linear_])),
                 'selected_rules': int(np.count_nonzero(b[self.n_linear_:])),
-                'lasso_C': self.C_, 'cv_auc_at_C': round(float(self.cv_auc_.max()), 4),
-                'cv_auc_by_C': {f'{c:.4g}': round(float(a), 4) for c, a in zip(self.Cs, self.cv_auc_)},
+                'linear_dropped_rare': len(self.lin_dropped_),
+                'selection': self.select, 'lasso_C': self.C_, 'cv_auc_at_C': round(float(self.cv_auc_[self.j_]), 4),
+                'best_C': self.C_best_, 'cv_auc_best': round(float(self.cv_auc_.max()), 4),
+                'cv_se_at_best': round(float(self.cv_se_[int(np.argmax(self.cv_auc_))]), 4),
+                'best_C_at_grid_edge': bool(self.best_at_grid_edge_),
+                'path': [{'C': round(float(c), 5), 'cv_auc': round(float(a), 4), 'cv_se': round(float(e), 4),
+                          'terms_on_full_train': k}
+                         for c, a, e, k in zip(self.Cs, self.cv_auc_, self.cv_se_, self.path_terms_)],
                 'gamma': self.gamma, 'pilot_C': self.pilot_C}
