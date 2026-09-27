@@ -82,8 +82,31 @@ RATE_FMT = {
 }
 
 
-def run_selector() -> tuple[pd.DataFrame, dict]:
-    """The sidebar 'Run' picker shared by the model pages. Returns (scores, meta), or stops the page."""
+STRATA = ["consent", "probable_cause", "pooled"]
+MODES = ["matched", "full", "full_blind"]
+
+
+@st.cache_data
+def modes_with_arm(stratum: str, arm: str) -> list[str]:
+    """The training modes whose cached run for this stratum actually fitted `arm`."""
+    out = []
+    for m in MODES:
+        _, meta = load_run(stratum, m)
+        if meta and any(a["arm"] == arm for a in meta.get("arms", [])):
+            out.append(m)
+    return out
+
+
+def run_selector(require_arm: str | None = None) -> tuple[pd.DataFrame, dict]:
+    """The sidebar 'Run' picker shared by the model pages. Returns (scores, meta), or stops the page.
+
+    `require_arm` opens the page on a mode that actually contains its arm. TabPFN is fitted only
+    in `matched`, so on the default `full` the foundation page used to greet a first-time visitor
+    with "this arm is not in the selected run" — an empty page for the one model family the brief
+    asks us to compare. The steer reads what is cached rather than hardcoding a mode, fires once
+    per arm per session, and only when the current mode genuinely lacks the arm, so it never
+    overrides a mode the visitor chose.
+    """
     from src import train as T
 
     if not T.available_runs():
@@ -95,11 +118,20 @@ def run_selector() -> tuple[pd.DataFrame, dict]:
     for key in ("run_stratum", "run_mode"):
         st.session_state[key] = st.session_state[key]
 
+    # Assigning a widget's key BEFORE the widget is created sets its default; after, it raises.
+    if require_arm is not None:
+        steered = st.session_state.setdefault("_steered_arms", set())
+        if require_arm not in steered:
+            steered.add(require_arm)
+            fitted_in = modes_with_arm(st.session_state["run_stratum"], require_arm)
+            if fitted_in and st.session_state["run_mode"] not in fitted_in:
+                st.session_state["run_mode"] = fitted_in[0]
+
     with st.sidebar:
         st.header("Run")
-        stratum = st.selectbox("Stratum", ["consent", "probable_cause", "pooled"], key="run_stratum")
+        stratum = st.selectbox("Stratum", STRATA, key="run_stratum")
         mode = st.radio(
-            "Training mode", ["matched", "full", "full_blind"], key="run_mode",
+            "Training mode", MODES, key="run_mode",
             help="matched = every arm trains on the same 5,000 rows (the TabPFN "
                  "ceiling), the only fair three-way comparison. full = all rows. "
                  "full_blind = all rows with race removed from the features.",
