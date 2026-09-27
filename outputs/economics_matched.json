@@ -1,0 +1,28 @@
+{
+ "K": 2000,
+ "test_n": 9113,
+ "base_rate": 0.2135410951388127,
+ "arms": {
+  "scorecard": {
+   "tp": 460,
+   "fp": 1540,
+   "precision": 0.23,
+   "breakeven_cost_fp": 0.2987012987012987,
+   "first_negative_at_cost_fp": 0.5
+  },
+  "gbm": {
+   "tp": 501,
+   "fp": 1499,
+   "precision": 0.2505,
+   "breakeven_cost_fp": 0.3342228152101401,
+   "first_negative_at_cost_fp": 0.5
+  },
+  "tabpfn": {
+   "tp": 509,
+   "fp": 1491,
+   "precision": 0.2545,
+   "breakeven_cost_fp": 0.3413816230717639,
+   "first_negative_at_cost_fp": 0.5
+  }
+ }
+}
