@@ -18,7 +18,7 @@ Hit rate by race, split by whether the search was discretionary
 | Stratum | white | black | b−w | hispanic | h−w |
 |---|---|---|---|---|---|
 | consent (discretionary) | 20.84% | **15.68%** | **−5.16 pp** | **7.88%** | **−12.96 pp** |
-| non-consent (mechanical) | 20.83% | **27.12%** | **+6.30 pp** | 15.63% | −5.20 pp |
+| non-consent (**mixed**, see §1.1) | 20.83% | **27.12%** | **+6.30 pp** | 15.63% | −5.20 pp |
 | **POOLED** | 20.83% | 21.66% | **+0.82 pp** | 12.07% | −8.77 pp |
 
 The Black–white gap runs in **opposite directions** across strata. This is
@@ -37,8 +37,13 @@ should be stated precisely.
 | **POOLED** | hispanic | 10,102 | 12.07% [11.44, 12.71] | −8.75 [−9.46, −8.02] | ✓ |
 
 **The Black reversal is beyond doubt.** Consent [−5.80, −4.49] and non-consent
-[+5.61, +6.94] do not overlap and sit on opposite sides of zero with an 11-point
-gap between them. It cannot be dismissed as noise.
+[+5.61, +6.94] do not overlap and sit on opposite sides of zero, 11.46 pp apart.
+It cannot be dismissed as noise.
+
+**But do not quote 11.46 pp as discretionary-vs-mechanical.** The non-consent
+group is only 52.4% mechanical. Against the genuinely mechanical bases alone
+(arrest + warrant + inventory, +1.77 pp) the separation is **6.93 pp**. That is
+the number to defend. See §1.1.
 
 **The pooled result is worse than "no disparity".** It is +0.83 [+0.35, +1.31] —
 statistically significant and pointing the WRONG WAY. A pooled analysis would not
@@ -54,10 +59,31 @@ gaps reverse".
 Not a composition artifact: consent is 44.6% of white searches, 47.8% of Black,
 46.0% of Hispanic.
 
-**Definition sensitivity, in our favour.** Using raw `search_basis == "consent"`
-gives −4.37 pp. Resolving search type most-mechanical-first — so `consent` means
-*no* mechanical basis also applied — drops 67,629 to 58,865 and widens the gap to
-−5.16 pp. Purer discretion, larger disparity.
+**Definition sensitivity — report both numbers, not the flattering one.**
+
+| definition of "consent" | n | b−w |
+|---|---|---|
+| `search_basis == "consent"` only | 67,431 | −4.41 pp |
+| any consent flag (raw flag OR basis) | 69,218 | **−4.60 pp** ← the conservative number |
+| resolved most-mechanical-first (our sample) | 58,836 | **−5.16 pp** ← the headline |
+
+Resolving most-mechanical-first — so `consent` means *no* other legal authority
+also applied — removes **10,386** consent-flagged searches. An earlier version of
+this document said 8,764, carried over from a stale count of 67,629 resolved rows;
+the true pre-purification count is 69,251 (69,218 with reportable race).
+
+**The removal is not neutral, and we do not claim it is.** Those 10,386 searches
+hit at **28.66%** against 16.91% for the ones we keep, and **76.35%** of them ended
+in arrest against 7.70%. The exclusion is on the legal *basis*, not on the outcome
+— a search carrying arrest, warrant or inventory authority did not require consent,
+whatever it yielded — but that basis is outcome-correlated in practice, so the
+purification is not free. The gap within the removed rows is −0.56 pp.
+
+**Concede plain view.** 1,247 of the removals are re-labelled `plain view`, which is
+discretionary and whose flag is set by what was already seen. It should not have
+overridden `consent`. Both gaps have the same sign and support the same conclusion,
+so the scope decision stands on either — but **−4.60 pp is the number to quote when
+challenged.**
 
 ### It replicates in two other jurisdictions
 
@@ -68,6 +94,43 @@ gives −4.37 pp. Resolving search type most-mechanical-first — so `consent` m
 | North Carolina | −1.15 pp | −6.30 pp |
 
 Three states, different years and reporting systems, same reversal.
+
+### 1.1 What the comparison group actually contains
+
+"Non-consent" is not a synonym for "mechanical". Decomposed by legal basis
+(`scripts/deck_stats.py`, recomputed from `data/processed/searches.parquet`):
+
+| legal basis | n | white hit | Black hit | b−w | officer discretion? |
+|---|---|---|---|---|---|
+| probable cause | 15,877 | 61.21% | 45.31% | **−15.90 pp** | YES |
+| consent *(our sample)* | 58,836 | 20.84% | 15.68% | **−5.16 pp** | YES |
+| warrant | 2,908 | 14.99% | 14.50% | −0.50 pp | no |
+| arrest | 31,358 | 19.42% | 21.21% | +1.80 pp | no |
+| inventory | 1,447 | 14.98% | 23.44% | +8.47 pp | no |
+| plain view | 16,634 | 5.91% | 14.44% | +8.54 pp | YES |
+
+- **Truly mechanical** (arrest + warrant + inventory): n = 35,713, **+1.77 pp**.
+- **Still discretionary** (probable cause + plain view): n = 32,511, +11.17 pp —
+  **47.7%** of the comparison group.
+
+n throughout this table is the count each gap is computed on — drivers recorded
+white, Black or Hispanic — so it is slightly below the raw row count (35,713 vs
+35,733 mechanical). The modelling sample is all 58,865 resolved consent searches.
+
+**This strengthens the mechanism rather than weakening it.** The two bases that
+require an officer to judge *this driver* are both negative, and probable cause —
+15,877 searches at a 49.57% base rate, far better powered than consent — runs
+**−15.90 pp**, three times the headline in the same direction. The claim
+"officers apply a lower evidentiary bar to Black drivers where they have
+discretion" is supported twice, not once.
+
+**What was wrong was the label, not the finding.** The contrast is consent versus
+non-consent, not discretionary versus mechanical. Plain view is the exception that
+proves the point: it is discretionary but positive, because the basis is recorded
+*because* something was already seen.
+
+Probable cause is fitted in the repo (`outputs/metrics__probable_cause__full.json`,
+gbm 0.5593 on 5,809 test rows at a 48.2% base rate) and was never written up.
 
 ---
 
@@ -311,10 +374,25 @@ rather than a misleading zero. Do not report a bare point estimate there.
 
 ## 7. Economics: deployment destroys value
 
-Net benefit at K = 2,000 turns **negative** once an innocent driver's search is
-valued above ~0.25 of a justified search. Under any defensible valuation, deploying
-the model costs more than it returns. The false-positive price is a policy
-judgement, not a data fact — ship the sensitivity table.
+Computed by `scripts/deck_stats.py` on the matched run, K = 2,000 of 9,113 test
+searches (`outputs/economics_matched.json`):
+
+| arm | TP | FP | precision | break-even FP price |
+|---|---|---|---|---|
+| tabpfn | 509 | 1,491 | 25.45% | **0.341** |
+| gbm | 501 | 1,499 | 25.05% | 0.334 |
+| scorecard | 460 | 1,540 | 23.00% | 0.299 |
+| *random ranking* | *427* | *1,573* | *21.35%* | *0.272* |
+
+The break-even price is the value of one innocent driver's search at which net
+benefit hits zero, expressed as a multiple of the value of one justified search.
+
+**The best arm buys 0.069 of headroom over ranking at random.** Above a
+false-positive price of 0.341 — that is, once searching an innocent driver costs
+more than about a third of what catching a real one is worth — deployment destroys
+value. At K = 2,000 TabPFN finds 82 more hits than random, at the cost of 1,491
+innocent searches. The false-positive price is a policy judgement, not a data fact,
+so we ship the sensitivity rather than picking the number.
 
 ---
 
@@ -382,8 +460,9 @@ Two things this overturns:
 
 1. **TabPFN does not fail at scale.** 49,752 rows in 25s via hosted inference, no
    context limit. The earlier CPU difficulty was inference cost, not a ceiling.
-2. **TabPFN becomes the best arm on the base feature set** — 0.5730, beating XGBoost
-   (0.5663) and matching gbm+time (0.5733).
+2. **TabPFN draws level with XGBoost on the base feature set** — 0.5730 against
+   0.5663, matching gbm+time (0.5733). Nominally ahead; see §24, the gap is not
+   statistically distinguishable, so this is "no longer behind", not "best".
 
 Stated honestly: the curve is **flat to 5,000, then rises modestly to full scale**,
 +0.020 over the n=2,000 result. The intermediate points are non-monotonic (~±0.006
@@ -463,7 +542,7 @@ identical accuracy and you get a different story about why.
 **And TabPFN leans hardest on race.** `subject_race` is its single largest feature
 by a wide margin (0.0382), fifteen times the GBM's reliance (0.0025).
 
-### 10.4 TabPFN is the best-calibrated arm, in every group
+### 10.4 TabPFN is the best-calibrated arm — and still worse than a constant
 
 Brier within each racial group (lower is better):
 
@@ -473,9 +552,24 @@ Brier within each racial group (lower is better):
 | scorecard | 0.1542 | 0.1802 | 0.1887 |
 | gbm | 0.1631 | 0.1794 | 0.1997 |
 
-Calibration is the sufficiency leg of the taxonomy, and TabPFN wins it outright.
-Note Brier is sensitive to base rate, which differs by group, so compare *within*
-a column, not across.
+Calibration is the sufficiency leg of the taxonomy, and TabPFN wins it outright
+**among the three arms**. Note Brier is sensitive to base rate, which differs by
+group, so compare *within* a column, not across.
+
+**But "best of three" is not "good".** Against the no-skill floor — predicting that
+group's base rate for every driver in it — every arm loses, in every group:
+
+| group | n | base rate | no-skill floor | tabpfn | scorecard | gbm |
+|---|---|---|---|---|---|---|
+| black | 4,947 | 0.1949 | **0.1569** | 0.1579 | 0.1608 | 0.1710 |
+| hispanic | 689 | 0.1509 | **0.1282** | 0.1377 | 0.1392 | 0.1413 |
+| white | 3,368 | 0.2550 | **0.1900** | 0.1926 | 0.1957 | 0.2085 |
+
+Pooled, the floor is 0.1679 against tabpfn 0.1690, scorecard 0.1718, gbm 0.1824 —
+**negative skill on calibration for all three.** They do carry ranking information:
+PR-AUC beats its 0.2135 floor by +0.019 to +0.027, which is why a top-K policy is
+conceivable at all. Do not call any of these arms well calibrated without the floor
+beside it.
 
 **The tension worth putting on a slide:** the best-calibrated arm is also the one
 most dependent on the protected attribute. Sufficiency and independence pull in
@@ -810,10 +904,16 @@ Brier follows the same order: TabPFN best in every row (0.1591 vs 0.1608 in the
 best configuration). The gbm column replicates the teammate's XGBoost run within
 0.004 (his 0.5713 / 0.6417 / 0.6362).
 
-**TabPFN wins every configuration**, by a consistent +0.007. Note the contrast with
-officer *ID*, where the arms converged to 0.001 apart: ID is 421 sparse one-hot
-columns where model family matters little, while behaviour is 25 dense numerics
-where TabPFN's strengths show.
+> **⚠ CORRECTED BY §24.** The +0.007 ordering below is **inside the noise**. The
+> DeLong paired test puts TabPFN vs XGBoost at p = 0.69. Do not present this as a
+> ranking, and do not say TabPFN "wins".
+
+TabPFN is nominally ahead in every configuration by a consistent +0.007 — an
+ordering that does not survive a significance test. The observation worth keeping is
+the *contrast* with officer *ID*, where the arms converged to 0.001 apart: ID is 421
+sparse one-hot columns where model family matters little, while behaviour is 25
+dense numerics where any difference between families would show. Even there, the
+difference is not statistically distinguishable.
 
 ### The finding: race matters because nothing else did
 
@@ -1018,6 +1118,24 @@ Stated explicitly rather than left to be discovered:
    alternative split years was run.
 5. **Global surrogate not fitted.** Taught in the deck (sl. 84-86) with a fidelity
    number; not attempted here.
+6. **There is no validation set.** Every model-selection decision in this document —
+   tree depth, TabPFN context size, which feature blocks to keep, the vintage pin, K
+   — was made by reading the same 9,113-row temporal test set that produces every
+   reported number. Limitation 2 covers multiple testing of p-values; this is the
+   separate problem that the point estimates are maxima over repeated reads. **Every
+   AUC difference below 0.01 in this document should be read as inside the noise**
+   and decided on other grounds. The officer block at +0.070 (p = 6.6e−23) is the
+   only performance claim an order of magnitude clear of it.
+7. **Provenance: the officer models are not reproducible from this repository.**
+   `officer_TRULY_blind` is the headline model of §21.1, §22.1 and §24.2, but the
+   string `TRULY` appears in no file except this one. `src.data.build_xy` has no
+   officer flag, and nothing in the repo writes `outputs/critique_tests.json`,
+   `outputs/fairness_officer_model.json` or `outputs/officer_ablation_full.json` —
+   those runs were done interactively and only their outputs were committed. The
+   reproducible path today is `scripts_claude/evaluate_officer_models.py`, which
+   replicates the same design with 16 officer features and gives 0.6397 / 0.6324
+   against src's 25-feature 0.6459 / 0.6428. State this before being asked; it takes
+   four seconds to check.
 
 ---
 
