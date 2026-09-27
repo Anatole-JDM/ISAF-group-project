@@ -10,6 +10,7 @@ from model_page import ARMS
 from src import config as C
 from src import economics as E
 from src import stability as S
+import plotly.express as px
 
 scores, meta = common.run_selector()
 
@@ -103,7 +104,49 @@ with tab_one:
         .style.format("{:.4f}"), width="stretch",
     )
     st.info(
-        "TODO for the group: attach SHAP local explanations here. The scorecard "
-        "arm can show signed coefficient contributions directly; the GBM needs "
-        "`shap.TreeExplainer`; TabPFN needs `tabpfn-extensions`."
+        "**Per-stop explanations live on each arm's own page** — White box, Black box "
+        "and Tabular foundation — because the three support different grades of "
+        "attribution: exact closed-form Shapley for the linear arm, exact TreeSHAP for "
+        "the trees, and approximate occlusion for TabPFN, which has no native "
+        "attribution at all."
+    )
+
+
+# --------------------------------------------------------------------------- XPER
+st.divider()
+st.subheader("XPER — decomposing AUC itself")
+import json as _json
+_xp = C.OUTPUTS / "xper_scorecard.json"
+if not _xp.exists():
+    st.info("Run `python -m src.interpret` to compute it (2^10 = 1,024 exact coalitions, ~5 min).")
+else:
+    d = _json.loads(_xp.read_text())
+    st.markdown(
+        f"""
+Performance itself, split by feature: **AUC = φ₀ + Σⱼ φⱼ** with φ₀ = 0.5 (a model with
+no features). Computed **exactly** — all 2^10 = {d['n_coalitions']:,} coalitions, each one a
+re-estimation on that feature subset. No sampling, no approximation.
+"""
+    )
+    c1, c2, c3 = st.columns(3)
+    c1.metric("AUC", f"{d['auc_full']:.4f}")
+    c2.metric("Σφⱼ (above chance)", f"{d['sum_phi']:.4f}")
+    c3.metric("Efficiency gap", f"{d['efficiency_gap']:.1e}",
+              help="φ₀ + Σφⱼ − AUC must be zero. This is machine precision.")
+
+    t = (pd.Series(d["phi"], name="phi").to_frame().reset_index(names="feature"))
+    t["share_of_signal"] = t["phi"] / d["sum_phi"]
+    fig = px.bar(t.iloc[::-1], x="phi", y="feature", orientation="h",
+                 color=t.iloc[::-1]["phi"] > 0,
+                 color_discrete_map={True: "#c0392b", False: "#2c7fb8"},
+                 labels={"phi": "φⱼ — contribution to AUC"})
+    fig.update_layout(showlegend=False)
+    st.plotly_chart(fig, width="stretch")
+    st.dataframe(t.style.format({"phi": "{:+.5f}", "share_of_signal": "{:+.1%}"}),
+                 hide_index=True, width="stretch")
+    top = t.iloc[0]
+    st.error(
+        f"**`{top['feature']}` alone is {top['share_of_signal']:.1%} of everything the model "
+        f"knows.** The whole above-chance signal is {d['sum_phi']:.4f} AUC; race accounts for "
+        f"{top['phi']:.5f} of it. The model is close to a race detector with noise attached."
     )

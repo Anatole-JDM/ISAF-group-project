@@ -12,6 +12,4 @@ The machine-learning arm: more flexible than the scorecard, with no built-in glo
 explanation.
 """,
     missing_hint="Run `python -m src.train` to fit it.",
-    explain_todo="TODO for the group: attach SHAP explanations here (`shap.TreeExplainer`), "
-                 "global importance and per-stop.",
 )

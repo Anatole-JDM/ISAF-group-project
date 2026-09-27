@@ -524,6 +524,115 @@ PPV and TPR for white and black only, with intervals; and say why.
 
 ---
 
+## 13. XPER — three quarters of the signal is race (2026-09-27)
+
+The instructor's own method (his research, 2 of the 8 set readings): decompose the
+performance metric itself into per-feature Shapley contributions.
+
+    AUC = phi_0 + sum_j phi_j,   phi_0 = 0.5
+
+Computed **exactly** — all 2^10 = 1,024 coalitions, each a re-estimation on that
+feature subset (the deck's option 1). No sampling, no package. Efficiency identity
+holds to machine precision: gap = -3.5e-17.
+
+| feature | φⱼ | share of signal |
+|---|---|---|
+| **`subject_race`** | **+0.03796** | **+73.5%** |
+| `violation` | +0.00529 | +10.2% |
+| `subject_age` | +0.00499 | +9.7% |
+| `precinct` | +0.00214 | +4.1% |
+| `vehicle_registration_state` | +0.00176 | +3.4% |
+| `subject_sex` | +0.00153 | +3.0% |
+| `month` | +0.00118 | +2.3% |
+| `dow` | +0.00008 | +0.2% |
+| `hour` | −0.00113 | −2.2% |
+| `zone` | −0.00215 | −4.2% |
+
+**AUC 0.5516 = 0.5 + 0.0516, and race is 0.0380 of that 0.0516.** The model is close
+to a race detector with a small amount of noise attached. Two features carry negative
+φ — they make out-of-sample AUC *worse* than the coalitions without them.
+
+This is the sharpest statement of the project's thesis, in the instructor's own
+notation, and it converges with finding 5 (the features predict race at 0.72-0.73
+and contraband at 0.57).
+
+## 14. Opening the white box (2026-09-27)
+
+`src.interpret.coefficient_table`. Base rate 16.1% gives an AME multiplier of
+p(1-p) = **0.133**, so every coefficient shrinks ~7.5x in probability terms — the
+deck's slide-34 point, concretely.
+
+| feature | coef | odds ratio | AME (pp) |
+|---|---|---|---|
+| **`subject_race_hispanic`** | **−0.850** | **0.428** | **−11.28** |
+| `subject_race_unknown` | −0.669 | 0.512 | −8.89 |
+| `zone_117` | −0.647 | 0.524 | −8.59 |
+| `vehicle_registration_state_SC` | +0.523 | 1.688 | +6.95 |
+| `subject_sex_male` | −0.487 | 0.614 | −6.47 |
+
+The largest single coefficient in a model built to predict contraband is a race
+indicator.
+
+### A decision tree beats the scorecard
+
+| max_depth | AUC | leaves |
+|---|---|---|
+| 2 | 0.5539 | 4 |
+| 3 | 0.5588 | 8 |
+| **4** | **0.5605** | **16** |
+| 5 | 0.5592 | 32 |
+
+A **16-leaf tree (0.5605) beats the logistic scorecard (0.5516)** and closes most of
+the gap to gradient boosting (0.5663). The most interpretable model available is
+competitive — the argument for the white box, made with numbers rather than asserted.
+
+## 15. Fairness as a hypothesis test (2026-09-27)
+
+The course frames fairness as a **test statistic**, not a confidence interval.
+
+**χ² test of independence**, selection × race at K=2,000, white vs black:
+
+    chi2 = 978.0,  dof 1,  p = 1.1e-214,  n = 8,315
+    selection: white 41.1%, black 11.5%, gap -29.6pp
+
+Statistical parity is rejected outright.
+
+**TOST equivalence.** χ² on large n rejects nearly anything, which is the deck's own
+limitation 2. Equivalence testing inverts the burden: how wide a tolerance δ before
+the model would *certify* as fair? The deck never assigns δ a value, so we sweep it:
+
+    theta_hat = -0.2964,  se = 0.0096
+    delta 0.05  z_L -25.63  z_U +36.03   not equivalent
+    delta 0.10  z_L -20.43  z_U +41.23   not equivalent
+    delta 0.20  z_L -10.03  z_U +51.63   not equivalent
+    delta 0.30  z_L  +0.37  z_U +62.03   not equivalent
+    delta 0.32                            EQUIVALENT
+
+**You would have to declare a 32 percentage-point selection gap acceptable before
+this model certifies as fair.** That converts "unfair" from an adjective into a
+magnitude, using the instructor's own framework.
+
+## 16. Local explanations, and why the three arms differ (2026-09-27)
+
+`src.explain`, wired into each arm's page.
+
+| arm | method | exact? |
+|---|---|---|
+| scorecard | Shapley in closed form, `coef_j (x_j − E[x_j])` | **exact** |
+| gbm | TreeSHAP, `xgboost predict(pred_contribs=True)` | **exact** |
+| tabpfn | occlusion — replace with background, measure the change | **approximate only** |
+
+TabPFN exposes no attribution of its own, so its explanation is an estimate whose
+error cannot be bounded. Interpretability is not binary: the white box answers for
+free, the tree answers with a special algorithm, and the foundation model only
+estimates. That is a measurable cost of the black box.
+
+On one held-out stop the three arms disagree locally exactly as they disagree
+globally (Spearman −0.321, finding 10.3): the scorecard says `zone` pushed the score
+up (+0.311), TabPFN says it pushed it down (−0.008).
+
+---
+
 ## 9. Recommendation to the client: do not deploy
 
 Not because the model is unfair *or* because it is inaccurate, but because every

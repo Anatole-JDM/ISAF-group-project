@@ -8,6 +8,8 @@ import common
 from model_page import ARMS
 from src import config as C
 from src import fairness as F
+import pandas as pd
+import plotly.express as px
 
 scores, meta = common.run_selector()
 
@@ -69,3 +71,52 @@ for arm, tab in zip(arms, st.tabs([ARMS.get(a, a) for a in arms])):
 if "tabpfn" not in arms:
     st.caption("No tab for the tabular foundation model (TabPFN): it is fitted only in the `matched` "
                "training mode, where the `tabpfn` package is installed. See Tabular foundation models.")
+
+
+# --------------------------------------------------------------------------- hypothesis tests
+st.divider()
+st.subheader("Is the disparity statistically significant? χ² and equivalence testing")
+
+_arm = st.session_state.get("fair_arm") or common.arm_name(common.score_cols(scores)[0])
+_K = int(st.session_state.get("fair_k", 2000))
+_s = scores[f"score_{_arm}"].to_numpy()
+_yhat = np.zeros(len(_s), int)
+_yhat[np.argsort(-_s)[: min(_K, len(_s))]] = 1
+
+_c1, _c2 = st.columns(2)
+with _c1:
+    st.markdown("**χ² test of independence** — H₀: selection is independent of race")
+    r = F.chi2_parity_test(_yhat, scores["subject_race"])
+    st.metric("χ²", f"{r['chi2']:.1f}", help=f"dof {r['dof']}, n = {r['n']:,}")
+    st.metric("p-value", f"{r['p_value']:.2e}")
+    st.caption(
+        f"White {r['selection_rate']['white']:.1%} vs black "
+        f"{r['selection_rate']['black']:.1%}, gap {r['gap_pp']:+.1f}pp. "
+        "Statistical parity is rejected outright."
+    )
+with _c2:
+    st.markdown("**TOST equivalence** — how much unfairness would you have to accept?")
+    sw = F.tost_delta_sweep(_yhat, scores["subject_race"])
+    ok = sw[sw["equivalent"]]
+    d_star = float(ok["delta"].iloc[0]) if len(ok) else float("nan")
+    st.metric("Smallest δ certifying fairness", f"{d_star:.2f}" if d_star == d_star else "never")
+    st.caption(
+        "χ² on large n rejects almost anything, so rejection alone is weak. Equivalence "
+        "testing inverts the burden: how wide a tolerance δ would you need before this "
+        "model passes? The deck never assigns δ a value, so we sweep it."
+    )
+
+fig = px.line(sw, x="delta", y=["z_lower", "z_upper"],
+              labels={"value": "z", "delta": "equivalence margin δ"})
+fig.add_hline(y=float(sw["z_crit"].iloc[0]), line_dash="dot", line_color="#8a8984",
+              annotation_text="critical value")
+if d_star == d_star:
+    fig.add_vline(x=d_star, line_color="#c0392b",
+                  annotation_text=f"certifies at δ={d_star:.2f}")
+st.plotly_chart(fig, width="stretch")
+st.error(
+    f"**You would have to declare a {d_star:.0%} selection gap acceptable before this model "
+    "certifies as fair.** That is the magnitude of the unfairness, not merely its "
+    "significance." if d_star == d_star else
+    "The model does not certify as equivalent at any δ up to 0.50."
+)

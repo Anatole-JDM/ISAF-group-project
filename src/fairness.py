@@ -181,6 +181,71 @@ def both_codings(y_true, y_pred, groups, reference: str = "white") -> dict:
     }
 
 
+# --------------------------------------------------------------------------- hypothesis tests
+def chi2_parity_test(y_pred, groups, ref: str = "white", other: str = "black") -> dict:
+    """Chi-square test of independence on the 2x2 of (selected) x (group).
+
+    The course frames fairness as a TEST with a statistic and a critical value,
+    not as a confidence interval. This is that test for statistical parity:
+    H0 = selection is independent of group.
+    """
+    from scipy.stats import chi2_contingency
+
+    g = pd.Series(groups).reset_index(drop=True)
+    yp = pd.Series(np.asarray(y_pred).astype(int)).reset_index(drop=True)
+    m = g.isin([ref, other])
+    ct = pd.crosstab(g[m], yp[m])
+    chi2, p, dof, exp = chi2_contingency(ct)
+    rates = {k: float(yp[m][(g[m] == k)].mean()) for k in (ref, other)}
+    return {"chi2": float(chi2), "p_value": float(p), "dof": int(dof),
+            "contingency": ct.to_dict(),
+            "selection_rate": rates,
+            "gap_pp": (rates[other] - rates[ref]) * 100,
+            "n": int(m.sum())}
+
+
+def tost_equivalence(y_pred, groups, delta: float,
+                     ref: str = "white", other: str = "black",
+                     alpha: float = 0.05) -> dict:
+    """TOST: two one-sided tests for EQUIVALENCE of selection rates.
+
+    A chi-square rejection says "not exactly equal", which on large n is nearly
+    automatic and therefore weak. Equivalence testing inverts the burden: it asks
+    whether the gap is small enough to CERTIFY as fair, within a tolerance delta.
+
+        theta_hat = p_other - p_ref
+        se        = sqrt( p_r(1-p_r)/n_r + p_o(1-p_o)/n_o )     (unpooled)
+        z_L = (theta_hat + delta) / se        z_U = (delta - theta_hat) / se
+        equivalent  iff  min(z_L, z_U) > z_{1-alpha}
+
+    The deck never assigns delta a numeric value, so the honest move is to sweep
+    it and report the smallest delta at which the model would certify -- see
+    tost_delta_sweep. That number IS the answer to "how much unfairness would you
+    have to tolerate to call this model fair".
+    """
+    from scipy.stats import norm
+
+    g = pd.Series(groups).reset_index(drop=True)
+    yp = pd.Series(np.asarray(y_pred).astype(int)).reset_index(drop=True)
+    pr = yp[g == ref]; po = yp[g == other]
+    p_r, p_o, n_r, n_o = pr.mean(), po.mean(), len(pr), len(po)
+    theta = p_o - p_r
+    se = float(np.sqrt(p_r * (1 - p_r) / n_r + p_o * (1 - p_o) / n_o))
+    zL, zU = (theta + delta) / se, (delta - theta) / se
+    zc = norm.ppf(1 - alpha)
+    return {"delta": delta, "theta_hat": float(theta), "se": se,
+            "z_lower": float(zL), "z_upper": float(zU), "z_crit": float(zc),
+            "equivalent": bool(min(zL, zU) > zc),
+            "n_ref": int(n_r), "n_other": int(n_o)}
+
+
+def tost_delta_sweep(y_pred, groups, deltas=None, **kw) -> pd.DataFrame:
+    """Sweep the equivalence margin and find where the model would certify as fair."""
+    deltas = deltas if deltas is not None else np.arange(0.01, 0.51, 0.01)
+    rows = [tost_equivalence(y_pred, groups, float(d), **kw) for d in deltas]
+    return pd.DataFrame(rows)
+
+
 # --------------------------------------------------------------------------- headline
 def pooled_vs_stratified_ci(
     df: pd.DataFrame,

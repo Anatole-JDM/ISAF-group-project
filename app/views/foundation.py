@@ -16,5 +16,4 @@ explanation: the honest black box of the comparison.
     missing_hint="TabPFN is fitted only in the `matched` training mode, and only where the "
                  "`tabpfn` package is installed. Install it, then run `python -m src.train` "
                  "(set `TABPFN_MAX_TRAIN=2000` for a faster CPU run).",
-    explain_todo="TODO for the group: local explanations via `tabpfn-extensions` (SHAP-based).",
 )
