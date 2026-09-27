@@ -1021,6 +1021,72 @@ Stated explicitly rather than left to be discovered:
 
 ---
 
+## 24. Are the AUC differences significant? DeLong + clustered bootstrap (2026-09-27)
+
+Until now this document compared AUCs with no standard error on any DIFFERENCE.
+The arms are scored on the SAME test rows, so their AUCs are correlated and an
+unpaired comparison is invalid. `src/significance.py` implements DeLong (1988) and
+an officer-clustered bootstrap.
+
+### 24.1 The three-arm comparison — no arm is best
+
+Matched n=2,000, same subsample, paired DeLong:
+
+| comparison | diff | 95% CI | p |
+|---|---|---|---|
+| gbm vs **tabpfn** | −0.0026 | [−0.0157, +0.0104] | **0.691 n.s.** |
+| gbm vs tree | +0.0062 | [−0.0091, +0.0215] | 0.431 n.s. |
+| tree vs tabpfn | −0.0088 | [−0.0212, +0.0036] | 0.163 n.s. |
+| scorecard vs gbm | −0.0173 | [−0.0317, −0.0028] | 0.019 * |
+| scorecard vs tabpfn | −0.0199 | [−0.0291, −0.0108] | <0.001 *** |
+
+**"TabPFN is the best arm" is NOT supported.** It is indistinguishable from XGBoost
+(p = 0.69) and from a 16-leaf decision tree (p = 0.16). Only the logistic scorecard
+is significantly worse than the two black boxes — and even it is indistinguishable
+from the tree (p = 0.13).
+
+This corrects finding 19, which reported TabPFN winning "every configuration" by
++0.007. That ordering is inside the noise. **Do not rank the arms.**
+
+It also strengthens the interpretability argument: a decision tree you can print on
+one slide is statistically indistinguishable from a tabular foundation model.
+
+### 24.2 The officer models — the gain is real, and race is free
+
+Full training, paired DeLong:
+
+| comparison | diff | 95% CI | p |
+|---|---|---|---|
+| base vs `officer` | −0.0726 | [−0.0870, −0.0581] | **6.6e−23 ***** |
+| base vs `officer_TRULY_blind` | −0.0669 | [−0.0829, −0.0510] | **2.2e−16 ***** |
+| `officer` vs `officer_blind` | +0.0031 | [−0.0031, +0.0093] | 0.332 n.s. |
+| **`officer` vs `officer_TRULY_blind`** | **+0.0056** | [−0.0019, +0.0132] | **0.144 n.s.** |
+
+**Removing `subject_race` AND all 8 race-derived officer features is statistically
+free** — the confidence interval on the cost includes zero.
+
+### 24.3 Clustered by officer — it survives
+
+Rows are not independent: 1,477 officers, the top 10 accounting for 10.2% of
+searches. Resampling OFFICERS rather than rows, 400 draws:
+
+| comparison | diff | clustered 95% CI | p |
+|---|---|---|---|
+| `officer` − base | +0.0722 | [+0.0516, +0.0947] | 0.000 |
+| `TRULY_blind` − `officer` | −0.0054 | [−0.0137, +0.0026] | 0.180 |
+| `TRULY_blind` − base | +0.0667 | [+0.0456, +0.0879] | 0.000 |
+
+The clustered interval is **wider** than DeLong's ([+0.0516,+0.0947] vs
+[+0.0581,+0.0870]), as it must be when the effective sample is closer to 1,477 than
+to 58,865 — and it still excludes zero. The officer-feature gain is not an artefact
+of treating correlated rows as independent.
+
+**The defensible summary:** the model arms are statistically indistinguishable from
+each other; what is significant is the FEATURE SET, and going fully race-blind costs
+nothing measurable.
+
+---
+
 ## 9. Recommendation to the client: do not deploy
 
 Not because the model is unfair *or* because it is inaccurate, but because every
