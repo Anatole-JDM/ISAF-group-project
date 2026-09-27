@@ -10,10 +10,10 @@
  "gap_all_flagged": -4.599850938683428,
  "gap_nonconsent": 6.295275010765426,
  "gap_mechanical": 1.772570039504398,
- "n_mechanical": 35733,
+ "n_mechanical": 35713,
  "gap_still_disc": 11.17228234886824,
- "n_still_disc": 32524,
- "share_disc_in_comparison": 0.4764932534392077,
+ "n_still_disc": 32511,
+ "share_disc_in_comparison": 0.4765331848030019,
  "gap_pooled": 0.824872430553544,
  "by_basis": [
   {
