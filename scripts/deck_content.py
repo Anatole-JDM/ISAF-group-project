@@ -351,7 +351,9 @@ SLIDES = [
                    f"{S['gap_mechanical']:+.2f}pp.   Still discretionary (probable cause + plain "
                    f"view): n = {S['n_still_disc']:,}, gap {S['gap_still_disc']:+.2f}pp — "
                    f"{S['share_disc_in_comparison']:.1%} of the comparison group.   "
-                   f"Pooled over everything: {S['gap_pooled']:+.2f}pp.",
+                   f"Pooled over everything: {S['gap_pooled']:+.2f}pp.   "
+                   "n is the count each gap is computed on: drivers recorded white, "
+                   "Black or Hispanic.",
         "notes": "Bring this up the moment anyone asks what 'non-consent' contains.",
     },
     {

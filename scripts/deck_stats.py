@@ -66,9 +66,12 @@ def sample_stats() -> dict:
         "gap_pure": float(_gap(kept)[0]),
         "gap_all_flagged": float(_gap(df[flagged])[0]),
         "gap_nonconsent": float(_gap(nc)[0]),
-        "gap_mechanical": float(_gap(mech)[0]), "n_mechanical": int(len(mech)),
-        "gap_still_disc": float(_gap(disc)[0]), "n_still_disc": int(len(disc)),
-        "share_disc_in_comparison": float(len(disc) / len(nc)),
+        # n here is the count the GAP is computed on - drivers with a recorded race -
+        # so it agrees with the per-basis rows. It is smaller than the raw row count
+        # (e.g. 35,713 vs 35,733 mechanical) because subject_race can be missing.
+        "gap_mechanical": float(_gap(mech)[0]), "n_mechanical": int(_gap(mech)[1]),
+        "gap_still_disc": float(_gap(disc)[0]), "n_still_disc": int(_gap(disc)[1]),
+        "share_disc_in_comparison": float(_gap(disc)[1] / _gap(nc)[1]),
         "gap_pooled": float(_gap(df)[0]),
         "by_basis": sorted(by, key=lambda r: r["gap"]),
     }
