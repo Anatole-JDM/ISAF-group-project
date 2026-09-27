@@ -363,10 +363,38 @@ across every arm and configuration, so AUCs here sit slightly below the main run
 | 2,000 | 0.5214 | 0.5323 | **0.5460** |
 | 5,000 | 0.5131 | 0.5365 | **0.5393** |
 
-Fifty times more training data changes nothing. **The ceiling is absence of signal,
-not lack of data** — with real signal and a data-starved model, AUC would climb with
-n. TabPFN leads from n=1,000, consistent with its small-data claim, but see 10.2:
-the margin is inside the noise.
+Between n=100 and n=5,000, fifty times more data changes nothing.
+
+**PARTIALLY REVISED 2026-09-27 — at full scale TabPFN does improve.** Scott asked for
+a full-training-size run and was right to. On the FULL 9,113-row test set (not the
+3,000-row subsample used for the curve above, so these do not splice directly):
+
+| n_train | AUC | Brier | seconds |
+|---|---|---|---|
+| 5,000 | 0.5662 | 0.1680 | 10.4 |
+| 10,000 | 0.5602 | 0.1696 | 7.5 |
+| 20,000 | 0.5651 | 0.1689 | 10.5 |
+| **49,752 (all)** | **0.5730** | 0.1683 | 25.3 |
+
+*Same test set: scorecard 0.5516 · gbm 0.5663 · tabpfn@2,000 0.5529*
+
+Two things this overturns:
+
+1. **TabPFN does not fail at scale.** 49,752 rows in 25s via hosted inference, no
+   context limit. The earlier CPU difficulty was inference cost, not a ceiling.
+2. **TabPFN becomes the best arm on the base feature set** — 0.5730, beating XGBoost
+   (0.5663) and matching gbm+time (0.5733).
+
+Stated honestly: the curve is **flat to 5,000, then rises modestly to full scale**,
++0.020 over the n=2,000 result. The intermediate points are non-monotonic (~±0.006
+wobble), and the total gain sits at the edge of the 0.024 context-resampling spread
+in 10.2. It is a real but small effect, and it does not disturb the central finding:
+the best model anyone has fitted on this problem reaches AUC 0.573.
+
+**It does sharpen the deployment argument.** The best-performing arm is also the
+least explainable (occlusion only, finding 16) and the most race-dependent
+(permutation importance 0.0382, fifteen times the GBM's — finding 10.3). Performance,
+interpretability and fairness point at different models.
 
 ### 10.2 The ranked list is essentially arbitrary — the deployment killer
 
