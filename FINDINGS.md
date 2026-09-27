@@ -841,6 +841,53 @@ race-derived feature. 0.65 is also still a weak model. What this shows is that t
 
 ---
 
+## 20. Fairness recomputed on the officer model — Test / Identify / Mitigate (2026-09-27)
+
+The metrics in findings 12 and 15 were computed on the BASE model. Recomputed on the
+officer models, gbm, top-K = 2,000 of 9,113:
+
+| model | AUC | sel W | sel B | sel gap | FPR gap | χ² | TOST δ* |
+|---|---|---|---|---|---|---|---|
+| base (`full_time`) | 0.5733 | 40.3% | 12.4% | −27.9pp | −26.6pp | 863 | 0.30 |
+| `+ officer` | 0.6459 | 35.2% | 14.9% | −20.3pp | −16.4pp | 463 | 0.22 |
+| **`+ officer, race-blind`** | **0.6428** | 27.9% | 18.6% | **−9.4pp** | **−6.0pp** | **100** | **0.11** |
+
+**Every fairness metric improves monotonically while accuracy rises.** Selection gap
+3x smaller, FPR gap 4.4x smaller, χ² 8.6x smaller, and the equivalence margin needed
+to certify falls from 0.30 to 0.11. Going race-blind is nearly free: **0.003 AUC for
+a fall from −16.4pp to −6.0pp in the false-positive gap.**
+
+### This completes the course's Test → Identify → Mitigate spine
+
+| step | evidence |
+|---|---|
+| **TEST** | χ² = 863, FPR gap −26.6pp, TOST needs δ = 0.30 (findings 12, 15) |
+| **IDENTIFY** | XPER: `subject_race` is 73.5% of the above-chance signal (finding 13) |
+| **MITIGATE** | model the DECISION PROCESS, not the driver, and drop race → FPR gap −6.0pp, χ² = 100, **+0.070 AUC** |
+
+The mitigation costs no accuracy. It gains it.
+
+### The conclusion this replaces
+
+Earlier sections of this document concluded "do not deploy" from a near-random,
+race-dominated model. That conclusion was correct **for that model**. The corrected
+reading:
+
+> The model leaned on race because it had nothing else. It was being asked to predict
+> contraband from the DRIVER, when almost all the available signal is in the DECISION
+> — who is searching, how often, with what recent track record. Given features that
+> describe the decision process, accuracy rises, reliance on the protected attribute
+> collapses 8x, and every group-fairness metric improves at the same time.
+
+### Still not fair
+
+χ² = 100 remains overwhelmingly significant, and δ = 0.11 means you would still have
+to accept an 11-point selection gap to certify. The FPR gap of −6.0pp is real. The
+model is **dramatically better, not fair** — the recommendation is "this is the
+direction", not "this is fixed".
+
+---
+
 ## 9. Recommendation to the client: do not deploy
 
 Not because the model is unfair *or* because it is inaccurate, but because every
