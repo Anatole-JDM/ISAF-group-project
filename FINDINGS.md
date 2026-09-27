@@ -888,6 +888,64 @@ direction", not "this is fixed".
 
 ---
 
+## 21. Adversarial self-critique — two tests a grader would run (2026-09-27)
+
+### 21.1 Is the "race-blind" model actually blind? — DEFUSED
+
+**8 of the 25 officer features are race-derived**: `off_hit_gap_black_white`,
+`off_hit_gap_hisp_white`, `off_log_search_ratio_black_white`,
+`off_log_search_ratio_hisp_white`, `off_consent_black_past`,
+`off_consent_white_past`, `off_consent_hisp_past`, `off_hit_rate_same_race_past`.
+
+Dropping `subject_race` while keeping those would re-admit race through eight side
+doors — the exact proxy trap documented in finding 5. Tested by removing all eight:
+
+| config | AUC | sel gap | FPR gap | χ² | TOST δ* |
+|---|---|---|---|---|---|
+| base | 0.5733 | −27.9pp | −26.6pp | 863 | 0.30 |
+| `officer` | 0.6459 | −20.3pp | −16.4pp | 463 | 0.22 |
+| `officer_blind` (8 still in) | 0.6428 | −9.4pp | −6.0pp | 100 | 0.11 |
+| **`officer_TRULY_blind`** | **0.6403** | **−7.5pp** | **−4.8pp** | **65** | **0.10** |
+
+Removing all eight costs **0.0025 AUC and makes the model fairer still**. The
+mitigation in finding 20 is **not** a proxy artefact — it survives the hardest
+version of the test. Use `officer_TRULY_blind` as the headline model.
+
+### 21.2 Is the gain BETWEEN officers or WITHIN? — CONFIRMED, and it matters
+
+`off_consent_hit_rate_365d_shrunk` is a moving average of Y itself. Strictly prior,
+so not leakage — but does the model discriminate between DRIVERS, or merely between
+OFFICERS? Within an officer those features are constant, so any between-officer gain
+has no value for a stop-level decision.
+
+AUC computed **inside each officer's own stops** (officers with ≥10 test searches and
+both classes present, weighted by n), against pooled AUC:
+
+| model | pooled | **within-officer** | gap |
+|---|---|---|---|
+| base | 0.5733 | 0.5510 | +0.022 |
+| `officer` | 0.6459 | **0.5657** | **+0.080** |
+| `officer_TRULY_blind` | 0.6403 | **0.5597** | **+0.081** |
+
+**About 80% of the +0.070 headline gain is between-officer variance.** For the
+decision an officer actually faces — which of *my* stops to search — the model
+improves from 0.5510 to 0.5657, a gain of **+0.015, not +0.070**.
+
+The model largely learns **which officers find contraband**, not **which drivers
+carry it**.
+
+This is not fatal, but it changes what the model is for:
+
+> The deployable use is **supervisory** — which officers' consent practices warrant
+> review — not stop-level triage. At the stop level the honest number is 0.566, and
+> the earlier "constant across the officer's own choice set" objection (finding 17)
+> was right. Finding 18 walked that objection back too far.
+
+Always report the within-group metric when the features are group-level aggregates.
+A pooled AUC flatters any model whose features vary mainly between decision-makers.
+
+---
+
 ## 9. Recommendation to the client: do not deploy
 
 Not because the model is unfair *or* because it is inaccurate, but because every
