@@ -38,18 +38,20 @@ The model would help identify fruitless vehicle searches thus saving the officer
 The user will be able to visualise the model's predictions as well as exploratory data using the following streamlit application.
 
 #### App Description
-There are eight different pages, all in the top bar, in the order of the argument:
+There are ten different pages, all in the top bar, in the order of the argument:
 
 | Page | What it shows |
 |---|---|
 | Dataset | a map of all 3.08M stops with filters (date, hour, weekday, race, sex, age, search type, violation, outcome, precinct) |
-| Problem definition | the decision and objects (`Y`, `Ŷ`, `D`), selective labels, why pooling hides the disparity |
-| White box models | the scorecard: description, metrics in every run, scores and calibration by race |
+| Problem definition | the decision and objects (`Y`, `Ŷ`, `D`), selective labels, the hit-rate gap by legal basis, why pooling hides the disparity |
+| White box models | the scorecard: description, metrics in every run, scores and calibration by race, coefficients, a decision tree |
 | Black box models | the gradient-boosted trees, same layout |
 | Foundation models | TabPFN, same layout (fitted only in `matched` mode) |
-| Performance | accuracy and ranking agreement, value under a search budget, one stop |
-| Fairness testing | independence / separation / sufficiency and both Y codings, one tab per model, shared K |
-| Findings & conclusions | the measured officer and race signal, the recommendation |
+| Performance | accuracy and ranking agreement, value under a search budget, one stop, XPER, DeLong tests (opens on `matched`: all three models) |
+| Stability | resampling, learning curve, distance among models, settings |
+| Fairness testing | independence / separation / sufficiency and both Y codings, one tab per model, shared K, χ² / TOST, FPDP (opens on `matched`) |
+| Officer features (comparison) | Act II: the officer's record, PLTR, XGBoost, pooled vs within-officer AUC, stability, fairness, economics, officer outcome test |
+| Findings & conclusions | answers to the five questions, Act I and Act II, the recommendation (officer-level review) and the pilot |
 
 The model pages, Performance and Fairness testing share the sidebar *Run* picker
 (stratum × training mode) and read the cached runs in `outputs/`; without them they say

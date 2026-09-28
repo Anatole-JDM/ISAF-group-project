@@ -11,7 +11,8 @@ from src import fairness as F
 import pandas as pd
 import plotly.express as px
 
-scores, meta = common.run_selector()
+# Open on a run that contains all three arms (`matched`), the comparison the slides report.
+scores, meta = common.run_selector(require_arm="tabpfn")
 
 st.header("Fairness testing")
 st.markdown(
@@ -121,3 +122,55 @@ st.error(
     "significance." if d_star == d_star else
     "The model does not certify as equivalent at any δ up to 0.50."
 )
+
+
+# --------------------------------------------------------------------------- FPDP
+st.divider()
+st.subheader("Which variables drive the disparity? Fairness partial dependence (FPDP)")
+_fp_p = C.OUTPUTS / "fpdp_pdp.json"
+if not _fp_p.exists():
+    st.info("Not computed yet: `outputs/fpdp_pdp.json`.")
+else:
+    import json as _json
+
+    _fp = _json.loads(_fp_p.read_text())
+    st.markdown(
+        """
+Step 2 of the course's fairness method: freeze one feature at a single value for every driver,
+rescore with the already-fitted model, and recompute the χ² parity test. A **candidate variable** is
+one whose freezing brings the test back above p = 0.05, i.e. a variable through which the disparity
+flows. Each feature is frozen at its median, 10th and 90th percentile (mode for categories); the
+best result is kept.
+"""
+    )
+    st.warning(
+        "**Model tested:** this was run on the race-blind model *with officer-behaviour features* "
+        "(see Officer features (comparison)), not on the models in the tabs above, whose run is "
+        "not available yet. Read it as a check on where a disparity comes from once race is "
+        "removed, not as a result for the recommended model."
+    )
+    _t = pd.DataFrame(_fp["fpdp"]).sort_values("chi2")
+    _n_rep = int(_t["repairs"].sum())
+    c1, c2, c3 = st.columns(3)
+    c1.metric("χ² with nothing frozen", f"{_fp['base_chi2']:.1f}")
+    c2.metric("Best single freeze", f"{_t['chi2'].iloc[0]:.1f}", help=f"freezing `{_t['feature'].iloc[0]}`")
+    c3.metric("Candidate variables", f"{_n_rep} of {len(_t)}")
+    _fig = px.bar(_t.iloc[::-1], x="chi2", y="feature", orientation="h",
+                  color=_t.iloc[::-1]["repairs"].map({True: "repairs parity", False: "does not repair"}),
+                  color_discrete_map={"repairs parity": "#2c7fb8", "does not repair": "#c0392b"},
+                  labels={"chi2": "χ² after freezing the feature", "color": ""})
+    _fig.add_vline(x=_fp["base_chi2"], line_dash="dot", line_color="#8a8984",
+                   annotation_text="nothing frozen")
+    _fig.update_layout(height=max(350, 22 * len(_t)))
+    st.plotly_chart(_fig, width="stretch")
+    st.dataframe(_t[["feature", "chi2", "p", "chi2_drop", "repairs"]]
+                 .rename(columns={"chi2_drop": "χ² drop", "chi2": "χ²", "p": "p-value"})
+                 .style.format({"χ²": "{:.1f}", "p-value": "{:.2e}", "χ² drop": "{:.1f}"}),
+                 hide_index=True, width="stretch")
+    st.error(
+        f"**{_n_rep} of {len(_t)} features repair parity on their own.** The disparity is not "
+        "carried by one variable that could be neutralised (as in the course's German Credit "
+        "example); it is spread across the whole feature set, so no single-variable mitigation "
+        "fixes it." if _n_rep == 0 else
+        f"**{_n_rep} candidate variable(s)** carry the disparity: see the blue bars."
+    )

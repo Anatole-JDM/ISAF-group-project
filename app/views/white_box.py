@@ -20,6 +20,10 @@ caseworker: the coefficients are the explanation.
   of the fairness taxonomy.
 - For the full WOE/IV scorecard banks deploy, swap the preprocessor for optbinning's
   `BinningProcess`: monotonic bins and points per attribute.
+
+This page is **Act I** (stop and driver information only). Once the officer's record is added
+(Act II), the white box is **PLTR** — penalised logistic tree regression, 19 readable rules,
+AUC 0.630 — shown on the **Officer features** page and used for the recommendation.
 """,
     missing_hint="Run `python -m src.train` to fit it.",
 )

@@ -1,6 +1,8 @@
 """Problem definition — the decision, the objects, selective labels, and why we stratify by search type."""
 from __future__ import annotations
 
+import pandas as pd
+import plotly.express as px
 import streamlit as st
 
 import common
@@ -40,11 +42,55 @@ on officer-selected stops, not on stops.
     """
 )
 
+st.subheader("Why consent searches only: the gap by legal basis")
+st.markdown(
+    "Consent and probable-cause searches rest on the officer's judgement of *this* driver. "
+    "Arrest, warrant and inventory searches are **mechanical**: the legal authority exists "
+    "before the officer weighs any evidence. Plain view is discretionary, but it is recorded "
+    "*because* something was already seen."
+)
+
+BASES = {"Probable cause": ["probable cause"], "Consent (our sample)": ["consent"],
+         "Plain view": ["plain view"], "Arrest, warrant, inventory": ["arrest", "warrant", "inventory"]}
+
+
+@st.cache_data
+def gap_by_basis(df: pd.DataFrame) -> pd.DataFrame:
+    """Black − white hit rate per legal basis (resolved search_type), plus all searches."""
+    d = df[df["subject_race"].isin(["white", "black"])]
+    hit = d["contraband_found"].astype("string").str.strip().isin({"TRUE", "True", "1"})
+    d = d.assign(_hit=hit.astype(int))
+    rows = []
+    for label, types in [*BASES.items(), ("All searches", None)]:
+        s = d if types is None else d[d["search_type"].isin(types)]
+        r = s.groupby("subject_race")["_hit"].mean()
+        rows.append({"legal basis": label, "searches": len(s), "white hit rate": r["white"],
+                     "Black hit rate": r["black"], "gap (pp)": 100 * (r["black"] - r["white"])})
+    return pd.DataFrame(rows)
+
+
+gb = gap_by_basis(common.searches())
+fig = px.bar(gb, x="gap (pp)", y="legal basis", orientation="h", text_auto="+.1f",
+             color=gb["legal basis"].eq("Consent (our sample)"),
+             color_discrete_map={True: "#1f77d0", False: "#b0b7bf"})
+fig.update_layout(showlegend=False, yaxis={"categoryorder": "array",
+                                           "categoryarray": list(gb["legal basis"])[::-1]},
+                  xaxis_title="Hit rate, Black minus white drivers (percentage points)")
+fig.add_vline(x=0, line_color="#555")
+st.plotly_chart(fig, width="stretch")
+st.dataframe(gb.style.format({"searches": "{:,}", "white hit rate": "{:.2%}", "Black hit rate": "{:.2%}",
+                              "gap (pp)": "{:+.2f}"}), hide_index=True, width="stretch")
+st.caption(
+    "Below zero: searches of Black drivers find contraband less often, consistent with a lower bar for "
+    "searching them (the outcome test; it cannot prove intent, see infra-marginality). Pooled over all "
+    "searches the gap has the wrong sign. Hit rate = searches of the group that found contraband / "
+    "all searches of the group."
+)
+
 st.subheader("Why pooling hides the disparity")
 st.markdown(
-    "Consent searches are fully discretionary. Incident-to-arrest, warrant, "
-    "inventory and plain-view searches are largely **mechanical** — contraband "
-    "is likely because something already happened."
+    "Split in two, consent against everything else. Note that \"non-consent\" is not purely "
+    "mechanical: about half of it is probable cause and plain view (above)."
 )
 tbl = F.pooled_vs_stratified(common.searches())
 piv = tbl.pivot(index="stratum", columns="subject_race", values="hit_rate")

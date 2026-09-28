@@ -12,7 +12,8 @@ from src import economics as E
 from src import stability as S
 import plotly.express as px
 
-scores, meta = common.run_selector()
+# Open on a run that contains all three arms (`matched`), the comparison the slides report.
+scores, meta = common.run_selector(require_arm="tabpfn")
 
 st.header("Performance comparisons")
 tab_metrics, tab_budget, tab_one = st.tabs(["Accuracy and ranking", "Under a search budget", "One stop"])
@@ -149,4 +150,38 @@ re-estimation on that feature subset. No sampling, no approximation.
         f"**`{top['feature']}` alone is {top['share_of_signal']:.1%} of everything the model "
         f"knows.** The whole above-chance signal is {d['sum_phi']:.4f} AUC; race accounts for "
         f"{top['phi']:.5f} of it. The model is close to a race detector with noise attached."
+    )
+
+
+# --------------------------------------------------------------------------- significance
+st.divider()
+st.subheader("Are the AUC differences real? DeLong tests")
+_sig_p = C.OUTPUTS / "significance__consent__matched.json"
+if not _sig_p.exists():
+    st.info("Run `python scripts/run_significance.py` to compute it.")
+else:
+    _sig = _json.loads(_sig_p.read_text())
+    st.markdown(
+        f"Paired DeLong test on the same {_sig['n_test']:,} test searches "
+        f"({_sig['stratum']} / `{_sig['mode']}`, every model trained on the same rows). "
+        "H₀: the two models have the same AUC."
+    )
+    _pairs = pd.DataFrame([{
+        "comparison": f"{ARMS.get(p['a'], p['a'])}  vs  {ARMS.get(p['b'], p['b'])}",
+        "AUC a": p["auc_a"], "AUC b": p["auc_b"], "difference": p["diff"],
+        "95% CI": f"[{p['ci95'][0]:+.4f}, {p['ci95'][1]:+.4f}]",
+        "z": p["z"], "p-value": p["p_value"],
+        "significant at 5%": "yes" if p["p_value"] < 0.05 else "no",
+    } for p in _sig["pairs"]])
+    st.dataframe(_pairs.style.format({"AUC a": "{:.4f}", "AUC b": "{:.4f}", "difference": "{:+.4f}",
+                                      "z": "{:+.2f}", "p-value": "{:.3g}"}),
+                 hide_index=True, width="stretch")
+    _n_sig = int((_pairs["p-value"] < 0.05).sum())
+    _max_d = float(_pairs["difference"].abs().max())
+    st.caption(
+        f"{_n_sig} of {len(_pairs)} pairwise differences are significant at 5%. The largest "
+        f"difference is {_max_d:.3f} AUC, between models that sit only a few points above "
+        "chance, and of the same order as the AUC spread from simply redrawing the training "
+        "rows (see Stability). Statistically distinguishable is not the same as practically "
+        "better."
     )

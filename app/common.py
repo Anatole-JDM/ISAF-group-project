@@ -61,6 +61,55 @@ def arm_name(col: str) -> str:
     return col.replace("score_", "")
 
 
+WITHIN_OFFICER_MODELS = {
+    "full_time/xgboost": "XGBoost, stop & driver only",
+    "full_time_officer/pltr_sparse": "White box (PLTR, 19 rules) + officer record",
+    "full_time_officer/xgboost": "XGBoost + officer record",
+    "full_time_officer_blind/pltr_sparse": "White box (PLTR), race-blind + officer record",
+    "full_time_officer_blind/xgboost": "XGBoost, race-blind + officer record",
+}
+
+
+@st.cache_data
+def load_diag():
+    p = ROOT / "data" / "officer_model_diagnostics.json"
+    return json.loads(p.read_text()) if p.exists() else None
+
+
+def within_officer_chart(f: dict) -> None:
+    """Slide 13: pooled AUC vs AUC inside each officer's own test searches (officer-resampled CI)."""
+    import plotly.graph_objects as go
+
+    rows = [{"model": lab, "pooled": f[k]["pooled_auc"], "within": f[k]["within_officer_auc"],
+             "lo": f[k]["ci95_resampling_officers"][0], "hi": f[k]["ci95_resampling_officers"][1],
+             "between": f[k]["share_of_score_variance_between_officers"]}
+            for k, lab in WITHIN_OFFICER_MODELS.items() if k in f]
+    t = pd.DataFrame(rows).iloc[::-1]
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=t["pooled"], y=t["model"], mode="markers+text", name="all officers pooled",
+                             marker=dict(symbol="diamond", size=12, color="#b0b7bf"),
+                             text=[f"{v:.3f}" for v in t["pooled"]], textposition="top center"))
+    fig.add_trace(go.Scatter(x=t["within"], y=t["model"], mode="markers+text",
+                             name="inside each officer's own searches (95% CI)",
+                             marker=dict(size=12, color="#1f77d0"),
+                             error_x=dict(type="data", symmetric=False, array=t["hi"] - t["within"],
+                                          arrayminus=t["within"] - t["lo"]),
+                             text=[f"{v:.3f}" for v in t["within"]], textposition="bottom center"))
+    fig.add_vline(x=0.5, line_dash="dot", line_color="#8a8984", annotation_text="chance")
+    fig.update_layout(xaxis_title="AUC, test 2016–2018", legend=dict(orientation="h", y=-0.2),
+                      height=380, margin=dict(l=10, r=10, t=10, b=10))
+    st.plotly_chart(fig, width="stretch")
+    n = next(iter(f.values()))
+    between = [v["share_of_score_variance_between_officers"] for k, v in f.items() if "officer" in k]
+    st.caption(
+        f"Within-officer AUC: computed inside each officer's own test searches and averaged, weighted by "
+        f"searches ({n['officers']} officers with enough searches and both outcomes, {n['searches']:,} "
+        f"searches); CI from resampling officers. With the officer record, {min(between):.0%}–"
+        f"{max(between):.0%} of the score variance lies between officers: the gain identifies which "
+        "officer, not which driver."
+    )
+
+
 # Colors are fixed per entity so a filter never repaints the survivors (the map uses the same ones).
 RACE_COLORS = {
     "black": "#2a78d6",
@@ -132,14 +181,17 @@ def run_selector(require_arm: str | None = None) -> tuple[pd.DataFrame, dict]:
         stratum = st.selectbox("Stratum", STRATA, key="run_stratum")
         mode = st.radio(
             "Training mode", MODES, key="run_mode",
-            help="matched = every arm trains on the same 5,000 rows (the TabPFN "
-                 "ceiling), the only fair three-way comparison. full = all rows. "
-                 "full_blind = all rows with race removed from the features.",
+            help="matched = every arm, TabPFN included, trains on the same subsample, the "
+                 "only fair three-way comparison (the slides' Act I numbers). full = all "
+                 "rows, scorecard and XGBoost only. full_blind = all rows with race removed "
+                 "from the features.",
         )
         scores, meta = load_run(stratum, mode)
         if scores is None:
             st.error(f"No cached run for {stratum}/{mode}.")
             st.stop()
-        st.caption(f"test n = {len(scores):,} · split at {meta['split_year']}")
+        n_train = sorted({a["n_train"] for a in meta.get("arms", [])})
+        st.caption(f"train n = {', '.join(f'{n:,}' for n in n_train)} · test n = {len(scores):,} · "
+                   f"split at {meta['split_year']}")
         st.caption(f"GBM backend: `{meta['gbm_backend']}`")
     return scores, meta
