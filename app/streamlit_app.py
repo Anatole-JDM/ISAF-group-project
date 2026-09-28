@@ -34,6 +34,7 @@ page = st.navigation(
         st.Page("views/fairness.py", title="Fairness testing"),
         st.Page("views/officers.py", title="Officer features (comparison)"),
         st.Page("views/findings.py", title="Findings & conclusions"),
+        st.Page("views/review.py", title="Officer review (the tool)"),
     ],
     position="top",
 )
