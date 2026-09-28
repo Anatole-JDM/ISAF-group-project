@@ -12,6 +12,12 @@ from src import config as C
 model_page.render(
     "scorecard", "White box models",
     description="""
+> **Two white boxes in this project.** This page is the **Act I white box: the logistic
+> scorecard** (stop and driver features only, slides 7–10). It is the model whose signal is
+> 73.5% the driver's race. From slide 12 on, the white box is **PLTR** (19 rules, with the
+> officer's record), and the one we recommend is its **race-blind** version: see the
+> **Officer features** page, tab *White box: PLTR*.
+
 **Scorecard: logistic regression on one-hot-encoded pre-search features.** Readable to a
 caseworker: the coefficients are the explanation.
 
@@ -20,10 +26,6 @@ caseworker: the coefficients are the explanation.
   of the fairness taxonomy.
 - For the full WOE/IV scorecard banks deploy, swap the preprocessor for optbinning's
   `BinningProcess`: monotonic bins and points per attribute.
-
-This page is **Act I** (stop and driver information only). Once the officer's record is added
-(Act II), the white box is **PLTR** — penalised logistic tree regression, 19 readable rules,
-AUC 0.630 — shown on the **Officer features** page and used for the recommendation.
 """,
     missing_hint="Run `python -m src.train` to fit it.",
 )

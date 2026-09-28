@@ -51,8 +51,9 @@ st.dataframe(pd.DataFrame([
     {"#": 1, "question": "Can a model predict a successful consent search?",
      "what we found": f"No. Test AUC {auc_txt} for all three models{extra}."},
     {"#": 2, "question": "What do the models learn, and can we explain it?",
-     "what we found": f"Mostly the driver's race ({race} of the white box's above-chance signal, XPER). "
-                      "Only the white box explains itself exactly."},
+     "what we found": f"Mostly the driver's race ({race} of the Act I white box's above-chance signal, "
+                      "XPER; that white box is the logistic scorecard). Only the white box explains "
+                      "itself exactly."},
     {"#": 3, "question": "Are the models stable and fair?",
      "what we found": f"No. Retrain on resampled data and the top-200 list overlaps at Jaccard {jac}; "
                       "every model flags mostly white drivers (outcome test run in reverse)."},
@@ -60,10 +61,12 @@ st.dataframe(pd.DataFrame([
      "what we found": "The searching officer. Their past record adds ~0.07 AUC to every model, but inside "
                       "one officer's own searches the scores fall to 0.50–0.56."},
     {"#": 5, "question": "Which model should MNPD deploy, and for what?",
-     "what we found": f"The white box (PLTR), for an officer-level review, not a roadside score: {fewer_txt}."},
+     "what we found": f"The white box (PLTR, race-blind, with the officer's record), for an officer-level "
+                      f"review, not a roadside score: {fewer_txt}."},
 ]), hide_index=True, width="stretch")
-st.caption("Act I = stop and driver information only (the task as posed, pages White box to Fairness). "
-           "Act II = adding the searching officer's past record (page Officer features).")
+st.caption("Act I = stop and driver information only (the task as posed, pages White box to Fairness); "
+           "its white box is the logistic scorecard. Act II = adding the searching officer's past record "
+           "(page Officer features); from there the white box is PLTR, and the recommended one is race-blind.")
 
 # --------------------------------------------------------------------------- Act I
 st.subheader("Act I — the task as posed: no usable roadside score")
