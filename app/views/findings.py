@@ -123,6 +123,7 @@ with c1:
 5. Benchmark: the race-blind white box's expected hit rate for the searches made
 """
     )
+    st.page_link("views/review.py", label="Try the review: Officer review (the tool) →")
 with c2:
     if fewer:
         st.metric("Fewer pointless searches, same number of catches", f"{fewer[0]:,}",

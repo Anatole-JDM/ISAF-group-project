@@ -38,7 +38,7 @@ The model would help identify fruitless vehicle searches thus saving the officer
 The user will be able to visualise the model's predictions as well as exploratory data using the following streamlit application.
 
 #### App Description
-There are ten different pages, all in the top bar, in the order of the argument:
+There are eleven different pages, all in the top bar, in the order of the argument:
 
 | Page | What it shows |
 |---|---|
@@ -52,6 +52,7 @@ There are ten different pages, all in the top bar, in the order of the argument:
 | Fairness testing | independence / separation / sufficiency and both Y codings, one tab per model, shared K, χ² / TOST, FPDP (opens on `matched`) |
 | Officer features (comparison) | Act II: the officer's record, PLTR, XGBoost, pooled vs within-officer AUC, stability, fairness, economics, officer outcome test |
 | Findings & conclusions | answers to the five questions, Act I and Act II, the recommendation (officer-level review) and the pilot |
+| Officer review (the tool) | the recommendation as a tool for supervisors: pick a quarter, see every officer's consent-search hit rate against the force (funnel plot, Benjamini–Hochberg flags), then one officer's five-item review from slide 18 with the race-blind PLTR benchmark |
 
 The model pages, Performance and Fairness testing share the sidebar *Run* picker
 (stratum × training mode) and read the cached runs in `outputs/`; without them they say
