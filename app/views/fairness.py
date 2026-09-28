@@ -11,7 +11,8 @@ from src import fairness as F
 import pandas as pd
 import plotly.express as px
 
-scores, meta = common.run_selector()
+# Open on a run that contains all three arms (`matched`), the comparison the slides report.
+scores, meta = common.run_selector(require_arm="tabpfn")
 
 st.header("Fairness testing")
 st.markdown(

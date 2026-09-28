@@ -19,6 +19,7 @@ from __future__ import annotations
 import json
 
 import pandas as pd
+import plotly.express as px
 import streamlit as st
 
 import common
@@ -126,6 +127,11 @@ with tabs[0]:
         st.dataframe(pd.DataFrame(gains).style.format({"AUC gain vs baseline": "{:+.3f}"}),
                      width="stretch", hide_index=True)
 
+    if diag and "F_within_officer_auc" in diag:
+        st.markdown("**Pooled AUC vs AUC inside each officer's own searches** — the decision an officer "
+                    "actually faces is which of *their own* stops to search")
+        common.within_officer_chart(diag["F_within_officer_auc"])
+
     if diag:
         st.markdown("**AUC by test year**")
         by_year = pd.DataFrame({k: {y: v["auc"] for y, v in d.items()}
@@ -180,12 +186,29 @@ with tabs[2]:
             figure("interpretation_global_importance.png", "Mean |SHAP| per feature")
         with c2:
             figure("interpretation_beeswarm.png", "SHAP beeswarm: direction and spread")
-        st.warning(
-            "**To be checked before presenting:** `off_minutes_since_first_stop_today` ranks 2nd. "
-            "Searches in the officer's first ~3 minutes of the day (40% of test rows) hit at 26%, "
-            "against 14% later. It uses only earlier stops, so it is not outcome leakage, but it may "
-            "be a recording artefact (a shift start logged as the first stop)."
-        )
+        fs_chk = (diag or {}).get("G_first_stop_check")
+        if fs_chk:
+            st.markdown("**Checked: searches at the officer's first stop of the calendar day hit more often.** "
+                        "`off_minutes_since_first_stop_today` ranks high in both XGBoost and PLTR, so it was "
+                        "tested for artefacts:")
+            hb = pd.DataFrame(fs_chk["by_hour_band"]).T
+            long = pd.concat([hb[["hit_first"]].rename(columns={"hit_first": "hit rate"}).assign(stop="first stop of the day"),
+                              hb[["hit_later"]].rename(columns={"hit_later": "hit rate"}).assign(stop="later stops")])
+            fig = px.bar(long.reset_index(names="hour band"), x="hour band", y="hit rate", color="stop",
+                         barmode="group", text_auto=".0%",
+                         color_discrete_map={"first stop of the day": "#1f77d0", "later stops": "#b0b7bf"})
+            fig.update_yaxes(tickformat=".0%")
+            st.plotly_chart(fig, width="stretch")
+            first, later = fs_chk["hit_rate_first_vs_later"]
+            st.caption(
+                f"{fs_chk['share_at_first_stop']:.0%} of {fs_chk['searches']:,} consent searches happen at the "
+                f"officer's first stop of the calendar day; they hit {first:.1%} against {later:.1%}, in every "
+                f"hour band and for low-, mid- and high-volume officers. "
+                f"{fs_chk['share_of_first_stop_searches_between_00_and_04']:.0%} of them fall between 00:00 and "
+                "03:59, so this is not \"start of shift\". The feature uses only earlier stops (no leakage). "
+                "Reading: later, repeated searches look more speculative — a hypothesis for training, not a "
+                "causal claim."
+            )
     if surrogate:
         st.subheader("Global surrogate")
         st.markdown("A decision tree fitted to **XGBoost's predicted probability** on the training "

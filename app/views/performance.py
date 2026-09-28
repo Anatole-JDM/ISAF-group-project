@@ -12,7 +12,8 @@ from src import economics as E
 from src import stability as S
 import plotly.express as px
 
-scores, meta = common.run_selector()
+# Open on a run that contains all three arms (`matched`), the comparison the slides report.
+scores, meta = common.run_selector(require_arm="tabpfn")
 
 st.header("Performance comparisons")
 tab_metrics, tab_budget, tab_one = st.tabs(["Accuracy and ranking", "Under a search budget", "One stop"])
