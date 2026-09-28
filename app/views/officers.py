@@ -69,12 +69,12 @@ if results is None:
     st.stop()
 
 st.warning(
-    "**Why these features are shown for comparison only.** The client's decision is whether to "
-    "search *this* driver. At that moment the officer is the same for every driver in front of "
-    "them, so a feature describing the officer cannot rank those drivers: it raises test-set AUC "
-    "but has no decision value. It would also score the officer's past hit rate rather than the "
-    "driver's risk, and steer searches toward officers whose rates reflect whom they chose to "
-    "search in the first place. The main results are on the model pages and in Findings."
+    "**Not for scoring drivers at the roadside.** When an officer decides whether to search *this* "
+    "driver, the officer is the same for every driver in front of them, so a feature describing the "
+    "officer cannot rank those drivers: it raises test-set AUC but has no decision value there. It "
+    "would also score the officer's past hit rate rather than the driver's risk. **What these "
+    "features are for:** reviewing officers' consent-search practice, the recommendation in "
+    "Findings. The white box used for that review is the race-blind PLTR (tab *White box: PLTR*)."
 )
 st.markdown(
     """
@@ -140,6 +140,12 @@ with tabs[0]:
 
 # --------------------------------------------------------------------------- PLTR
 with tabs[1]:
+    st.info(
+        "**This is the white box from slide 12 on** — not the logistic scorecard of Act I (White box "
+        "models page). Race-aware PLTR: 19 rules, AUC 0.630, 81% of its weight about the officer "
+        "(slide 12). **Race-blind PLTR: AUC 0.628, the version recommended** for the officer-level "
+        "review (slides 16–18). It opens on the race-blind version below."
+    )
     st.markdown(
         """
 **Penalised Logistic Tree Regression** (Dumitrescu, Hué, Hurlin & Tokpavi 2022; course section 2.4).
