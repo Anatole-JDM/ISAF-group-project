@@ -1,0 +1,674 @@
+{
+ "source": "outputs/scores__consent__matched.parquet (src matched run: every arm trained on the same 2,000 rows of 2010-2015, scored on the 9,113 consent searches of 2016-2018)",
+ "K": 2000,
+ "test_n": 9113,
+ "base_rate": 0.2135,
+ "arms": {
+  "scorecard": {
+   "auc": 0.5329,
+   "score_sd": 0.0713,
+   "within_officer": {
+    "within_officer_auc": 0.521,
+    "ci95_resampling_officers": [
+     0.5014,
+     0.541
+    ],
+    "officers": 209,
+    "searches": 7005,
+    "share_of_score_variance_between_officers": 0.248
+   },
+   "fairness_top_k": {
+    "white": {
+     "share_flagged": [
+      0.4201,
+      [
+       0.4042,
+       0.4376
+      ]
+     ],
+     "true_positive_rate": [
+      0.4016,
+      [
+       0.3699,
+       0.4373
+      ]
+     ],
+     "false_positive_rate": [
+      0.4265,
+      [
+       0.4087,
+       0.4446
+      ]
+     ],
+     "hit_rate_flagged": [
+      0.2438,
+      [
+       0.2223,
+       0.2661
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.0408,
+      [
+       -0.0561,
+       -0.0266
+      ]
+     ],
+     "n": 3368
+    },
+    "black": {
+     "share_flagged": [
+      0.1088,
+      [
+       0.1003,
+       0.1172
+      ]
+     ],
+     "true_positive_rate": [
+      0.1058,
+      [
+       0.0873,
+       0.1241
+      ]
+     ],
+     "false_positive_rate": [
+      0.1095,
+      [
+       0.0995,
+       0.1197
+      ]
+     ],
+     "hit_rate_flagged": [
+      0.1896,
+      [
+       0.1565,
+       0.222
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.0328,
+      [
+       -0.0439,
+       -0.0214
+      ]
+     ],
+     "n": 4947
+    },
+    "hispanic": {
+     "share_flagged": [
+      0.0,
+      [
+       0.0,
+       0.0
+      ]
+     ],
+     "true_positive_rate": [
+      0.0,
+      [
+       0.0,
+       0.0
+      ]
+     ],
+     "false_positive_rate": [
+      0.0,
+      [
+       0.0,
+       0.0
+      ]
+     ],
+     "hit_rate_flagged": [
+      null,
+      [
+       null,
+       null
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.1068,
+      [
+       -0.1343,
+       -0.0816
+      ]
+     ],
+     "n": 689
+    },
+    "black_minus_white": {
+     "share_flagged": [
+      -0.3114,
+      [
+       -0.3301,
+       -0.2941
+      ]
+     ],
+     "true_positive_rate": [
+      -0.2958,
+      [
+       -0.3343,
+       -0.2611
+      ]
+     ],
+     "false_positive_rate": [
+      -0.317,
+      [
+       -0.3364,
+       -0.2967
+      ]
+     ],
+     "hit_rate_flagged": [
+      -0.0542,
+      [
+       -0.0949,
+       -0.0147
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      0.008,
+      [
+       -0.0104,
+       0.0275
+      ]
+     ]
+    },
+    "hispanic_minus_white": {
+     "share_flagged": [
+      -0.4201,
+      [
+       -0.4376,
+       -0.4042
+      ]
+     ],
+     "true_positive_rate": [
+      -0.4016,
+      [
+       -0.4373,
+       -0.3699
+      ]
+     ],
+     "false_positive_rate": [
+      -0.4265,
+      [
+       -0.4446,
+       -0.4087
+      ]
+     ],
+     "hit_rate_flagged": [
+      null,
+      [
+       null,
+       null
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.066,
+      [
+       -0.097,
+       -0.0382
+      ]
+     ]
+    },
+    "chi2_selection_black_vs_white": [
+     1081.0749,
+     4.287157003769339e-237
+    ],
+    "hit_rate_gap_at_equal_score_black_minus_white": [
+     -0.06,
+     [
+      -0.0802,
+      -0.0378
+     ]
+    ],
+    "hit_rate_gap_at_equal_score_hispanic_minus_white": [
+     -0.0927,
+     [
+      -0.1578,
+      -0.0355
+     ]
+    ]
+   }
+  },
+  "gbm": {
+   "auc": 0.5478,
+   "score_sd": 0.1385,
+   "within_officer": {
+    "within_officer_auc": 0.519,
+    "ci95_resampling_officers": [
+     0.4997,
+     0.5399
+    ],
+    "officers": 209,
+    "searches": 7005,
+    "share_of_score_variance_between_officers": 0.1728
+   },
+   "fairness_top_k": {
+    "white": {
+     "share_flagged": [
+      0.3343,
+      [
+       0.3189,
+       0.3504
+      ]
+     ],
+     "true_positive_rate": [
+      0.3714,
+      [
+       0.3391,
+       0.4021
+      ]
+     ],
+     "false_positive_rate": [
+      0.3216,
+      [
+       0.3028,
+       0.3406
+      ]
+     ],
+     "hit_rate_flagged": [
+      0.2833,
+      [
+       0.2589,
+       0.3103
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.0386,
+      [
+       -0.0545,
+       -0.023
+      ]
+     ],
+     "n": 3368
+    },
+    "black": {
+     "share_flagged": [
+      0.1647,
+      [
+       0.1552,
+       0.1746
+      ]
+     ],
+     "true_positive_rate": [
+      0.1712,
+      [
+       0.1471,
+       0.1952
+      ]
+     ],
+     "false_positive_rate": [
+      0.1632,
+      [
+       0.1527,
+       0.1743
+      ]
+     ],
+     "hit_rate_flagged": [
+      0.2025,
+      [
+       0.1764,
+       0.2292
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.0471,
+      [
+       -0.0571,
+       -0.0348
+      ]
+     ],
+     "n": 4947
+    },
+    "hispanic": {
+     "share_flagged": [
+      0.0131,
+      [
+       0.0058,
+       0.0218
+      ]
+     ],
+     "true_positive_rate": [
+      0.0288,
+      [
+       0.0,
+       0.0681
+      ]
+     ],
+     "false_positive_rate": [
+      0.0103,
+      [
+       0.0034,
+       0.0187
+      ]
+     ],
+     "hit_rate_flagged": [
+      0.3333,
+      [
+       0.0,
+       0.7143
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.1132,
+      [
+       -0.1416,
+       -0.0868
+      ]
+     ],
+     "n": 689
+    },
+    "black_minus_white": {
+     "share_flagged": [
+      -0.1696,
+      [
+       -0.1886,
+       -0.1508
+      ]
+     ],
+     "true_positive_rate": [
+      -0.2002,
+      [
+       -0.2374,
+       -0.16
+      ]
+     ],
+     "false_positive_rate": [
+      -0.1584,
+      [
+       -0.1814,
+       -0.137
+      ]
+     ],
+     "hit_rate_flagged": [
+      -0.0808,
+      [
+       -0.1177,
+       -0.0431
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.0085,
+      [
+       -0.0264,
+       0.0116
+      ]
+     ]
+    },
+    "hispanic_minus_white": {
+     "share_flagged": [
+      -0.3213,
+      [
+       -0.3395,
+       -0.3026
+      ]
+     ],
+     "true_positive_rate": [
+      -0.3425,
+      [
+       -0.3853,
+       -0.2962
+      ]
+     ],
+     "false_positive_rate": [
+      -0.3114,
+      [
+       -0.3313,
+       -0.2914
+      ]
+     ],
+     "hit_rate_flagged": [
+      0.05,
+      [
+       -0.2879,
+       0.4235
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.0747,
+      [
+       -0.1061,
+       -0.0414
+      ]
+     ]
+    },
+    "chi2_selection_black_vs_white": [
+     322.0113,
+     5.281930454268884e-72
+    ],
+    "hit_rate_gap_at_equal_score_black_minus_white": [
+     -0.0457,
+     [
+      -0.0672,
+      -0.0256
+     ]
+    ],
+    "hit_rate_gap_at_equal_score_hispanic_minus_white": [
+     -0.0457,
+     [
+      -0.0942,
+      -0.0002
+     ]
+    ]
+   }
+  },
+  "tabpfn": {
+   "auc": 0.5529,
+   "score_sd": 0.0442,
+   "within_officer": {
+    "within_officer_auc": 0.5333,
+    "ci95_resampling_officers": [
+     0.5121,
+     0.5528
+    ],
+    "officers": 209,
+    "searches": 7005,
+    "share_of_score_variance_between_officers": 0.2171
+   },
+   "fairness_top_k": {
+    "white": {
+     "share_flagged": [
+      0.5647,
+      [
+       0.5488,
+       0.5814
+      ]
+     ],
+     "true_positive_rate": [
+      0.5681,
+      [
+       0.5365,
+       0.601
+      ]
+     ],
+     "false_positive_rate": [
+      0.5636,
+      [
+       0.544,
+       0.5817
+      ]
+     ],
+     "hit_rate_flagged": [
+      0.2566,
+      [
+       0.2375,
+       0.2784
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.0492,
+      [
+       -0.0641,
+       -0.036
+      ]
+     ],
+     "n": 3368
+    },
+    "black": {
+     "share_flagged": [
+      0.0166,
+      [
+       0.0131,
+       0.0202
+      ]
+     ],
+     "true_positive_rate": [
+      0.0156,
+      [
+       0.0084,
+       0.0243
+      ]
+     ],
+     "false_positive_rate": [
+      0.0168,
+      [
+       0.0129,
+       0.0211
+      ]
+     ],
+     "hit_rate_flagged": [
+      0.1829,
+      [
+       0.0977,
+       0.2747
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.0262,
+      [
+       -0.0362,
+       -0.0155
+      ]
+     ],
+     "n": 4947
+    },
+    "hispanic": {
+     "share_flagged": [
+      0.0,
+      [
+       0.0,
+       0.0
+      ]
+     ],
+     "true_positive_rate": [
+      0.0,
+      [
+       0.0,
+       0.0
+      ]
+     ],
+     "false_positive_rate": [
+      0.0,
+      [
+       0.0,
+       0.0
+      ]
+     ],
+     "hit_rate_flagged": [
+      null,
+      [
+       null,
+       null
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.0996,
+      [
+       -0.1248,
+       -0.0757
+      ]
+     ],
+     "n": 689
+    },
+    "black_minus_white": {
+     "share_flagged": [
+      -0.5482,
+      [
+       -0.5649,
+       -0.5322
+      ]
+     ],
+     "true_positive_rate": [
+      -0.5525,
+      [
+       -0.5871,
+       -0.5197
+      ]
+     ],
+     "false_positive_rate": [
+      -0.5467,
+      [
+       -0.5652,
+       -0.5267
+      ]
+     ],
+     "hit_rate_flagged": [
+      -0.0736,
+      [
+       -0.1592,
+       0.0201
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      0.023,
+      [
+       0.007,
+       0.0414
+      ]
+     ]
+    },
+    "hispanic_minus_white": {
+     "share_flagged": [
+      -0.5647,
+      [
+       -0.5814,
+       -0.5488
+      ]
+     ],
+     "true_positive_rate": [
+      -0.5681,
+      [
+       -0.601,
+       -0.5365
+      ]
+     ],
+     "false_positive_rate": [
+      -0.5636,
+      [
+       -0.5817,
+       -0.544
+      ]
+     ],
+     "hit_rate_flagged": [
+      null,
+      [
+       null,
+       null
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.0504,
+      [
+       -0.0792,
+       -0.0224
+      ]
+     ]
+    },
+    "chi2_selection_black_vs_white": [
+     3314.0794,
+     0.0
+    ],
+    "hit_rate_gap_at_equal_score_black_minus_white": [
+     -0.0588,
+     [
+      -0.1066,
+      -0.0192
+     ]
+    ],
+    "hit_rate_gap_at_equal_score_hispanic_minus_white": [
+     -0.0417,
+     [
+      -0.1233,
+      0.0317
+     ]
+    ]
+   }
+  }
+ }
+}

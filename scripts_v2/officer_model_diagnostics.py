@@ -10,12 +10,21 @@
                             search): what if the bottom 20% had the hit rate of the median group?
   E. calibration by race    at the same score, is the hit rate the same for Black, Hispanic and white
                             drivers? (predictive parity / sufficiency)
+  F. within-officer AUC     AUC computed INSIDE each officer's own test searches (officers with >= 10 test
+                            searches and both outcomes, weighted by searches), CI by resampling officers.
+                            The stop-level decision is made by one officer among his own stops, so this is
+                            the number that measures decision value; the pooled AUC mixes in the
+                            differences BETWEEN officers
+  G. first stop of the day  hit rate of consent searches made at the officer's first stop of the calendar
+                            day vs later, by hour band and by the officer's daily stop volume (is the
+                            model's 'first stop' signal an artefact?)
 
 Selective labels apply to everything: only searches that were made are observed, so "avoided" means
 "searches among those made that would not have been made"; nothing is known about stops not searched.
 
 Usage   python scripts_claude/officer_model_diagnostics.py
 Input   data/officer_model_predictions.parquet, data/pltr_terms.json, data/nashville_consent_searches.parquet
+        (G also reads opp_data/processed/nashville_clean.parquet for officer stop volume, if present)
 Output  data/officer_model_diagnostics.json + printed summary
 """
 import json
@@ -30,6 +39,8 @@ PRED = ROOT / 'data' / 'officer_model_predictions.parquet'
 TABLE = ROOT / 'data' / 'nashville_consent_searches.parquet'
 TERMS = ROOT / 'data' / 'pltr_terms.json'
 OUT = ROOT / 'data' / 'officer_model_diagnostics.json'
+STOPS = ROOT / 'opp_data' / 'processed' / 'nashville_clean.parquet'
+MIN_OFFICER_SEARCHES = 10
 
 SEED, N_BOOT = 42, 500
 RACES = ['white', 'black', 'hispanic']
@@ -269,12 +280,69 @@ def calibration(d, rng):
     return out
 
 
+# --------------------------------------------------------------------------- F
+def within_officer(d, rng):
+    out = {}
+    for mode, model in MAIN:
+        x = get(d, 'temporal', mode, model)
+        if x.empty:
+            continue
+        per = np.array([(len(h), roc_auc_score(h['y'], h['p'])) for _, h in x.groupby('officer_id_hash')
+                        if len(h) >= MIN_OFFICER_SEARCHES and 0 < h['y'].sum() < len(h)])
+        w, a = per[:, 0], per[:, 1]
+        draws = []
+        for _ in range(N_BOOT):
+            i = rng.integers(0, len(w), len(w))
+            draws.append((w[i] * a[i]).sum() / w[i].sum())
+        xo = x[x['officer_id_hash'].notna()]
+        officer_mean = xo.groupby('officer_id_hash')['p'].transform('mean')
+        between = float(((officer_mean - xo['p'].mean()) ** 2).mean() / xo['p'].var(ddof=0))
+        out[f'{mode}/{model}'] = {'pooled_auc': r4(roc_auc_score(x['y'], x['p'])),
+                                  'within_officer_auc': r4((w * a).sum() / w.sum()),
+                                  'ci95_resampling_officers': ci(draws),
+                                  'officers': int(len(w)), 'searches': int(w.sum()),
+                                  'share_of_officers_below_0.5': r4((a < 0.5).mean()),
+                                  'share_of_score_variance_between_officers': r4(between)}
+    return out
+
+
+# --------------------------------------------------------------------------- G
+def first_stop_check():
+    t = pd.read_parquet(TABLE, columns=['date', 'hour', 'contraband_found', 'officer_id_hash', 'off_stops_today_before'])
+    t = t[(t['date'] >= '2011-01-01') & (t['date'] < '2019-01-01') & t['officer_id_hash'].notna()
+          & t['off_stops_today_before'].notna()].copy()
+    t['y'] = t['contraband_found'].astype(int)
+    t['first'] = t['off_stops_today_before'].eq(0)
+    out = {'scope': 'consent searches 2011-2018 (2010 = warm-up); first = no earlier stop by this officer on '
+                    'the same calendar day',
+           'searches': int(len(t)), 'share_at_first_stop': r4(t['first'].mean()),
+           'hit_rate_first_vs_later': [r4(t.loc[t['first'], 'y'].mean()), r4(t.loc[~t['first'], 'y'].mean())]}
+    h = t[t['hour'] >= 0].copy()
+    h['band'] = pd.cut(h['hour'], [-1, 3, 7, 11, 15, 19, 23], labels=['00-03', '04-07', '08-11', '12-15', '16-19', '20-23'])
+    out['by_hour_band'] = {str(b): {'hit_first': r4(g.loc[g['first'], 'y'].mean()), 'hit_later': r4(g.loc[~g['first'], 'y'].mean()),
+                                    'n_first': int(g['first'].sum()), 'n_later': int((~g['first']).sum())}
+                           for b, g in h.groupby('band', observed=True)}
+    out['share_of_first_stop_searches_between_00_and_04'] = r4((h.loc[h['first'], 'hour'] <= 3).mean())
+    if STOPS.exists():
+        s = pd.read_parquet(STOPS, columns=['date', 'officer_id_hash'])
+        s = s[(s['date'] < '2019-01-01') & s['officer_id_hash'].notna()]
+        per_day = s.groupby(['officer_id_hash', 'date']).size().groupby('officer_id_hash').mean().rename('spd')
+        t = t.join(per_day, on='officer_id_hash')
+        t['volume'] = pd.qcut(t['spd'], 3, labels=['low', 'mid', 'high'])
+        out['by_officer_daily_stop_volume'] = {
+            str(v): {'median_stops_per_active_day': r4(g['spd'].median()), 'share_at_first_stop': r4(g['first'].mean()),
+                     'hit_first': r4(g.loc[g['first'], 'y'].mean()), 'hit_later': r4(g.loc[~g['first'], 'y'].mean())}
+            for v, g in t.groupby('volume', observed=True)}
+    return out
+
+
 def main():
     rng = np.random.default_rng(SEED)
     d = load()
     res = {'A_auc_by_test_year': by_year(d, rng), 'B_pltr_term_stability': term_stability(),
            'C_economics': economics(d, rng), 'D_officer_counterfactual': officer_counterfactual(d, rng),
            'E_calibration_by_race': calibration(d, rng),
+           'F_within_officer_auc': within_officer(d, rng), 'G_first_stop_check': first_stop_check(),
            'caveats': ['Selective labels: only searches that were made are observed.',
                        'Economics treat each search as independent and ignore deterrence and the value of '
                        'the contraband; the break-even hit rate is an assumption, shown over a range.',
@@ -310,6 +378,20 @@ def main():
     for k, v in res['E_calibration_by_race'].items():
         g = v['hit_rate_gap_at_equal_score']
         print(f'  {k:38} Black {g["black_minus_white"]}  Hispanic {g["hispanic_minus_white"]}')
+    print(f'\nF. AUC inside each officer\'s own test searches (officers with >= {MIN_OFFICER_SEARCHES} searches)')
+    for k, v in res['F_within_officer_auc'].items():
+        print(f'  {k:38} pooled {v["pooled_auc"]:.3f}   within officer {v["within_officer_auc"]:.3f} '
+              f'{v["ci95_resampling_officers"]}   ({v["officers"]} officers, {v["searches"]:,} searches); '
+              f'{v["share_of_score_variance_between_officers"]:.0%} of score variance between officers')
+    g = res['G_first_stop_check']
+    print(f'\nG. First stop of the day: {g["share_at_first_stop"]:.0%} of consent searches; hit rate '
+          f'{g["hit_rate_first_vs_later"][0]:.1%} vs {g["hit_rate_first_vs_later"][1]:.1%} later; '
+          f'{g["share_of_first_stop_searches_between_00_and_04"]:.0%} of them between 00:00 and 03:59')
+    for b, v in g['by_hour_band'].items():
+        print(f'  {b}: first {v["hit_first"]:.1%} (n {v["n_first"]:,}) vs later {v["hit_later"]:.1%} (n {v["n_later"]:,})')
+    for b, v in g.get('by_officer_daily_stop_volume', {}).items():
+        print(f'  {b}-volume officers ({v["median_stops_per_active_day"]} stops/day): first {v["hit_first"]:.1%} '
+              f'vs later {v["hit_later"]:.1%}; {v["share_at_first_stop"]:.0%} of their searches at a first stop')
     print(f'\nwrote {OUT.name}')
 
 

@@ -1,0 +1,1597 @@
+{
+ "from_predictions": {
+  "white_box": {
+   "mode": "full_time_officer",
+   "model": "pltr_sparse",
+   "performance": {
+    "auc": 0.63,
+    "pr_auc": 0.3187,
+    "brier": 0.1611,
+    "brier_no_skill": 0.1679,
+    "auc_ci95": [
+     0.6151,
+     0.643
+    ],
+    "pr_auc_ci95": [
+     0.3002,
+     0.3381
+    ],
+    "brier_ci95": [
+     0.1565,
+     0.1657
+    ]
+   },
+   "economics_top22": {
+    "flagged": 2005,
+    "of": 9113,
+    "searches_avoided": 7108,
+    "searches_avoided_share": 0.78,
+    "finds_kept": 642,
+    "finds_lost": 1304,
+    "finds_lost_share": 0.6701,
+    "hit_rate_flagged": 0.3202,
+    "hit_rate_all": 0.2135,
+    "searches_per_find_flagged": 3.1231,
+    "searches_per_find_all": 4.6829
+   },
+   "fairness_top22": {
+    "white": {
+     "share_flagged": [
+      0.3637,
+      [
+       0.3481,
+       0.3793
+      ]
+     ],
+     "true_positive_rate": [
+      0.4796,
+      [
+       0.4472,
+       0.5125
+      ]
+     ],
+     "false_positive_rate": [
+      0.324,
+      [
+       0.3055,
+       0.3418
+      ]
+     ],
+     "hit_rate_flagged": [
+      0.3363,
+      [
+       0.3092,
+       0.3625
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.0122,
+      [
+       -0.0259,
+       0.0021
+      ]
+     ],
+     "n": 3368
+    },
+    "black": {
+     "share_flagged": [
+      0.1488,
+      [
+       0.1394,
+       0.1593
+      ]
+     ],
+     "true_positive_rate": [
+      0.2282,
+      [
+       0.2018,
+       0.2546
+      ]
+     ],
+     "false_positive_rate": [
+      0.1296,
+      [
+       0.1202,
+       0.1404
+      ]
+     ],
+     "hit_rate_flagged": [
+      0.2989,
+      [
+       0.2635,
+       0.3307
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      0.0024,
+      [
+       -0.0076,
+       0.0128
+      ]
+     ],
+     "n": 4947
+    },
+    "hispanic": {
+     "share_flagged": [
+      0.0406,
+      [
+       0.0276,
+       0.0552
+      ]
+     ],
+     "true_positive_rate": [
+      0.0673,
+      [
+       0.0264,
+       0.1198
+      ]
+     ],
+     "false_positive_rate": [
+      0.0359,
+      [
+       0.0222,
+       0.052
+      ]
+     ],
+     "hit_rate_flagged": [
+      0.25,
+      [
+       0.0999,
+       0.4108
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.0134,
+      [
+       -0.0364,
+       0.0142
+      ]
+     ],
+     "n": 689
+    },
+    "black_minus_white": {
+     "share_flagged": [
+      -0.2149,
+      [
+       -0.2324,
+       -0.1961
+      ]
+     ],
+     "true_positive_rate": [
+      -0.2514,
+      [
+       -0.2964,
+       -0.2089
+      ]
+     ],
+     "false_positive_rate": [
+      -0.1945,
+      [
+       -0.2134,
+       -0.1739
+      ]
+     ],
+     "hit_rate_flagged": [
+      -0.0374,
+      [
+       -0.0813,
+       -0.0
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      0.0147,
+      [
+       -0.0034,
+       0.0313
+      ]
+     ]
+    },
+    "black_over_white_share_flagged": 0.409,
+    "hispanic_minus_white": {
+     "share_flagged": [
+      -0.3231,
+      [
+       -0.3449,
+       -0.3018
+      ]
+     ],
+     "true_positive_rate": [
+      -0.4123,
+      [
+       -0.4665,
+       -0.3539
+      ]
+     ],
+     "false_positive_rate": [
+      -0.2881,
+      [
+       -0.3114,
+       -0.2642
+      ]
+     ],
+     "hit_rate_flagged": [
+      -0.0863,
+      [
+       -0.2374,
+       0.0872
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.0012,
+      [
+       -0.031,
+       0.0284
+      ]
+     ]
+    },
+    "hispanic_over_white_share_flagged": 0.1117
+   }
+  },
+  "white_box_race_blind": {
+   "mode": "full_time_officer_blind",
+   "model": "pltr_sparse",
+   "performance": {
+    "auc": 0.6284,
+    "pr_auc": 0.3174,
+    "brier": 0.1612,
+    "brier_no_skill": 0.1679,
+    "auc_ci95": [
+     0.615,
+     0.6419
+    ],
+    "pr_auc_ci95": [
+     0.2988,
+     0.3397
+    ],
+    "brier_ci95": [
+     0.1563,
+     0.1659
+    ]
+   },
+   "economics_top22": {
+    "flagged": 2005,
+    "of": 9113,
+    "searches_avoided": 7108,
+    "searches_avoided_share": 0.78,
+    "finds_kept": 645,
+    "finds_lost": 1301,
+    "finds_lost_share": 0.6686,
+    "hit_rate_flagged": 0.3217,
+    "hit_rate_all": 0.2135,
+    "searches_per_find_flagged": 3.1085,
+    "searches_per_find_all": 4.6829
+   },
+   "fairness_top22": {
+    "white": {
+     "share_flagged": [
+      0.2687,
+      [
+       0.255,
+       0.2834
+      ]
+     ],
+     "true_positive_rate": [
+      0.3795,
+      [
+       0.3457,
+       0.4112
+      ]
+     ],
+     "false_positive_rate": [
+      0.2308,
+      [
+       0.2148,
+       0.2473
+      ]
+     ],
+     "hit_rate_flagged": [
+      0.3602,
+      [
+       0.3274,
+       0.3901
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.0326,
+      [
+       -0.0469,
+       -0.018
+      ]
+     ],
+     "n": 3368
+    },
+    "black": {
+     "share_flagged": [
+      0.1924,
+      [
+       0.1821,
+       0.2034
+      ]
+     ],
+     "true_positive_rate": [
+      0.2905,
+      [
+       0.2639,
+       0.3207
+      ]
+     ],
+     "false_positive_rate": [
+      0.1687,
+      [
+       0.1564,
+       0.1794
+      ]
+     ],
+     "hit_rate_flagged": [
+      0.2941,
+      [
+       0.2674,
+       0.3273
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      0.0112,
+      [
+       -0.0016,
+       0.0219
+      ]
+     ],
+     "n": 4947
+    },
+    "hispanic": {
+     "share_flagged": [
+      0.1901,
+      [
+       0.1597,
+       0.2207
+      ]
+     ],
+     "true_positive_rate": [
+      0.3365,
+      [
+       0.2533,
+       0.4234
+      ]
+     ],
+     "false_positive_rate": [
+      0.1641,
+      [
+       0.1337,
+       0.1955
+      ]
+     ],
+     "hit_rate_flagged": [
+      0.2672,
+      [
+       0.1922,
+       0.3441
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      0.0368,
+      [
+       0.0111,
+       0.0655
+      ]
+     ],
+     "n": 689
+    },
+    "black_minus_white": {
+     "share_flagged": [
+      -0.0763,
+      [
+       -0.0954,
+       -0.0574
+      ]
+     ],
+     "true_positive_rate": [
+      -0.0891,
+      [
+       -0.1279,
+       -0.0435
+      ]
+     ],
+     "false_positive_rate": [
+      -0.0621,
+      [
+       -0.082,
+       -0.0416
+      ]
+     ],
+     "hit_rate_flagged": [
+      -0.0661,
+      [
+       -0.1051,
+       -0.0193
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      0.0438,
+      [
+       0.0261,
+       0.0621
+      ]
+     ]
+    },
+    "black_over_white_share_flagged": 0.7162,
+    "hispanic_minus_white": {
+     "share_flagged": [
+      -0.0786,
+      [
+       -0.1139,
+       -0.0454
+      ]
+     ],
+     "true_positive_rate": [
+      -0.043,
+      [
+       -0.1336,
+       0.0494
+      ]
+     ],
+     "false_positive_rate": [
+      -0.0667,
+      [
+       -0.1047,
+       -0.0324
+      ]
+     ],
+     "hit_rate_flagged": [
+      -0.093,
+      [
+       -0.1673,
+       -0.0094
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      0.0694,
+      [
+       0.0392,
+       0.0997
+      ]
+     ]
+    },
+    "hispanic_over_white_share_flagged": 0.7076
+   }
+  },
+  "white_box_1se_61_terms": {
+   "mode": "full_time_officer",
+   "model": "pltr",
+   "performance": {
+    "auc": 0.6358,
+    "pr_auc": 0.3283,
+    "brier": 0.1605,
+    "brier_no_skill": 0.1679,
+    "auc_ci95": [
+     0.6218,
+     0.6492
+    ],
+    "pr_auc_ci95": [
+     0.308,
+     0.3505
+    ],
+    "brier_ci95": [
+     0.1556,
+     0.1653
+    ]
+   },
+   "economics_top22": {
+    "flagged": 2005,
+    "of": 9113,
+    "searches_avoided": 7108,
+    "searches_avoided_share": 0.78,
+    "finds_kept": 666,
+    "finds_lost": 1280,
+    "finds_lost_share": 0.6578,
+    "hit_rate_flagged": 0.3322,
+    "hit_rate_all": 0.2135,
+    "searches_per_find_flagged": 3.0105,
+    "searches_per_find_all": 4.6829
+   },
+   "fairness_top22": {
+    "white": {
+     "share_flagged": [
+      0.3893,
+      [
+       0.3726,
+       0.405
+      ]
+     ],
+     "true_positive_rate": [
+      0.525,
+      [
+       0.4905,
+       0.5591
+      ]
+     ],
+     "false_positive_rate": [
+      0.3428,
+      [
+       0.3237,
+       0.3603
+      ]
+     ],
+     "hit_rate_flagged": [
+      0.344,
+      [
+       0.32,
+       0.3721
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.0081,
+      [
+       -0.0219,
+       0.0057
+      ]
+     ],
+     "n": 3368
+    },
+    "black": {
+     "share_flagged": [
+      0.1348,
+      [
+       0.1246,
+       0.1448
+      ]
+     ],
+     "true_positive_rate": [
+      0.2137,
+      [
+       0.1867,
+       0.2396
+      ]
+     ],
+     "false_positive_rate": [
+      0.1157,
+      [
+       0.106,
+       0.1262
+      ]
+     ],
+     "hit_rate_flagged": [
+      0.3088,
+      [
+       0.2752,
+       0.3456
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.005,
+      [
+       -0.0165,
+       0.0066
+      ]
+     ],
+     "n": 4947
+    },
+    "hispanic": {
+     "share_flagged": [
+      0.0203,
+      [
+       0.0116,
+       0.0319
+      ]
+     ],
+     "true_positive_rate": [
+      0.0577,
+      [
+       0.0145,
+       0.105
+      ]
+     ],
+     "false_positive_rate": [
+      0.0137,
+      [
+       0.0051,
+       0.0251
+      ]
+     ],
+     "hit_rate_flagged": [
+      0.4286,
+      [
+       0.1481,
+       0.6923
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.0389,
+      [
+       -0.0633,
+       -0.0118
+      ]
+     ],
+     "n": 689
+    },
+    "black_minus_white": {
+     "share_flagged": [
+      -0.2544,
+      [
+       -0.273,
+       -0.2327
+      ]
+     ],
+     "true_positive_rate": [
+      -0.3113,
+      [
+       -0.3554,
+       -0.2711
+      ]
+     ],
+     "false_positive_rate": [
+      -0.227,
+      [
+       -0.246,
+       -0.2055
+      ]
+     ],
+     "hit_rate_flagged": [
+      -0.0352,
+      [
+       -0.0778,
+       0.0027
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      0.0032,
+      [
+       -0.0156,
+       0.021
+      ]
+     ]
+    },
+    "black_over_white_share_flagged": 0.3464,
+    "hispanic_minus_white": {
+     "share_flagged": [
+      -0.3689,
+      [
+       -0.3869,
+       -0.3482
+      ]
+     ],
+     "true_positive_rate": [
+      -0.4673,
+      [
+       -0.5212,
+       -0.4065
+      ]
+     ],
+     "false_positive_rate": [
+      -0.3291,
+      [
+       -0.3484,
+       -0.3074
+      ]
+     ],
+     "hit_rate_flagged": [
+      0.0846,
+      [
+       -0.1953,
+       0.344
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.0308,
+      [
+       -0.0588,
+       -0.0008
+      ]
+     ]
+    },
+    "hispanic_over_white_share_flagged": 0.0522
+   }
+  },
+  "baseline_scorecard_officer": {
+   "mode": "full_time_officer",
+   "model": "scorecard",
+   "performance": {
+    "auc": 0.6271,
+    "pr_auc": 0.3218,
+    "brier": 0.1617,
+    "brier_no_skill": 0.1679,
+    "auc_ci95": [
+     0.6132,
+     0.6405
+    ],
+    "pr_auc_ci95": [
+     0.3026,
+     0.3413
+    ],
+    "brier_ci95": [
+     0.1568,
+     0.1664
+    ]
+   },
+   "economics_top22": {
+    "flagged": 2005,
+    "of": 9113,
+    "searches_avoided": 7108,
+    "searches_avoided_share": 0.78,
+    "finds_kept": 652,
+    "finds_lost": 1294,
+    "finds_lost_share": 0.665,
+    "hit_rate_flagged": 0.3252,
+    "hit_rate_all": 0.2135,
+    "searches_per_find_flagged": 3.0752,
+    "searches_per_find_all": 4.6829
+   },
+   "fairness_top22": {
+    "white": {
+     "share_flagged": [
+      0.399,
+      [
+       0.3812,
+       0.4155
+      ]
+     ],
+     "true_positive_rate": [
+      0.5355,
+      [
+       0.5048,
+       0.569
+      ]
+     ],
+     "false_positive_rate": [
+      0.3523,
+      [
+       0.3339,
+       0.3702
+      ]
+     ],
+     "hit_rate_flagged": [
+      0.3423,
+      [
+       0.3196,
+       0.3685
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      0.0163,
+      [
+       0.0014,
+       0.0293
+      ]
+     ],
+     "n": 3368
+    },
+    "black": {
+     "share_flagged": [
+      0.1263,
+      [
+       0.1174,
+       0.1351
+      ]
+     ],
+     "true_positive_rate": [
+      0.1909,
+      [
+       0.1686,
+       0.2162
+      ]
+     ],
+     "false_positive_rate": [
+      0.1107,
+      [
+       0.1006,
+       0.1201
+      ]
+     ],
+     "hit_rate_flagged": [
+      0.2944,
+      [
+       0.2606,
+       0.3295
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      0.0045,
+      [
+       -0.0058,
+       0.0151
+      ]
+     ],
+     "n": 4947
+    },
+    "hispanic": {
+     "share_flagged": [
+      0.016,
+      [
+       0.0073,
+       0.0261
+      ]
+     ],
+     "true_positive_rate": [
+      0.0385,
+      [
+       0.0039,
+       0.0791
+      ]
+     ],
+     "false_positive_rate": [
+      0.012,
+      [
+       0.0035,
+       0.0221
+      ]
+     ],
+     "hit_rate_flagged": [
+      0.3636,
+      [
+       0.0365,
+       0.6667
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.0433,
+      [
+       -0.0687,
+       -0.0187
+      ]
+     ],
+     "n": 689
+    },
+    "black_minus_white": {
+     "share_flagged": [
+      -0.2727,
+      [
+       -0.2918,
+       -0.2525
+      ]
+     ],
+     "true_positive_rate": [
+      -0.3446,
+      [
+       -0.3857,
+       -0.3045
+      ]
+     ],
+     "false_positive_rate": [
+      -0.2416,
+      [
+       -0.2615,
+       -0.2196
+      ]
+     ],
+     "hit_rate_flagged": [
+      -0.0479,
+      [
+       -0.0895,
+       -0.0059
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.0118,
+      [
+       -0.0286,
+       0.0058
+      ]
+     ]
+    },
+    "black_over_white_share_flagged": 0.3166,
+    "hispanic_minus_white": {
+     "share_flagged": [
+      -0.3831,
+      [
+       -0.4026,
+       -0.363
+      ]
+     ],
+     "true_positive_rate": [
+      -0.497,
+      [
+       -0.5455,
+       -0.448
+      ]
+     ],
+     "false_positive_rate": [
+      -0.3404,
+      [
+       -0.3605,
+       -0.3184
+      ]
+     ],
+     "hit_rate_flagged": [
+      0.0214,
+      [
+       -0.2998,
+       0.3331
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.0597,
+      [
+       -0.0883,
+       -0.0314
+      ]
+     ]
+    },
+    "hispanic_over_white_share_flagged": 0.04
+   }
+  },
+  "team_scorecard_no_officer": {
+   "mode": "full_time",
+   "model": "scorecard",
+   "performance": {
+    "auc": 0.5552,
+    "pr_auc": 0.2585,
+    "brier": 0.1694,
+    "brier_no_skill": 0.1679,
+    "auc_ci95": [
+     0.5415,
+     0.5697
+    ],
+    "pr_auc_ci95": [
+     0.2431,
+     0.2757
+    ],
+    "brier_ci95": [
+     0.1634,
+     0.1749
+    ]
+   },
+   "economics_top22": {
+    "flagged": 2005,
+    "of": 9113,
+    "searches_avoided": 7108,
+    "searches_avoided_share": 0.78,
+    "finds_kept": 518,
+    "finds_lost": 1428,
+    "finds_lost_share": 0.7338,
+    "hit_rate_flagged": 0.2584,
+    "hit_rate_all": 0.2135,
+    "searches_per_find_flagged": 3.8707,
+    "searches_per_find_all": 4.6829
+   },
+   "fairness_top22": {
+    "white": {
+     "share_flagged": [
+      0.4855,
+      [
+       0.4697,
+       0.5025
+      ]
+     ],
+     "true_positive_rate": [
+      0.5192,
+      [
+       0.4879,
+       0.5529
+      ]
+     ],
+     "false_positive_rate": [
+      0.4739,
+      [
+       0.4553,
+       0.4938
+      ]
+     ],
+     "hit_rate_flagged": [
+      0.2728,
+      [
+       0.2524,
+       0.2932
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.0537,
+      [
+       -0.0679,
+       -0.0395
+      ]
+     ],
+     "n": 3368
+    },
+    "black": {
+     "share_flagged": [
+      0.0705,
+      [
+       0.0637,
+       0.0779
+      ]
+     ],
+     "true_positive_rate": [
+      0.0716,
+      [
+       0.0562,
+       0.0861
+      ]
+     ],
+     "false_positive_rate": [
+      0.0703,
+      [
+       0.0631,
+       0.0787
+      ]
+     ],
+     "hit_rate_flagged": [
+      0.1977,
+      [
+       0.1596,
+       0.2353
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.0443,
+      [
+       -0.0559,
+       -0.034
+      ]
+     ],
+     "n": 4947
+    },
+    "hispanic": {
+     "share_flagged": [
+      0.0,
+      [
+       0.0,
+       0.0
+      ]
+     ],
+     "true_positive_rate": [
+      0.0,
+      [
+       0.0,
+       0.0
+      ]
+     ],
+     "false_positive_rate": [
+      0.0,
+      [
+       0.0,
+       0.0
+      ]
+     ],
+     "hit_rate_flagged": [
+      null,
+      [
+       null,
+       null
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.0828,
+      [
+       -0.1115,
+       -0.0575
+      ]
+     ],
+     "n": 689
+    },
+    "black_minus_white": {
+     "share_flagged": [
+      -0.4149,
+      [
+       -0.433,
+       -0.3975
+      ]
+     ],
+     "true_positive_rate": [
+      -0.4476,
+      [
+       -0.4857,
+       -0.412
+      ]
+     ],
+     "false_positive_rate": [
+      -0.4036,
+      [
+       -0.4239,
+       -0.3848
+      ]
+     ],
+     "hit_rate_flagged": [
+      -0.0751,
+      [
+       -0.1204,
+       -0.0314
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      0.0094,
+      [
+       -0.0091,
+       0.0269
+      ]
+     ]
+    },
+    "black_over_white_share_flagged": 0.1453,
+    "hispanic_minus_white": {
+     "share_flagged": [
+      -0.4855,
+      [
+       -0.5025,
+       -0.4697
+      ]
+     ],
+     "true_positive_rate": [
+      -0.5192,
+      [
+       -0.5529,
+       -0.4879
+      ]
+     ],
+     "false_positive_rate": [
+      -0.4739,
+      [
+       -0.4938,
+       -0.4553
+      ]
+     ],
+     "hit_rate_flagged": [
+      null,
+      [
+       null,
+       null
+      ]
+     ],
+     "calibration_pred_minus_obs": [
+      -0.029,
+      [
+       -0.061,
+       -0.0005
+      ]
+     ]
+    },
+    "hispanic_over_white_share_flagged": 0.0
+   }
+  }
+ },
+ "top10_terms": [
+  {
+   "term": "num__off_consent_hit_rate_365d_shrunk",
+   "odds_ratio": 1.4291,
+   "avg_marginal_effect": 0.0464,
+   "support_share": 1.0,
+   "importance_share": 0.3204
+  },
+  {
+   "term": "off_hit_rate_same_race_past <= 0.179 AND off_hit_rate_365d_shrunk <= 0.129",
+   "odds_ratio": 0.639,
+   "avg_marginal_effect": -0.052,
+   "support_share": 0.1506,
+   "importance_share": 0.1438
+  },
+  {
+   "term": "cat__subject_race_hispanic",
+   "odds_ratio": 0.7097,
+   "avg_marginal_effect": -0.0405,
+   "support_share": 0.0795,
+   "importance_share": 0.0833
+  },
+  {
+   "term": "cat__subject_race_white",
+   "odds_ratio": 1.2094,
+   "avg_marginal_effect": 0.0251,
+   "support_share": 0.359,
+   "importance_share": 0.0819
+  },
+  {
+   "term": "off_experience_days > 569 AND off_minutes_since_first_stop_today <= 5.5",
+   "odds_ratio": 1.2353,
+   "avg_marginal_effect": 0.0285,
+   "support_share": 0.2127,
+   "importance_share": 0.0776
+  },
+  {
+   "term": "off_log_minutes_since_last_search <= 4.7",
+   "odds_ratio": 0.7936,
+   "avg_marginal_effect": -0.0283,
+   "support_share": 0.1012,
+   "importance_share": 0.0626
+  },
+  {
+   "term": "subject_sex in {male} AND off_consent_365d <= 9.5",
+   "odds_ratio": 0.8549,
+   "avg_marginal_effect": -0.0198,
+   "support_share": 0.1906,
+   "importance_share": 0.0553
+  },
+  {
+   "term": "off_stops_365d <= 1.71e+03 AND hour_sin > 0.921",
+   "odds_ratio": 1.4625,
+   "avg_marginal_effect": 0.0551,
+   "support_share": 0.0247,
+   "importance_share": 0.053
+  },
+  {
+   "term": "off_hit_gap_hisp_white > -0.0345 AND off_log_search_ratio_hisp_white > 0.475",
+   "odds_ratio": 0.9294,
+   "avg_marginal_effect": -0.0094,
+   "support_share": 0.2132,
+   "importance_share": 0.0269
+  },
+  {
+   "term": "off_search_rate_365d <= 0.255 AND subject_age <= 19.5",
+   "odds_ratio": 1.0933,
+   "avg_marginal_effect": 0.0119,
+   "support_share": 0.0898,
+   "importance_share": 0.0229
+  }
+ ],
+ "local_explanations": {
+  "cutoff_score": 0.253,
+  "intercept_log_odds": -1.7339,
+  "cases": {
+   "hit (highest-scored search that found contraband)": {
+    "score": 0.7573,
+    "found": 1,
+    "driver": {
+     "race": "white",
+     "sex": "female",
+     "age": 32.0
+    },
+    "officer_past_consent_hit_rate": 0.5805,
+    "log_odds": 1.138,
+    "top_contributions_log_odds": [
+     {
+      "term": "num__off_consent_hit_rate_365d_shrunk",
+      "contribution": 2.3669
+     },
+     {
+      "term": "off_experience_days > 569 AND off_minutes_since_first_stop_today <= 5.5",
+      "contribution": 0.2113
+     },
+     {
+      "term": "cat__subject_race_white",
+      "contribution": 0.1901
+     },
+     {
+      "term": "num__off_search_rate_365d",
+      "contribution": 0.0638
+     },
+     {
+      "term": "off_stops_365d <= 1.71e+03 AND month > 8.5",
+      "contribution": 0.0365
+     },
+     {
+      "term": "hour_cos > -0.847 AND reason_for_stop in {__missing__, child restraint, moving traffic violation, parking violation, safety violation, seatbelt violation}",
+      "contribution": 0.0032
+     }
+    ]
+   },
+   "miss (highest-scored search that found nothing)": {
+    "score": 0.752,
+    "found": 0,
+    "driver": {
+     "race": "white",
+     "sex": "male",
+     "age": 34.0
+    },
+    "officer_past_consent_hit_rate": 0.5797,
+    "log_odds": 1.1095,
+    "top_contributions_log_odds": [
+     {
+      "term": "num__off_consent_hit_rate_365d_shrunk",
+      "contribution": 2.3623
+     },
+     {
+      "term": "off_experience_days > 569 AND off_minutes_since_first_stop_today <= 5.5",
+      "contribution": 0.2113
+     },
+     {
+      "term": "cat__subject_race_white",
+      "contribution": 0.1901
+     },
+     {
+      "term": "num__off_search_rate_365d",
+      "contribution": 0.0626
+     },
+     {
+      "term": "cat__reason_for_stop_moving traffic violation",
+      "contribution": 0.0137
+     },
+     {
+      "term": "hour_cos > -0.847 AND reason_for_stop in {__missing__, child restraint, moving traffic violation, parking violation, safety violation, seatbelt violation}",
+      "contribution": 0.0032
+     }
+    ]
+   },
+   "borderline (score closest to the top-22% cut-off)": {
+    "score": 0.253,
+    "found": 0,
+    "driver": {
+     "race": "white",
+     "sex": "female",
+     "age": 45.0
+    },
+    "officer_past_consent_hit_rate": 0.2133,
+    "log_odds": -1.0829,
+    "top_contributions_log_odds": [
+     {
+      "term": "num__off_consent_hit_rate_365d_shrunk",
+      "contribution": 0.3148
+     },
+     {
+      "term": "off_experience_days > 569 AND off_minutes_since_first_stop_today <= 5.5",
+      "contribution": 0.2113
+     },
+     {
+      "term": "cat__subject_race_white",
+      "contribution": 0.1901
+     },
+     {
+      "term": "off_hit_gap_hisp_white > -0.0345 AND off_log_search_ratio_hisp_white > 0.475",
+      "contribution": -0.0733
+     },
+     {
+      "term": "cat__reason_for_stop_moving traffic violation",
+      "contribution": 0.0137
+     },
+     {
+      "term": "num__off_search_rate_365d",
+      "contribution": -0.0058
+     }
+    ]
+   }
+  }
+ },
+ "coefficient_bootstrap": {
+  "resamples": 50,
+  "note": "rules fixed; adaptive weights and lasso re-estimated at the chosen penalty on each resample",
+  "terms_selected_per_resample": [
+   35,
+   31,
+   29,
+   24,
+   22,
+   30,
+   24,
+   28,
+   24,
+   32,
+   27,
+   27,
+   30,
+   24,
+   32,
+   28,
+   25,
+   29,
+   24,
+   25,
+   31,
+   24,
+   27,
+   29,
+   28,
+   30,
+   26,
+   28,
+   28,
+   34,
+   32,
+   23,
+   27,
+   28,
+   30,
+   29,
+   29,
+   24,
+   27,
+   23,
+   26,
+   35,
+   32,
+   23,
+   31,
+   28,
+   25,
+   20,
+   24,
+   26
+  ],
+  "selected_terms_kept_in_90pct_of_resamples": 2,
+  "selected_terms_with_any_sign_change": 0,
+  "unselected_terms_entering_in_over_half": 0,
+  "importance_rank_correlation_mean_min": [
+   0.4157,
+   0.1869
+  ],
+  "test_auc_mean_sd_min_max": [
+   0.6303,
+   0.004,
+   0.6218,
+   0.6413
+  ],
+  "per_term": [
+   {
+    "term": "num__off_consent_hit_rate_365d_shrunk",
+    "odds_ratio_full": 1.4291,
+    "selected_share": 1.0,
+    "same_sign_share_when_selected": 1.0,
+    "odds_ratio_ci95_over_resamples": [
+     1.2479,
+     1.4797
+    ]
+   },
+   {
+    "term": "off_hit_rate_same_race_past <= 0.179 AND off_hit_rate_365d_shrunk <= 0.129",
+    "odds_ratio_full": 0.639,
+    "selected_share": 0.68,
+    "same_sign_share_when_selected": 1.0,
+    "odds_ratio_ci95_over_resamples": [
+     0.4902,
+     1.0
+    ]
+   },
+   {
+    "term": "cat__subject_race_hispanic",
+    "odds_ratio_full": 0.7097,
+    "selected_share": 0.84,
+    "same_sign_share_when_selected": 1.0,
+    "odds_ratio_ci95_over_resamples": [
+     0.5301,
+     1.0
+    ]
+   },
+   {
+    "term": "cat__subject_race_white",
+    "odds_ratio_full": 1.2094,
+    "selected_share": 0.66,
+    "same_sign_share_when_selected": 1.0,
+    "odds_ratio_ci95_over_resamples": [
+     1.0,
+     1.62
+    ]
+   },
+   {
+    "term": "off_experience_days > 569 AND off_minutes_since_first_stop_today <= 5.5",
+    "odds_ratio_full": 1.2353,
+    "selected_share": 0.84,
+    "same_sign_share_when_selected": 1.0,
+    "odds_ratio_ci95_over_resamples": [
+     1.0,
+     1.3527
+    ]
+   },
+   {
+    "term": "off_log_minutes_since_last_search <= 4.7",
+    "odds_ratio_full": 0.7936,
+    "selected_share": 0.92,
+    "same_sign_share_when_selected": 1.0,
+    "odds_ratio_ci95_over_resamples": [
+     0.7175,
+     1.0
+    ]
+   },
+   {
+    "term": "subject_sex in {male} AND off_consent_365d <= 9.5",
+    "odds_ratio_full": 0.8549,
+    "selected_share": 0.76,
+    "same_sign_share_when_selected": 1.0,
+    "odds_ratio_ci95_over_resamples": [
+     0.7953,
+     1.0
+    ]
+   },
+   {
+    "term": "off_stops_365d <= 1.71e+03 AND hour_sin > 0.921",
+    "odds_ratio_full": 1.4625,
+    "selected_share": 0.8,
+    "same_sign_share_when_selected": 1.0,
+    "odds_ratio_ci95_over_resamples": [
+     1.0,
+     1.9001
+    ]
+   },
+   {
+    "term": "off_hit_gap_hisp_white > -0.0345 AND off_log_search_ratio_hisp_white > 0.475",
+    "odds_ratio_full": 0.9294,
+    "selected_share": 0.78,
+    "same_sign_share_when_selected": 1.0,
+    "odds_ratio_ci95_over_resamples": [
+     0.8399,
+     1.0
+    ]
+   },
+   {
+    "term": "off_search_rate_365d <= 0.255 AND subject_age <= 19.5",
+    "odds_ratio_full": 1.0933,
+    "selected_share": 0.72,
+    "same_sign_share_when_selected": 1.0,
+    "odds_ratio_ci95_over_resamples": [
+     1.0,
+     1.2808
+    ]
+   },
+   {
+    "term": "off_stops_365d <= 1.71e+03 AND hour > 21.5",
+    "odds_ratio_full": 1.0636,
+    "selected_share": 0.6,
+    "same_sign_share_when_selected": 1.0,
+    "odds_ratio_ci95_over_resamples": [
+     1.0,
+     1.2028
+    ]
+   },
+   {
+    "term": "off_stops_365d <= 1.71e+03 AND month > 8.5",
+    "odds_ratio_full": 1.0371,
+    "selected_share": 0.64,
+    "same_sign_share_when_selected": 1.0,
+    "odds_ratio_ci95_over_resamples": [
+     1.0,
+     1.1075
+    ]
+   },
+   {
+    "term": "cat__zone_125",
+    "odds_ratio_full": 1.1228,
+    "selected_share": 0.8,
+    "same_sign_share_when_selected": 1.0,
+    "odds_ratio_ci95_over_resamples": [
+     1.0,
+     1.4728
+    ]
+   },
+   {
+    "term": "num__off_search_rate_365d",
+    "odds_ratio_full": 1.0095,
+    "selected_share": 0.32,
+    "same_sign_share_when_selected": 1.0,
+    "odds_ratio_ci95_over_resamples": [
+     1.0,
+     1.0223
+    ]
+   },
+   {
+    "term": "precinct in {2, 3, 4, 6, 8, U, ... (7 values)} AND hour_sin > -0.223",
+    "odds_ratio_full": 0.9832,
+    "selected_share": 0.52,
+    "same_sign_share_when_selected": 1.0,
+    "odds_ratio_ci95_over_resamples": [
+     0.9084,
+     1.0
+    ]
+   },
+   {
+    "term": "cat__reason_for_stop_moving traffic violation",
+    "odds_ratio_full": 1.0138,
+    "selected_share": 0.38,
+    "same_sign_share_when_selected": 1.0,
+    "odds_ratio_ci95_over_resamples": [
+     1.0,
+     1.0629
+    ]
+   },
+   {
+    "term": "off_stops_365d <= 1.71e+03 AND day_of_week > 3.5",
+    "odds_ratio_full": 0.9884,
+    "selected_share": 0.56,
+    "same_sign_share_when_selected": 1.0,
+    "odds_ratio_ci95_over_resamples": [
+     0.9463,
+     1.0
+    ]
+   },
+   {
+    "term": "hour_cos > -0.847 AND reason_for_stop in {__missing__, child restraint, moving traffic violation, parking violation, safety violation, seatbelt violation}",
+    "odds_ratio_full": 1.0032,
+    "selected_share": 0.26,
+    "same_sign_share_when_selected": 1.0,
+    "odds_ratio_ci95_over_resamples": [
+     1.0,
+     1.0784
+    ]
+   },
+   {
+    "term": "cat__zone_113",
+    "odds_ratio_full": 1.0052,
+    "selected_share": 0.52,
+    "same_sign_share_when_selected": 1.0,
+    "odds_ratio_ci95_over_resamples": [
+     1.0,
+     1.2158
+    ]
+   }
+  ]
+ },
+ "random_split": {
+  "n_train": 47092,
+  "n_test": 11773,
+  "pltr_sparse_auc": 0.6648,
+  "pltr_sparse_terms": 29,
+  "scorecard_auc": 0.6641,
+  "time_split_pltr_sparse_auc": 0.63
+ }
+}
